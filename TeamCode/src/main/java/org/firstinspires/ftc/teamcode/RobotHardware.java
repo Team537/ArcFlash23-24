@@ -58,8 +58,9 @@ public class RobotHardware {
     public Motor.Encoder perpindicularPod;
     public Motor.Encoder centerPod;
 
-    public int cameraMonitorViewId;
-    public OpenCvCamera camera;
+
+
+    public WebcamName webcamName;
 
     public NormalizedColorSensor colorSensor;
     public View relativeLayout;
@@ -138,8 +139,9 @@ public class RobotHardware {
         centerPod = new MotorEx(hardwareMap, "frontLeftMotor").encoder;
         centerPod.setDirection(Motor.Direction.REVERSE);
 
-        cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+
+
+        webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
 
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
         relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
