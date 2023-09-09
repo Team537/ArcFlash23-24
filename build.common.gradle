@@ -121,5 +121,10 @@ android {
 }
 
 repositories {
+    mavenCentral()
+    maven { url = 'https://jitpack.io' }
+    flatDir {
+        dirs rootProject.file('libs')
+    }
 }
 
