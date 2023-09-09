@@ -58,7 +58,7 @@ public class RobotHardware {
     public Motor.Encoder perpindicularPod;
     public Motor.Encoder centerPod;
 
-
+    public OpenCvCamera webcam;
 
     public WebcamName webcamName;
 
@@ -141,7 +141,10 @@ public class RobotHardware {
 
 
 
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"));
+
         webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
+
 
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
         relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
