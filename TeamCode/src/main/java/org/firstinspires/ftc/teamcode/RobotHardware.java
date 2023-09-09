@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.app.Activity;
+import android.view.View;
+
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.outoftheboxrobotics.photoncore.PhotonCore;
@@ -12,6 +15,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -31,12 +35,16 @@ public class RobotHardware {
     public DcMotorEx backLeftMotor;
     public DcMotorEx backRightMotor;
     public DcMotorEx intakeMotor;
+    public DcMotorEx slideMotor1;
+    public DcMotorEx slideMotor2;
 
 
     public CRServo frontLeftServo;
     public CRServo frontRightServo;
     public CRServo backLeftServo;
     public CRServo backRightServo;
+
+    public Servo latchServo;
 
     public AnalogInput frontLeftEncoder;
     public AnalogInput frontRightEncoder;
@@ -51,6 +59,11 @@ public class RobotHardware {
 
     public int cameraMonitorViewId;
     public OpenCvCamera camera;
+
+    public NormalizedColorSensor colorSensor;
+    public View relativeLayout;
+    public int relativeLayoutId;
+
 
     private final Object imuLock = new Object();
     @GuardedBy("imuLock")
@@ -93,12 +106,16 @@ public class RobotHardware {
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        slideMotor1 = hardwareMap.get(DcMotorEx.class, "slideMotor1");
+        slideMotor2 = hardwareMap.get(DcMotorEx.class, "slideMotor2");
 
 
         frontLeftServo = hardwareMap.get(CRServo.class, "frontLeftServo");
         frontRightServo = hardwareMap.get(CRServo.class, "frontRightServo");
         backLeftServo = hardwareMap.get(CRServo.class, "backLeftServo");
         backRightServo = hardwareMap.get(CRServo.class, "backRightServo");
+
+        latchServo = hardwareMap.get(Servo.class, "latchServo");
 
         frontLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRightServo.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -121,6 +138,10 @@ public class RobotHardware {
 
         cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
+        relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
         voltage = hardwareMap.voltageSensor.iterator().next().getVoltage();
     }

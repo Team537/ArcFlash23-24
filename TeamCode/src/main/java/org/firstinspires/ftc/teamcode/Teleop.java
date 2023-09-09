@@ -17,6 +17,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.manipulator.Deposit;
 import org.firstinspires.ftc.teamcode.manipulator.Intake;
 import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
 
@@ -35,6 +36,7 @@ public class Teleop extends CommandOpMode {
     private SwerveDrivetrain drivetrain;
     private PFinder pathfinder;
     private Intake intake;
+    private Deposit deposit;
 
     private SlewRateLimiter forwardLimiter;
     private SlewRateLimiter steerLimiter;
@@ -64,6 +66,7 @@ public class Teleop extends CommandOpMode {
         gamepadEx = new GamepadEx(gamepad1);
         gamepadEx2 = new GamepadEx(gamepad2);
         intake = new Intake(robot);
+        deposit = new Deposit(robot);
 
         pathfinder = new PFinder(robot);
 
@@ -139,11 +142,29 @@ public class Teleop extends CommandOpMode {
         pathfinder.teleopDrive(drive);
         pathfinder.loop();
 
+
+        //INTAKE AND DEPOSIT PLACEHOLDER
         if(gamepadEx.getButton(GamepadKeys.Button.LEFT_BUMPER)){
             intake.toggle();
         }
+        if(gamepadEx.getButton(GamepadKeys.Button.RIGHT_BUMPER)){
+            deposit.latchToggle();
+        }
+        if(gamepadEx.getButton(GamepadKeys.Button.X)){
+            deposit.setLowPosition();
+        }
+        if(gamepadEx.getButton(GamepadKeys.Button.Y)){
+            deposit.setHighPosition();
+        }
+        if(gamepadEx.getButton(GamepadKeys.Button.A)){
+            deposit.setMidPosition();
+        }
+        if(gamepadEx.getButton(GamepadKeys.Button.B)){
+            deposit.setDownPosition();
+        }
 
         intake.loop();
+        deposit.loop();
     }
 
     private double joystickScalar(double num, double min) {
