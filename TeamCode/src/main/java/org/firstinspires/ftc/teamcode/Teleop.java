@@ -18,6 +18,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.manipulator.Deposit;
+import org.firstinspires.ftc.teamcode.manipulator.DroneShooter;
 import org.firstinspires.ftc.teamcode.manipulator.Intake;
 import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
 
@@ -37,6 +38,7 @@ public class Teleop extends CommandOpMode {
     private PFinder pathfinder;
     private Intake intake;
     private Deposit deposit;
+    private DroneShooter droneShooter;
 
     private SlewRateLimiter forwardLimiter;
     private SlewRateLimiter steerLimiter;
@@ -67,6 +69,7 @@ public class Teleop extends CommandOpMode {
         gamepadEx2 = new GamepadEx(gamepad2);
         intake = new Intake(robot);
         deposit = new Deposit(robot);
+        droneShooter = new DroneShooter(robot);
 
         pathfinder = new PFinder(robot);
 
@@ -162,9 +165,13 @@ public class Teleop extends CommandOpMode {
         if(gamepadEx.getButton(GamepadKeys.Button.B)){
             deposit.setDownPosition();
         }
+        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_UP)){
+            droneShooter.shoot();
+        }
 
         intake.loop();
         deposit.loop();
+        droneShooter.loop();
     }
 
     private double joystickScalar(double num, double min) {

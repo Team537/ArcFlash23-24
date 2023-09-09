@@ -43,6 +43,7 @@ public class RobotHardware {
     public CRServo frontRightServo;
     public CRServo backLeftServo;
     public CRServo backRightServo;
+    public CRServo shooterServo;
 
     public Servo latchServo;
 
@@ -114,6 +115,7 @@ public class RobotHardware {
         frontRightServo = hardwareMap.get(CRServo.class, "frontRightServo");
         backLeftServo = hardwareMap.get(CRServo.class, "backLeftServo");
         backRightServo = hardwareMap.get(CRServo.class, "backRightServo");
+        shooterServo = hardwareMap.get(CRServo.class, "shooterServo");
 
         latchServo = hardwareMap.get(Servo.class, "latchServo");
 
