@@ -48,6 +48,7 @@ public class Deposit {
     private double slideSpeed;
 
     private SlideState currentSlideState = SlideState.DOWN;
+    private SlideState targetSlideState = SlideState.DOWN;
     private LatchState currentLatchState = LatchState.CLOSED;
     private DepositState currentDepositState = DepositState.NO_PIXEL;
 
@@ -88,7 +89,8 @@ public class Deposit {
         slideMotor2.setPower(slideSpeed);
         latchServo.setPosition(servoPosition);
 
-        telemetry.addData("Slide State", currentSlideState);
+        telemetry.addData("Current Slide State", currentSlideState);
+        telemetry.addData("Target Slide State", targetSlideState);
         telemetry.addData("Latch State", currentLatchState);
         telemetry.addData("Deposit State", currentDepositState);
         telemetry.addData("Slide Motor 1 Current Position", slideMotor1.getCurrentPosition());
@@ -100,27 +102,34 @@ public class Deposit {
 
         runColorSensor();
 
+        if(Math.abs(targetPosition1-slideMotor1Position) < 10 || Math.abs(targetPosition2-slideMotor2.getCurrentPosition()) < 10){
+            currentSlideState = SlideState.TRANSITION;
+        } else {
+            currentSlideState = targetSlideState;
+        }
+
     }
 
     public void latchToggle(){
-        isServoToggled = !isServoToggled;
-        servoPosition = isServoToggled ? latchServoOpen : latchServoClosed;
-        currentLatchState = isServoToggled ? LatchState.OPEN : LatchState.CLOSED;
-
+        if(currentSlideState != SlideState.TRANSITION) {
+            isServoToggled = !isServoToggled;
+            servoPosition = isServoToggled ? latchServoOpen : latchServoClosed;
+            currentLatchState = isServoToggled ? LatchState.OPEN : LatchState.CLOSED;
+        }
     }
 
 
     public void setDownPosition(){
             targetPosition1 = downPosition;
             targetPosition2 = downPosition;
-            currentSlideState = SlideState.DOWN;
+            targetSlideState = SlideState.DOWN;
     }
 
     public void setLowPosition(){
         if(currentDepositState == DepositState.HAS_PIXEL) {
             targetPosition1 = lowPosition1;
             targetPosition2 = lowPosition2;
-            currentSlideState = SlideState.LOW;
+            targetSlideState = SlideState.LOW;
         }
 
     }
@@ -129,7 +138,7 @@ public class Deposit {
         if(currentDepositState == DepositState.HAS_PIXEL) {
             targetPosition1 = midPosition1;
             targetPosition2 = midPosition2;
-            currentSlideState = SlideState.MID;
+            targetSlideState = SlideState.MID;
         }
     }
 
@@ -137,7 +146,7 @@ public class Deposit {
         if(currentDepositState == DepositState.HAS_PIXEL) {
             targetPosition1 = highPosition1;
             targetPosition2 = highPosition2;
-            currentSlideState = SlideState.HIGH;
+            targetSlideState = SlideState.HIGH;
         }
     }
 
@@ -179,7 +188,8 @@ public class Deposit {
         DOWN,
         LOW,
         MID,
-        HIGH
+        HIGH,
+        TRANSITION
     }
 
     public enum LatchState{
