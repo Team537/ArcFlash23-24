@@ -30,6 +30,7 @@ public class RobotHardware {
     public DcMotorEx frontRightMotor;
     public DcMotorEx backLeftMotor;
     public DcMotorEx backRightMotor;
+    public DcMotorEx intakeMotor;
 
 
     public CRServo frontLeftServo;
@@ -91,6 +92,7 @@ public class RobotHardware {
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
+        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
 
 
         frontLeftServo = hardwareMap.get(CRServo.class, "frontLeftServo");
