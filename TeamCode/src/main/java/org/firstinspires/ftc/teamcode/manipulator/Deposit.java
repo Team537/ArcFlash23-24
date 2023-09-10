@@ -20,12 +20,14 @@ public class Deposit {
     private DcMotorEx slideMotor1;
     private DcMotorEx slideMotor2;
     private Servo latchServo;
+    private Servo swivelServo;
     private NormalizedColorSensor colorSensor;
     private View relativeLayout;
 
     private double targetPosition1 = 0;
     private double targetPosition2 = 0;
-    private double servoPosition = 0;
+    private double latchPosition = 0;
+    private double swivelPosition = 0;
 
     private static double latchServoOpen = 90;
     private static double latchServoClosed = 0;
@@ -43,6 +45,10 @@ public class Deposit {
     private static double highPosition1 = 100;
     private static double highPosition2 = 100;
 
+    private static double swivelServoLeft = 0;
+    private static double swivelServoRight = 0.3;
+    private static double swivelServoCenter = 0.6;
+
     private boolean isServoToggled = false;
 
     private double slideSpeed;
@@ -50,6 +56,8 @@ public class Deposit {
     private SlideState currentSlideState = SlideState.DOWN;
     private SlideState targetSlideState = SlideState.DOWN;
     private LatchState currentLatchState = LatchState.CLOSED;
+    private SwivelState currentSwivelState = SwivelState.CENTER;
+    private SwivelState targetSwivelState = SwivelState.CENTER;
     private DepositState currentDepositState = DepositState.NO_PIXEL;
 
     private PIDController pidController = new PIDController(0.01, 0, 0);
@@ -66,6 +74,7 @@ public class Deposit {
         slideMotor1 = robot.slideMotor1;
         slideMotor2 = robot.slideMotor2;
         latchServo = robot.latchServo;
+        swivelServo = robot.swivelServo;
         colorSensor = robot.colorSensor;
         relativeLayout = robot.relativeLayout;
 
@@ -87,7 +96,8 @@ public class Deposit {
         slideMotor2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         slideMotor1.setPower(slideSpeed);
         slideMotor2.setPower(slideSpeed);
-        latchServo.setPosition(servoPosition);
+        latchServo.setPosition(latchPosition);
+        swivelServo.setPosition(swivelPosition);
 
         telemetry.addData("Current Slide State", currentSlideState);
         telemetry.addData("Target Slide State", targetSlideState);
@@ -98,7 +108,7 @@ public class Deposit {
         telemetry.addData("Slide Motor 1 Target Position", targetPosition1);
         telemetry.addData("Slide Motor 2 Target Position", targetPosition2);
         telemetry.addData("Latch Servo Current Position", latchServo.getPosition());
-        telemetry.addData("Latch Servo Target Position", servoPosition);
+        telemetry.addData("Latch Servo Target Position", latchPosition);
 
         runColorSensor();
 
@@ -108,12 +118,18 @@ public class Deposit {
             currentSlideState = targetSlideState;
         }
 
+        if(Math.abs(swivelPosition-swivelServo.getPosition()) < 0.01){
+            currentSwivelState = SwivelState.TRANSITION;
+        } else {
+            currentSwivelState = targetSwivelState;
+        }
+
     }
 
     public void latchToggle(){
-        if(currentSlideState != SlideState.TRANSITION) {
+        if(currentSlideState != SlideState.TRANSITION && currentSwivelState != SwivelState.TRANSITION) {
             isServoToggled = !isServoToggled;
-            servoPosition = isServoToggled ? latchServoOpen : latchServoClosed;
+            latchPosition = isServoToggled ? latchServoOpen : latchServoClosed;
             currentLatchState = isServoToggled ? LatchState.OPEN : LatchState.CLOSED;
         }
     }
@@ -155,6 +171,21 @@ public class Deposit {
         }
     }
 
+    public void setSwivelServoLeft(){
+        swivelPosition = swivelServoLeft;
+        targetSwivelState = SwivelState.LEFT;
+    }
+
+    public void setSwivelServoRight(){
+        swivelPosition = swivelServoRight;
+        targetSwivelState = SwivelState.RIGHT;
+    }
+
+    public void setSwivelServoCenter(){
+        swivelPosition = swivelServoCenter;
+        targetSwivelState = SwivelState.CENTER;
+    }
+
     public void runColorSensor(){
 
         NormalizedRGBA colors = colorSensor.getNormalizedColors();
@@ -194,6 +225,13 @@ public class Deposit {
         LOW,
         MID,
         HIGH,
+        TRANSITION
+    }
+
+    public enum SwivelState{
+        LEFT,
+        RIGHT,
+        CENTER,
         TRANSITION
     }
 

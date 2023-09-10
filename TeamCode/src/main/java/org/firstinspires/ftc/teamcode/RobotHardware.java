@@ -46,6 +46,7 @@ public class RobotHardware {
     public CRServo shooterServo;
 
     public Servo latchServo;
+    public Servo swivelServo;
 
     public AnalogInput frontLeftEncoder;
     public AnalogInput frontRightEncoder;
@@ -119,6 +120,7 @@ public class RobotHardware {
         shooterServo = hardwareMap.get(CRServo.class, "shooterServo");
 
         latchServo = hardwareMap.get(Servo.class, "latchServo");
+        swivelServo = hardwareMap.get(Servo.class, "swivelServo");
 
         frontLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRightServo.setDirection(DcMotorSimple.Direction.REVERSE);
