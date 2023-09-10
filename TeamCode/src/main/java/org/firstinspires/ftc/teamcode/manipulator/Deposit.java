@@ -120,6 +120,8 @@ public class Deposit {
 
 
     public void setDownPosition(){
+         if(currentLatchState == LatchState.OPEN) latchToggle();
+
             targetPosition1 = downPosition;
             targetPosition2 = downPosition;
             targetSlideState = SlideState.DOWN;
@@ -127,6 +129,7 @@ public class Deposit {
 
     public void setLowPosition(){
         if(currentDepositState == DepositState.HAS_PIXEL) {
+            if(currentLatchState == LatchState.OPEN) latchToggle();
             targetPosition1 = lowPosition1;
             targetPosition2 = lowPosition2;
             targetSlideState = SlideState.LOW;
@@ -136,6 +139,7 @@ public class Deposit {
 
     public void setMidPosition(){
         if(currentDepositState == DepositState.HAS_PIXEL) {
+            if(currentLatchState == LatchState.OPEN) latchToggle();
             targetPosition1 = midPosition1;
             targetPosition2 = midPosition2;
             targetSlideState = SlideState.MID;
@@ -144,6 +148,7 @@ public class Deposit {
 
     public void setHighPosition(){
         if(currentDepositState == DepositState.HAS_PIXEL) {
+            if(currentLatchState == LatchState.OPEN) latchToggle();
             targetPosition1 = highPosition1;
             targetPosition2 = highPosition2;
             targetSlideState = SlideState.HIGH;
@@ -168,7 +173,7 @@ public class Deposit {
         if (colorSensor instanceof DistanceSensor) {
             telemetry.addData("Distance (cm)", "%.3f", ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM));
 
-            if(((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM) > 1){
+            if(((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM) < 1){
                 currentDepositState = DepositState.HAS_PIXEL;
             } else {
                 currentDepositState = DepositState.NO_PIXEL;
