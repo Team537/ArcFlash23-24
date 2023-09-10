@@ -38,7 +38,7 @@ public class TagChaser {
             xPower = yController.calculate(latestDetection.pose.x);
             yPower = xController.calculate(5 - latestDetection.pose.y);
 
-            pFinder.drive(new Pose( xPower * 0.5, yPower * 0.5, rotPower*0.5));
+            pFinder.drive(new Pose( -xPower * 0.5, -yPower * 0.5, -rotPower*0.5));
 
             if(Math.abs(rotPower) < 0.1 && Math.abs(xPower) < 0.1 && Math.abs(yPower) < 0.){
                 isToggled = false;

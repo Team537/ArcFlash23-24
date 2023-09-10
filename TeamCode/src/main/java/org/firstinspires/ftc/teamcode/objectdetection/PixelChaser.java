@@ -31,7 +31,7 @@ public class PixelChaser {
                 rotPower = rotController.calculate(latestRegion.relativePosition.x);
                 drivePower = driveController.calculate(areaAtTargetDistance-latestRegion.boundingRect.area());
 
-                pFinder.drive(new Pose( -drivePower * 0.5, 0, -rotPower*0.5));
+                pFinder.drive(new Pose( drivePower * 0.5, 0, rotPower*0.5));
 
                 if(Math.abs(rotPower) < 0.1 && Math.abs(drivePower) < 0.1){
                     isToggled = false;
