@@ -33,7 +33,7 @@ public class PixelChaser {
 
                 pFinder.drive(new Pose( -drivePower * 0.5, 0, -rotPower*0.5));
 
-                if(rotPower < 0.1 && drivePower < 0.1){
+                if(Math.abs(rotPower) < 0.1 && Math.abs(drivePower) < 0.1){
                     isToggled = false;
                 }
 
