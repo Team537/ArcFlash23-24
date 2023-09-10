@@ -66,7 +66,7 @@ public class PFinder {
 
 
 
-    public void teleopDrive(Pose pose){
+    public void absoluteDrive(Pose pose){
 
 
             double x = pose.x;
@@ -78,6 +78,22 @@ public class PFinder {
             Translation absoluteTranslation = translation.toRelative(Angle.fromRad(robotMap.getAngle()));
 
             pathfinder.setTranslation(absoluteTranslation);
+
+
+    }
+
+    public void drive(Pose pose){
+
+
+        double x = pose.x;
+        double y = pose.y;
+        double z = pose.heading;
+
+        Translation translation = new Translation(x, y, z);
+
+
+
+        pathfinder.setTranslation(translation);
 
 
     }

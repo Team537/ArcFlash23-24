@@ -142,7 +142,7 @@ public class Teleop extends CommandOpMode {
 
         //PATHFINDER TELEOP, Don't run before commenting other drive stuff
         // Don't know if the logic for the drive pose correlates however, all that needs to be done is to create a pose with a x, y, and heading value
-        pathfinder.teleopDrive(drive);
+        pathfinder.absoluteDrive(drive);
         pathfinder.loop();
 
 
