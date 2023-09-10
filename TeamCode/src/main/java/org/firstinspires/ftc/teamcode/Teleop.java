@@ -165,6 +165,15 @@ public class Teleop extends CommandOpMode {
         if(gamepadEx.getButton(GamepadKeys.Button.B)){
             deposit.setDownPosition();
         }
+        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_DOWN)){
+            deposit.setSwivelServoCenter();
+        }
+        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_LEFT)){
+            deposit.setSwivelServoLeft();
+        }
+        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_RIGHT)){
+            deposit.setSwivelServoRight();
+        }
         if(gamepadEx.getButton(GamepadKeys.Button.DPAD_UP)){
             droneShooter.shoot();
         }
