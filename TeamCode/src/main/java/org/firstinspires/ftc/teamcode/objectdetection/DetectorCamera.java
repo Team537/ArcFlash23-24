@@ -37,6 +37,10 @@ public class DetectorCamera {
 
     }
 
+    public ColorDetectionPipeline.ColorRegion getLastDetectedRegion() {
+        return detectedRegions.get(detectedRegions.size() - 1);
+    }
+
     public void loop() {
         detectedRegions = pipeline.getColorRegions();
 
