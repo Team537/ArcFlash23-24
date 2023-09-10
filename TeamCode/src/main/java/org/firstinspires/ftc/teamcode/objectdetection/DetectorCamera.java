@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.objectdetection;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import org.firstinspires.ftc.teamcode.RobotHardware;
+import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
@@ -11,13 +12,14 @@ import java.util.List;
 public class DetectorCamera {
 
     private OpenCvCamera webcam;
-    private ColorDetectionPipeline pipeline;
+    private ColorDetectionPipeline colorDetectionPipeline;
+    private PropDetectionPipeline propDetectionPipeline;
     private List<ColorDetectionPipeline.ColorRegion> detectedRegions;
 
     public DetectorCamera(RobotHardware robot) {
         webcam = robot.webcam1;
-        pipeline = new ColorDetectionPipeline();
-        webcam.setPipeline(pipeline);
+        colorDetectionPipeline = new ColorDetectionPipeline();
+        propDetectionPipeline = new PropDetectionPipeline();
 
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -41,8 +43,19 @@ public class DetectorCamera {
         return detectedRegions.get(detectedRegions.size() - 1);
     }
 
+    public Point getPropCenter(){
+        return propDetectionPipeline.getObjectCenter();
+    }
+
+    public void setColorDetect() {
+        webcam.setPipeline(colorDetectionPipeline);
+    }
+    public void setPropDetect(){
+        webcam.setPipeline(propDetectionPipeline);
+    }
+
     public void loop() {
-        detectedRegions = pipeline.getColorRegions();
+        detectedRegions = colorDetectionPipeline.getColorRegions();
 
         telemetry.addData("Detected Regions", detectedRegions.size());
         for (ColorDetectionPipeline.ColorRegion region : detectedRegions) {

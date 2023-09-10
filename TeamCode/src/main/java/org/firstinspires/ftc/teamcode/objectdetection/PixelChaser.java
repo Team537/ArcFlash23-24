@@ -20,6 +20,8 @@ public class PixelChaser {
         public PixelChaser(DetectorCamera camera, PFinder pFinder) {
             this.camera = camera;
             this.pFinder = pFinder;
+
+            camera.setColorDetect();
         }
 
         public void loop() {
