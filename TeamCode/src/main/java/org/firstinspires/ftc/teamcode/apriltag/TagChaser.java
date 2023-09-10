@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.apriltag;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.PIDController;
 import org.firstinspires.ftc.teamcode.Pose;
 import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
@@ -28,9 +32,9 @@ public class TagChaser {
 
     public void loop() {
         latestDetection = camera.getLastDetection();
-
+        Orientation rot = Orientation.getOrientation(latestDetection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
         if (isToggled && latestDetection != null && latestDetection.id == specifiedID){
-            rotPower = rotController.calculate(latestDetection.pose.z);
+            rotPower = rotController.calculate(rot.firstAngle);
             xPower = yController.calculate(latestDetection.pose.x);
             yPower = xController.calculate(latestDetection.pose.y);
 
