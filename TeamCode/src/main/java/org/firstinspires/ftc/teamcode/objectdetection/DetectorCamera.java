@@ -15,7 +15,7 @@ public class DetectorCamera {
     private List<ColorDetectionPipeline.ColorRegion> detectedRegions;
 
     public DetectorCamera(RobotHardware robot) {
-        webcam = robot.webcam;
+        webcam = robot.webcam1;
         pipeline = new ColorDetectionPipeline();
         webcam.setPipeline(pipeline);
 
