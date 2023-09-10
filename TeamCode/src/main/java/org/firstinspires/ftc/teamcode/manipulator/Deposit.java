@@ -98,9 +98,10 @@ public class Deposit {
         slideMotor2.setPower(slideSpeed);
         latchServo.setPosition(latchPosition);
         swivelServo.setPosition(swivelPosition);
-
         telemetry.addData("Current Slide State", currentSlideState);
         telemetry.addData("Target Slide State", targetSlideState);
+        telemetry.addData("Current Swivel State", currentSwivelState);
+        telemetry.addData("Target Swivel State", targetSwivelState);
         telemetry.addData("Latch State", currentLatchState);
         telemetry.addData("Deposit State", currentDepositState);
         telemetry.addData("Slide Motor 1 Current Position", slideMotor1.getCurrentPosition());
