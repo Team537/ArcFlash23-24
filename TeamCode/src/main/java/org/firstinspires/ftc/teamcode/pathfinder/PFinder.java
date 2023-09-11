@@ -98,7 +98,7 @@ public class PFinder {
 
     }
 
-    private void goToPoint(PointXYZ target) {
+    public void goToPoint(PointXYZ target) {
         pathfinder.clear();
 
         pathfinder.goTo(target);
