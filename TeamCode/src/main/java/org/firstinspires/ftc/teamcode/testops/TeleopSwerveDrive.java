@@ -23,6 +23,9 @@ public class TeleopSwerveDrive extends CommandOpMode {
     private PFinder pathfinder;
 
     private GamepadEx gamepadEx;
+    private static double MAX_X_SPEED = 5.0;
+    private static double MAX_Y_SPEED = 5.0;
+    private static double MAX_TURN_SPEED = Math.PI * 2;
 
 
     @Override
@@ -48,9 +51,9 @@ public class TeleopSwerveDrive extends CommandOpMode {
      public void run() {
         pathfinder.absoluteDrive(
                 new Pose(
-                        gamepadEx.getLeftX(),
-                        gamepadEx.getLeftY(),
-                        gamepadEx.getRightX()
+                        gamepadEx.getLeftX() * MAX_X_SPEED,
+                        gamepadEx.getLeftY() * MAX_Y_SPEED,
+                        gamepadEx.getRightX() * MAX_TURN_SPEED
                 )
         );
         pathfinder.loop();
