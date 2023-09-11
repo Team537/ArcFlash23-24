@@ -20,6 +20,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.util.Encoder;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 
@@ -51,9 +52,9 @@ public class RobotHardware {
 
     public Motor.Encoder liftEncoder;
     public Motor.Encoder intakeEncoder;
-    public Motor.Encoder parallelPod;
-    public Motor.Encoder perpindicularPod;
-    public Motor.Encoder centerPod;
+    public Encoder parallelPod;
+    public Encoder perpindicularPod;
+    public Encoder centerPod;
 
     public OpenCvCamera webcam1;
     public int cameraMonitorViewId;
@@ -137,14 +138,13 @@ public class RobotHardware {
         backLeftEncoder = hardwareMap.get(AnalogInput.class, "backLeftEncoder");
         backRightEncoder = hardwareMap.get(AnalogInput.class, "backRightEncoder");
 
-        parallelPod = new MotorEx(hardwareMap, "backLeftMotor").encoder;
-        parallelPod.setDirection(Motor.Direction.REVERSE);
-        perpindicularPod = new MotorEx(hardwareMap, "backRightMotor").encoder;
-        perpindicularPod.setDirection(Motor.Direction.REVERSE);
+       parallelPod = hardwareMap.get(Encoder.class, "parallelPod");
+       perpindicularPod = hardwareMap.get(Encoder.class, "perpindicularPod");
+       centerPod = hardwareMap.get(Encoder.class, "centerPod");
 
         //Placeholder
-        centerPod = new MotorEx(hardwareMap, "frontLeftMotor").encoder;
-        centerPod.setDirection(Motor.Direction.REVERSE);
+
+
 
 
 

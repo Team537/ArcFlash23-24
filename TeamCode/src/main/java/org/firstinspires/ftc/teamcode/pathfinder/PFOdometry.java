@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.apriltag.AprilTagCamera;
 import org.firstinspires.ftc.teamcode.apriltag.AprilTagFieldConstants;
+import org.firstinspires.ftc.teamcode.util.Encoder;
 import org.openftc.apriltag.AprilTagDetection;
 
 import java.util.Locale;
@@ -17,7 +18,7 @@ import me.wobblyyyy.pathfinder2.geometry.PointXYZ;
 import me.wobblyyyy.pathfinder2.odometrycore.ThreeWheelOdometry;
 import me.wobblyyyy.pathfinder2.robot.AbstractOdometry;
 import me.wobblyyyy.pathfinder2.robot.Odometry;
-import me.wobblyyyy.pathfinder2.robot.sensors.Encoder;
+
 
 
 /**
@@ -36,9 +37,9 @@ public class PFOdometry extends AbstractOdometry {
     private static final double OFFSET_CENTER = 0.0;
 
     // PLACEHOLDER!!!!!
-    private Motor.Encoder leftEncoder;
-    private Motor.Encoder rightEncoder;
-    private Motor.Encoder centerEncoder;
+    private Encoder leftEncoder;
+    private Encoder rightEncoder;
+    private Encoder centerEncoder;
     private AprilTagCamera camera;
 
     /**
@@ -67,9 +68,9 @@ public class PFOdometry extends AbstractOdometry {
 
 
         ThreeWheelOdometry.EncoderProfile encoderProfile = new ThreeWheelOdometry.EncoderProfile(
-                () -> (double) leftEncoder.getPosition(),
-                () -> (double) rightEncoder.getPosition(),
-                () -> (double) centerEncoder.getPosition()
+                () -> (double) leftEncoder.getCurrentPosition(),
+                () -> (double) rightEncoder.getCurrentPosition(),
+                () -> (double) centerEncoder.getCurrentPosition()
         );
 
         // initialize ThreeWheelOdometry
