@@ -118,7 +118,12 @@ public class PFinder {
 
         pathfinder.followTrajectories(trajectories);
     }
-    public void loop() {
+    public void loopAuto() {
+        pathfinder.tick();
+        camera.loop();
+    }
+
+    public void loopTele() {
         pathfinder.tick();
         camera.loop();
     }

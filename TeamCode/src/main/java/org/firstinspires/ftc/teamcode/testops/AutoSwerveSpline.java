@@ -3,14 +3,11 @@ package org.firstinspires.ftc.teamcode.testops;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Globals;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
 
@@ -64,7 +61,7 @@ public class AutoSwerveSpline extends LinearOpMode {
 
 
         while (opModeIsActive()) {
-            pathfinder.loop();
+            pathfinder.loopAuto();
             telemetry.update();
             robot.clearBulkCache();
         }

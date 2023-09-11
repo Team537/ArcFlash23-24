@@ -57,7 +57,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
                         gamepadEx.getRightX() * MAX_TURN_SPEED
                 )
         );
-        pathfinder.loop();
+        pathfinder.loopTele();
 
         telemetry.update();
 
