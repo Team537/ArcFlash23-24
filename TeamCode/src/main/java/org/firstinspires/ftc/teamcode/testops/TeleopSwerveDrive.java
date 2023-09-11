@@ -25,7 +25,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
     private GamepadEx gamepadEx;
     private static double MAX_X_SPEED = 5.0;
     private static double MAX_Y_SPEED = 5.0;
-    private static double MAX_TURN_SPEED = Math.PI * 2;
+    private static double MAX_TURN_SPEED = 180;
 
 
     @Override
