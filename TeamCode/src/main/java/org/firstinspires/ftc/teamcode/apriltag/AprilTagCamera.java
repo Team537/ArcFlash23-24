@@ -22,7 +22,7 @@ public class AprilTagCamera {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
-    static final double FEET_PER_METER = 3.28084;
+    static final double INCHES_PER_METER = 3.28084 * 12 ;
 
     // Lens intrinsics
     // UNITS ARE PIXELS
@@ -30,6 +30,7 @@ public class AprilTagCamera {
     // You will need to do your own calibration for other configurations!
     double fx = 578.272;
     double fy = 578.272;
+    
     double cx = 402.145;
     double cy = 221.506;
 
@@ -113,9 +114,9 @@ public class AprilTagCamera {
 
                     telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
                     telemetry.addLine(String.format("Decision Margin: %f", detection.decisionMargin));
-                    telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
-                    telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y*FEET_PER_METER));
-                    telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z*FEET_PER_METER));
+                    telemetry.addLine(String.format("Translation X: %.2f inches", detection.pose.x*INCHES_PER_METER));
+                    telemetry.addLine(String.format("Translation Y: %.2f inches", detection.pose.y*INCHES_PER_METER));
+                    telemetry.addLine(String.format("Translation Z: %.2f inches", detection.pose.z*INCHES_PER_METER));
                     telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", rot.firstAngle));
                     telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", rot.secondAngle));
                     telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rot.thirdAngle));
