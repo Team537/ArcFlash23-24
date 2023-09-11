@@ -29,6 +29,7 @@ import me.wobblyyyy.pathfinder2.robot.sensors.Encoder;
 public class PFOdometry extends AbstractOdometry {
     // PLACEHOLDER!!!!
     private static final double CPR = 4096;
+    //Needs to be meters
     private static final double WHEEL_DIAMETER = 0.0;
     private static final double OFFSET_LEFT = 0.0;
     private static final double OFFSET_RIGHT = 0.0;

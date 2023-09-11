@@ -49,7 +49,7 @@ public class AutoSwerveGoToPoint extends LinearOpMode {
 
         waitForStart();
 
-       if(opModeIsActive()) pathfinder.goToPoint( new PointXYZ(0,2,0));
+       if(opModeIsActive()) pathfinder.goToPoint( new PointXYZ(0,0.2,0));
 
          while(opModeIsActive()) {
              pathfinder.loop();

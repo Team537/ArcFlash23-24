@@ -50,7 +50,7 @@ public class AutoSwerveSpline extends LinearOpMode {
                 .setAngleTolerance(ANGLE_TOLERANCE);
 
         trajectory = factory.builder().add(new PointXYZ(0, 0, 0))
-                .add(new PointXYZ(1, 1, 0)).add(new PointXYZ(2, 3, 0)).build();
+                .add(new PointXYZ(0.1, 0.1, 0)).add(new PointXYZ(0.2, 0.3, 0)).build();
 
         robot.enabled = true;
 
