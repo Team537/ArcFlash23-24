@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 import android.graphics.Color;
 import android.view.View;
 
+import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
@@ -60,6 +61,7 @@ public class Deposit {
     private SwivelState targetSwivelState = SwivelState.CENTER;
     private DepositState currentDepositState = DepositState.NO_PIXEL;
 
+    private Timing.Timer timer = new Timing.Timer(1);
 
 
     private int colorSensorGain = 2;
@@ -126,6 +128,15 @@ public class Deposit {
             latchPosition = isServoToggled ? latchServoOpen : latchServoClosed;
             currentLatchState = isServoToggled ? LatchState.OPEN : LatchState.CLOSED;
         }
+    }
+
+    public void twoPixelScore(){
+        timer.start();
+        latchToggle();
+        if(timer.elapsedTime() == 0.2) latchToggle();
+        if (timer.elapsedTime() == 0.5) latchToggle();
+        if (timer.elapsedTime() == 0.7) latchToggle();
+
     }
 
 
