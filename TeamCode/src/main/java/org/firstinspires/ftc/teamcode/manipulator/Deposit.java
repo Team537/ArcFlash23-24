@@ -17,8 +17,8 @@ import org.firstinspires.ftc.teamcode.PIDController;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 
 public class Deposit {
-    private DcMotorEx slideMotor1;
-    private DcMotorEx slideMotor2;
+    private Servo slideServo1;
+    private Servo slideServo2;
     private Servo latchServo;
     private Servo swivelServo;
     private NormalizedColorSensor colorSensor;
@@ -36,14 +36,14 @@ public class Deposit {
     // PLACEHOLDER VALUES
     private static double downPosition = 0;
 
-    private static double lowPosition1 = 50;
-    private static double lowPosition2 = 50;
+    private static double lowPosition1 = 0.2;
+    private static double lowPosition2 = 0.2;
 
-    private static double midPosition1 = 75;
-    private static double midPosition2 = 75;
+    private static double midPosition1 = 0.6;
+    private static double midPosition2 = 0.6;
 
-    private static double highPosition1 = 100;
-    private static double highPosition2 = 100;
+    private static double highPosition1 = 0.8;
+    private static double highPosition2 = 0.8;
 
     private static double swivelServoLeft = 0;
     private static double swivelServoRight = 0.3;
@@ -60,9 +60,7 @@ public class Deposit {
     private SwivelState targetSwivelState = SwivelState.CENTER;
     private DepositState currentDepositState = DepositState.NO_PIXEL;
 
-    private PIDController pidController = new PIDController(0.01, 0, 0);
-    private double slideMotor1Position;
-    private static double ticksPerDegree = 700/180;
+
 
     private int colorSensorGain = 2;
     private float[] hsvValues = new float[3];
@@ -71,8 +69,8 @@ public class Deposit {
 
 
     public Deposit(RobotHardware robot){
-        slideMotor1 = robot.slideMotor1;
-        slideMotor2 = robot.slideMotor2;
+        slideServo1 = robot.slideServo1;
+        slideServo2 = robot.slideServo2;
         latchServo = robot.latchServo;
         swivelServo = robot.swivelServo;
         colorSensor = robot.colorSensor;
@@ -86,16 +84,11 @@ public class Deposit {
     }
 
     public void loop(){
-        slideMotor1Position = slideMotor1.getCurrentPosition();
-        slideSpeed = pidController.calculate(targetPosition1-slideMotor1Position);
 
 
-        slideMotor1.setTargetPosition((int)targetPosition1);
-        slideMotor2.setTargetPosition((int)targetPosition2);
-        slideMotor1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        slideMotor2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        slideMotor1.setPower(slideSpeed);
-        slideMotor2.setPower(slideSpeed);
+
+        slideServo1.setPosition((int)targetPosition1);
+        slideServo2.setPosition((int)targetPosition2);
         latchServo.setPosition(latchPosition);
         swivelServo.setPosition(swivelPosition);
         telemetry.addData("Current Slide State", currentSlideState);
@@ -104,8 +97,8 @@ public class Deposit {
         telemetry.addData("Target Swivel State", targetSwivelState);
         telemetry.addData("Latch State", currentLatchState);
         telemetry.addData("Deposit State", currentDepositState);
-        telemetry.addData("Slide Motor 1 Current Position", slideMotor1.getCurrentPosition());
-        telemetry.addData("Slide Motor 2 Current Position", slideMotor2.getCurrentPosition());
+        telemetry.addData("Slide Motor 1 Current Position",  slideServo1.getPosition());
+        telemetry.addData("Slide Motor 2 Current Position",  slideServo2.getPosition());
         telemetry.addData("Slide Motor 1 Target Position", targetPosition1);
         telemetry.addData("Slide Motor 2 Target Position", targetPosition2);
         telemetry.addData("Latch Servo Current Position", latchServo.getPosition());
@@ -113,7 +106,7 @@ public class Deposit {
 
         runColorSensor();
 
-        if(Math.abs(targetPosition1-slideMotor1Position) < 10 || Math.abs(targetPosition2-slideMotor2.getCurrentPosition()) < 10){
+        if(Math.abs(targetPosition1-slideServo1.getPosition()) < 10 || Math.abs(targetPosition2-slideServo2.getPosition()) < 10){
             currentSlideState = SlideState.TRANSITION;
         } else {
             currentSlideState = targetSlideState;

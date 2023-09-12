@@ -32,8 +32,7 @@ public class RobotHardware {
     public DcMotorEx backLeftMotor;
     public DcMotorEx backRightMotor;
     public DcMotorEx intakeMotor;
-    public DcMotorEx slideMotor1;
-    public DcMotorEx slideMotor2;
+
 
 
     public CRServo frontLeftServo;
@@ -44,6 +43,8 @@ public class RobotHardware {
 
     public Servo latchServo;
     public Servo swivelServo;
+    public Servo slideServo1;
+    public Servo slideServo2;
 
     public AnalogInput frontLeftEncoder;
     public AnalogInput frontRightEncoder;
@@ -115,8 +116,7 @@ public class RobotHardware {
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
-        slideMotor1 = hardwareMap.get(DcMotorEx.class, "slideMotor1");
-        slideMotor2 = hardwareMap.get(DcMotorEx.class, "slideMotor2");
+
 
 
         frontLeftServo = hardwareMap.get(CRServo.class, "frontLeftServo");
@@ -127,6 +127,8 @@ public class RobotHardware {
 
         latchServo = hardwareMap.get(Servo.class, "latchServo");
         swivelServo = hardwareMap.get(Servo.class, "swivelServo");
+        slideServo1 = hardwareMap.get(Servo.class, "slideServo1");
+        slideServo2 = hardwareMap.get(Servo.class, "slideServo2");
 
         frontLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRightServo.setDirection(DcMotorSimple.Direction.REVERSE);
