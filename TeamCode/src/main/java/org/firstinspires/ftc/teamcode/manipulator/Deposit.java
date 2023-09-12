@@ -100,12 +100,14 @@ public class Deposit {
         telemetry.addData("Target Swivel State", targetSwivelState);
         telemetry.addData("Latch State", currentLatchState);
         telemetry.addData("Deposit State", currentDepositState);
-        telemetry.addData("Slide Motor 1 Current Position",  slideServo1.getPosition());
-        telemetry.addData("Slide Motor 2 Current Position",  slideServo2.getPosition());
-        telemetry.addData("Slide Motor 1 Target Position", targetPosition1);
-        telemetry.addData("Slide Motor 2 Target Position", targetPosition2);
+        telemetry.addData("Slide Servo 1 Current Position",  slideServo1.getPosition());
+        telemetry.addData("Slide Servo 2 Current Position",  slideServo2.getPosition());
+        telemetry.addData("Slide Servo 1 Target Position", targetPosition1);
+        telemetry.addData("Slide Servo 2 Target Position", targetPosition2);
         telemetry.addData("Latch Servo Current Position", latchServo.getPosition());
         telemetry.addData("Latch Servo Target Position", latchPosition);
+        telemetry.addData("Swivel Servo Current Position", swivelServo.getPosition());
+        telemetry.addData("Swivel Servo Target Position", swivelPosition);
 
         runColorSensor();
 
