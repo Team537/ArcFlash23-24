@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.view.View;
 
 import com.arcrobotics.ftclib.util.Timing;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -14,7 +13,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.PIDController;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 
 public class Deposit {
@@ -61,7 +59,10 @@ public class Deposit {
     private SwivelState targetSwivelState = SwivelState.CENTER;
     private DepositState currentDepositState = DepositState.NO_PIXEL;
 
-    private Timing.Timer timer = new Timing.Timer(1);
+    private Timing.Timer twoPixelTimer = new Timing.Timer(1);
+    private Timing.Timer lowScoreTimer = new Timing.Timer(2);
+    private Timing.Timer midScoreTimer = new Timing.Timer(3);
+    private Timing.Timer highScoreTimer = new Timing.Timer(4);
 
 
     private int colorSensorGain = 2;
@@ -131,12 +132,34 @@ public class Deposit {
     }
 
     public void twoPixelScore(){
-        timer.start();
+        twoPixelTimer.start();
         latchToggle();
-        if(timer.elapsedTime() == 0.2) latchToggle();
-        if (timer.elapsedTime() == 0.5) latchToggle();
-        if (timer.elapsedTime() == 0.7) latchToggle();
+        if(twoPixelTimer.elapsedTime() == 0.2) latchToggle();
+        if (twoPixelTimer.elapsedTime() == 0.5) latchToggle();
+        if (twoPixelTimer.elapsedTime() == 0.7) latchToggle();
 
+    }
+
+    public void scoreLowPosition(){
+        lowScoreTimer.start();
+        setLowPosition();
+        if (lowScoreTimer.elapsedTime() == 0.5) twoPixelScore();
+        if (lowScoreTimer.elapsedTime() == 1.5) setDownPosition();
+
+    }
+
+    public void scoreMidPosition(){
+        midScoreTimer.start();
+        setMidPosition();
+        if (midScoreTimer.elapsedTime() == 1.5) twoPixelScore();
+        if (midScoreTimer.elapsedTime() == 2.5) setDownPosition();
+    }
+
+    public void scoreHighPosition(){
+        highScoreTimer.start();
+        setHighPosition();
+        if (highScoreTimer.elapsedTime() == 2.5) twoPixelScore();
+        if (highScoreTimer.elapsedTime() == 3.5) setDownPosition();
     }
 
 
