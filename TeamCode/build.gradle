@@ -42,4 +42,6 @@ dependencies {
     implementation 'org.openftc:apriltag:2.0.0'
 
     implementation 'org.ftclib.ftclib:core:2.0.1' // core
+
+    implementation 'org.openftc:rev-extensions-2:1.2'
 }
