@@ -4,7 +4,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.pipelines.ColorDetectionPipeline;
-import org.firstinspires.ftc.teamcode.pipelines.PropDetectionPipeline;
+import org.firstinspires.ftc.teamcode.pipelines.RedPropDetectionPipeline;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -15,14 +15,14 @@ public class DetectorCamera {
 
     private OpenCvCamera webcam;
     private ColorDetectionPipeline colorDetectionPipeline;
-    private PropDetectionPipeline propDetectionPipeline;
+    private RedPropDetectionPipeline propDetectionPipeline;
     private List<ColorDetectionPipeline.ColorRegion> detectedRegions;
     private CameraState currentState;
 
     public DetectorCamera(RobotHardware robot) {
         webcam = robot.webcam1;
         colorDetectionPipeline = new ColorDetectionPipeline();
-        propDetectionPipeline = new PropDetectionPipeline();
+        propDetectionPipeline = new RedPropDetectionPipeline();
 
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()

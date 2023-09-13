@@ -11,13 +11,13 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PropDetectionPipeline extends OpenCvPipeline {
+public class RedPropDetectionPipeline extends OpenCvPipeline {
     private Mat hsvMat = new Mat();
     private Mat mask = new Mat();
     private Mat detectedObject = new Mat();
 
-    private Scalar lowerBlue = new Scalar(80, 100, 100); // Lower bound for blue color in HSV
-    private Scalar upperBlue = new Scalar(120, 255, 255); // Upper bound for blue color in HSV
+    private Scalar lowerRed = new Scalar(80, 100, 100); // Lower bound for blue color in HSV
+    private Scalar upperRed = new Scalar(120, 255, 255); // Upper bound for blue color in HSV
 
     private Point objectCenter = new Point(-1, -1); // Initialize with an invalid point
 
@@ -27,7 +27,7 @@ public class PropDetectionPipeline extends OpenCvPipeline {
         Imgproc.cvtColor(input, hsvMat, Imgproc.COLOR_BGR2HSV);
 
         // Create a mask to detect blue within the specified range
-        Core.inRange(hsvMat, lowerBlue, upperBlue, mask);
+        Core.inRange(hsvMat, lowerRed, upperRed, mask);
 
         // Find contours in the mask
         List<MatOfPoint> contours = new ArrayList<>();
