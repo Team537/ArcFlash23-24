@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.objectdetection;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import org.firstinspires.ftc.teamcode.RobotHardware;
+import org.firstinspires.ftc.teamcode.pipelines.ColorDetectionPipeline;
+import org.firstinspires.ftc.teamcode.pipelines.PropDetectionPipeline;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;

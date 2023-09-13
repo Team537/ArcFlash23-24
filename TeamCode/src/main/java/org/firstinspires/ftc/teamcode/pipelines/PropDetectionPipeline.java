@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.objectdetection;
+package org.firstinspires.ftc.teamcode.pipelines;
 
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
@@ -62,7 +62,7 @@ public class PropDetectionPipeline extends OpenCvPipeline {
             }
 
             // Draw a circle at the object's center
-            Imgproc.circle(input, objectCenter, 10, new Scalar(0, 255, 0), -1);
+            Imgproc.circle(input, objectCenter, 2, new Scalar(0, 255, 0), -1);
         } else {
             objectCenter.x = -1;
             objectCenter.y = -1;
