@@ -76,5 +76,7 @@ public class BatteryTesting extends CommandOpMode {
 
         robot.clearBulkCache();
 
+        log.update();
+
     }
 }
