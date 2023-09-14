@@ -59,6 +59,8 @@ public class BatteryTesting extends CommandOpMode {
         control_hub = (LynxModule) hardwareMap.get(LynxModule.class, "Control Hub");
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
+        log = new Log("Battery Testing",true);
+
         robot.enabled = true;
 
         PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
