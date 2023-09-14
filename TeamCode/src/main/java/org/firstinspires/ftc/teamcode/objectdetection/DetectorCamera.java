@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.pipelines.BluePropDetectionPipeline;
 import org.firstinspires.ftc.teamcode.pipelines.ColorDetectionPipeline;
+import org.firstinspires.ftc.teamcode.pipelines.PixelDetectionPipeline;
 import org.firstinspires.ftc.teamcode.pipelines.RedPropDetectionPipeline;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -15,16 +16,18 @@ import java.util.List;
 public class DetectorCamera {
 
     private OpenCvCamera webcam;
-    private ColorDetectionPipeline colorDetectionPipeline;
+    private PixelDetectionPipeline pixelDetectionPipeline;
     private RedPropDetectionPipeline redPropDetectionPipeline;
     private BluePropDetectionPipeline bluePropDetectionPipeline;
-    private List<ColorDetectionPipeline.ColorRegion> detectedRegions;
+    private List<PixelDetectionPipeline.Pixel> detectedPixels;
     private CameraState currentState;
 
     public DetectorCamera(RobotHardware robot) {
         webcam = robot.webcam1;
-        colorDetectionPipeline = new ColorDetectionPipeline();
+
         redPropDetectionPipeline = new RedPropDetectionPipeline();
+        bluePropDetectionPipeline = new BluePropDetectionPipeline();
+        pixelDetectionPipeline = new PixelDetectionPipeline();
 
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -44,19 +47,19 @@ public class DetectorCamera {
 
     }
 
-    public ColorDetectionPipeline.ColorRegion getLastDetectedRegion() {
-        return detectedRegions.get(detectedRegions.size() - 1);
+    public PixelDetectionPipeline.Pixel getLastDetectedRegion() {
+        return detectedPixels.get(detectedPixels.size() - 1);
     }
 
     public Point getPropCenter(){
         return redPropDetectionPipeline.getObjectCenter();
     }
 
-    public void setColorDetect() {
-        webcam.setPipeline(colorDetectionPipeline);
-        currentState = CameraState.COLOR_DETECT;
-
+    public void setPixelDetect(){
+        webcam.setPipeline(pixelDetectionPipeline);
+        currentState = CameraState.PIXEL_DETECT;
     }
+
     public void setRedPropDetect(){
         webcam.setPipeline(redPropDetectionPipeline);
         currentState = CameraState.RED_PROP_DETECT;
@@ -69,17 +72,17 @@ public class DetectorCamera {
     
     public void loop() {
 
-        if(currentState == CameraState.COLOR_DETECT) {
-            detectedRegions = colorDetectionPipeline.getColorRegions();
+        if(currentState == CameraState.PIXEL_DETECT) {
+            detectedPixels = pixelDetectionPipeline.getDetectedPixels();
 
-            telemetry.addData("Detected Regions", detectedRegions.size());
-            for (ColorDetectionPipeline.ColorRegion region : detectedRegions) {
+            telemetry.addData("Detected Regions", detectedPixels.size());
+            for (PixelDetectionPipeline.Pixel region : detectedPixels) {
                 telemetry.addData("Region Center: %6.1f", region.center);
                 telemetry.addData("Region Width: %6.1f", region.boundingRect.width);
                 telemetry.addData("Region Height: %6.1f", region.boundingRect.height);
                 telemetry.addData("Region Area: %6.1f", region.boundingRect.area());
-                telemetry.addData("Region X: %6.1f", region.relativePosition.x);
-                telemetry.addData("Region Y: %6.1f", region.relativePosition.y);
+                telemetry.addData("Region X: %6.1f", region.center.x);
+                telemetry.addData("Region Y: %6.1f", region.center.y);
             }
         }
         else if(currentState == CameraState.RED_PROP_DETECT){
@@ -89,7 +92,7 @@ public class DetectorCamera {
     }
 
     public enum CameraState{
-        COLOR_DETECT,
+        PIXEL_DETECT,
         RED_PROP_DETECT,
         BLUE_PROP_DETECT
     }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.objectdetection;
+package org.firstinspires.ftc.teamcode.pipelines;
 
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
@@ -7,21 +7,23 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HexagonDetectionPipeline extends OpenCvPipeline {
+public class PixelDetectionPipeline extends OpenCvPipeline {
     private Mat grayMat = new Mat();
 
     // Custom object to represent a detected hexagon
-    public static class Hexagon {
+    public static class Pixel {
         public Rect boundingRect; // Rectangle bounding the detected hexagon
         public Point[] vertices; // Vertices of the hexagon
+        public Point center; // Center of the hexagon
 
-        public Hexagon(Rect boundingRect, Point[] vertices) {
+        public Pixel(Rect boundingRect, Point[] vertices, Point center) {
             this.boundingRect = boundingRect;
             this.vertices = vertices;
+            this.center = center;
         }
     }
 
-    private List<Hexagon> detectedHexagons = new ArrayList<>(); // List of detected hexagons
+    private List<Pixel> detectedPixels = new ArrayList<>(); // List of detected hexagons
 
     @Override
     public Mat processFrame(Mat input) {
@@ -40,7 +42,7 @@ public class HexagonDetectionPipeline extends OpenCvPipeline {
         Imgproc.findContours(edges, contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
         // Filter and find hexagons among the contours
-        detectedHexagons.clear();
+        detectedPixels.clear();
         for (MatOfPoint contour : contours) {
             MatOfPoint2f approx = new MatOfPoint2f();
             MatOfPoint2f contour2f = new MatOfPoint2f(contour.toArray());
@@ -53,16 +55,22 @@ public class HexagonDetectionPipeline extends OpenCvPipeline {
                 Point[] vertices = approx.toArray();
                 Rect boundingRect = Imgproc.boundingRect(contour);
 
-                // Draw the hexagon
+                // Calculate the center of the hexagon
+                double centerX = (vertices[0].x + vertices[3].x) / 2;
+                double centerY = (vertices[0].y + vertices[3].y) / 2;
+                Point center = new Point(centerX, centerY);
+
+                // Draw the hexagon and its center
                 for (int j = 0; j < 6; j++) {
                     Imgproc.line(output, vertices[j], vertices[(j + 1) % 6], new Scalar(0, 255, 0), 2);
                 }
+                Imgproc.drawMarker(output, center, new Scalar(255, 0, 0), Imgproc.MARKER_CROSS, 20, 2);
 
-                detectedHexagons.add(new Hexagon(boundingRect, vertices));
+                detectedPixels.add(new Pixel(boundingRect, vertices, center));
             }
         }
 
-        // Return the processed frame with drawn hexagons
+        // Return the processed frame with drawn hexagons and centers
         return output;
     }
 
@@ -99,7 +107,7 @@ public class HexagonDetectionPipeline extends OpenCvPipeline {
     }
 
     // Function to return the list of detected hexagons
-    public List<Hexagon> getDetectedHexagons() {
-        return detectedHexagons;
+    public List<Pixel> getDetectedPixels() {
+        return detectedPixels;
     }
 }
