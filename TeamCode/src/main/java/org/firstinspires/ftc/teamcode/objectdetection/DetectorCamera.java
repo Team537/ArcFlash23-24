@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.objectdetection;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import org.firstinspires.ftc.teamcode.RobotHardware;
+import org.firstinspires.ftc.teamcode.pipelines.BluePropDetectionPipeline;
+import org.firstinspires.ftc.teamcode.pipelines.ColorDetectionPipeline;
+import org.firstinspires.ftc.teamcode.pipelines.RedPropDetectionPipeline;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -13,14 +16,15 @@ public class DetectorCamera {
 
     private OpenCvCamera webcam;
     private ColorDetectionPipeline colorDetectionPipeline;
-    private PropDetectionPipeline propDetectionPipeline;
+    private RedPropDetectionPipeline redPropDetectionPipeline;
+    private BluePropDetectionPipeline bluePropDetectionPipeline;
     private List<ColorDetectionPipeline.ColorRegion> detectedRegions;
     private CameraState currentState;
 
     public DetectorCamera(RobotHardware robot) {
         webcam = robot.webcam1;
         colorDetectionPipeline = new ColorDetectionPipeline();
-        propDetectionPipeline = new PropDetectionPipeline();
+        redPropDetectionPipeline = new RedPropDetectionPipeline();
 
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -45,7 +49,7 @@ public class DetectorCamera {
     }
 
     public Point getPropCenter(){
-        return propDetectionPipeline.getObjectCenter();
+        return redPropDetectionPipeline.getObjectCenter();
     }
 
     public void setColorDetect() {
@@ -53,11 +57,16 @@ public class DetectorCamera {
         currentState = CameraState.COLOR_DETECT;
 
     }
-    public void setPropDetect(){
-        webcam.setPipeline(propDetectionPipeline);
-        currentState = CameraState.PROP_DETECT;
+    public void setRedPropDetect(){
+        webcam.setPipeline(redPropDetectionPipeline);
+        currentState = CameraState.RED_PROP_DETECT;
     }
 
+    public void setBluePropDetect(){
+        webcam.setPipeline(bluePropDetectionPipeline);
+        currentState = CameraState.BLUE_PROP_DETECT;
+    }
+    
     public void loop() {
 
         if(currentState == CameraState.COLOR_DETECT) {
@@ -73,14 +82,15 @@ public class DetectorCamera {
                 telemetry.addData("Region Y: %6.1f", region.relativePosition.y);
             }
         }
-        else if(currentState == CameraState.PROP_DETECT){
-            telemetry.addData("Prop Center X", propDetectionPipeline.getObjectCenter().x);
-            telemetry.addData("Prop Center Y", propDetectionPipeline.getObjectCenter().y);
+        else if(currentState == CameraState.RED_PROP_DETECT){
+            telemetry.addData("Prop Center X", redPropDetectionPipeline.getObjectCenter().x);
+            telemetry.addData("Prop Center Y", redPropDetectionPipeline.getObjectCenter().y);
         }
     }
 
     public enum CameraState{
         COLOR_DETECT,
-        PROP_DETECT
+        RED_PROP_DETECT,
+        BLUE_PROP_DETECT
     }
 }
