@@ -89,6 +89,10 @@ public class DetectorCamera {
             telemetry.addData("Prop Center X", redPropDetectionPipeline.getObjectCenter().x);
             telemetry.addData("Prop Center Y", redPropDetectionPipeline.getObjectCenter().y);
         }
+        else if(currentState == CameraState.BLUE_PROP_DETECT){
+            telemetry.addData("Prop Center X", bluePropDetectionPipeline.getObjectCenter().x);
+            telemetry.addData("Prop Center Y", bluePropDetectionPipeline.getObjectCenter().y);
+        }
     }
 
     public enum CameraState{
