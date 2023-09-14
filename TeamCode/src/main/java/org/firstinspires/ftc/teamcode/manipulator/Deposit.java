@@ -18,18 +18,18 @@ import org.firstinspires.ftc.teamcode.RobotHardware;
 public class Deposit {
     private Servo slideServo1;
     private Servo slideServo2;
-    private Servo latchServo;
+    private Servo angleServo;
     private Servo swivelServo;
     private NormalizedColorSensor colorSensor;
     private View relativeLayout;
 
     private double targetPosition1 = 0;
     private double targetPosition2 = 0;
-    private double latchPosition = 0;
+    private double anglePosition = 0;
     private double swivelPosition = 0;
 
-    private static double latchServoOpen = 90;
-    private static double latchServoClosed = 0;
+    private static double angleServoOpen = 0.3;
+    private static double angleServoClosed = 0;
 
 
     // PLACEHOLDER VALUES
@@ -59,10 +59,10 @@ public class Deposit {
     private SwivelState targetSwivelState = SwivelState.CENTER;
     private DepositState currentDepositState = DepositState.NO_PIXEL;
 
-    private Timing.Timer twoPixelTimer = new Timing.Timer(1);
-    private Timing.Timer lowScoreTimer = new Timing.Timer(2);
-    private Timing.Timer midScoreTimer = new Timing.Timer(3);
-    private Timing.Timer highScoreTimer = new Timing.Timer(4);
+
+    private Timing.Timer lowScoreTimer = new Timing.Timer(3);
+    private Timing.Timer midScoreTimer = new Timing.Timer(4);
+    private Timing.Timer highScoreTimer = new Timing.Timer(5);
 
 
     private int colorSensorGain = 2;
@@ -74,7 +74,7 @@ public class Deposit {
     public Deposit(RobotHardware robot){
         slideServo1 = robot.slideServo1;
         slideServo2 = robot.slideServo2;
-        latchServo = robot.latchServo;
+        angleServo = robot.angleServo;
         swivelServo = robot.swivelServo;
         colorSensor = robot.colorSensor;
         relativeLayout = robot.relativeLayout;
@@ -92,7 +92,7 @@ public class Deposit {
 
         slideServo1.setPosition((int)targetPosition1);
         slideServo2.setPosition((int)targetPosition2);
-        latchServo.setPosition(latchPosition);
+        angleServo.setPosition(anglePosition);
         swivelServo.setPosition(swivelPosition);
         telemetry.addData("Current Slide State", currentSlideState);
         telemetry.addData("Target Slide State", targetSlideState);
@@ -104,8 +104,8 @@ public class Deposit {
         telemetry.addData("Slide Servo 2 Current Position",  slideServo2.getPosition());
         telemetry.addData("Slide Servo 1 Target Position", targetPosition1);
         telemetry.addData("Slide Servo 2 Target Position", targetPosition2);
-        telemetry.addData("Latch Servo Current Position", latchServo.getPosition());
-        telemetry.addData("Latch Servo Target Position", latchPosition);
+        telemetry.addData("Angle Servo Current Position", angleServo.getPosition());
+        telemetry.addData("Angle Servo Target Position", anglePosition);
         telemetry.addData("Swivel Servo Current Position", swivelServo.getPosition());
         telemetry.addData("Swivel Servo Target Position", swivelPosition);
 
@@ -128,40 +128,36 @@ public class Deposit {
     public void latchToggle(){
         if(currentSlideState != SlideState.TRANSITION && currentSwivelState != SwivelState.TRANSITION) {
             isServoToggled = !isServoToggled;
-            latchPosition = isServoToggled ? latchServoOpen : latchServoClosed;
+            anglePosition = isServoToggled ? angleServoOpen : angleServoClosed;
             currentLatchState = isServoToggled ? LatchState.OPEN : LatchState.CLOSED;
         }
     }
 
-    public void twoPixelScore(){
-        twoPixelTimer.start();
-        latchToggle();
-        if(twoPixelTimer.elapsedTime() == 0.2) latchToggle();
-        if (twoPixelTimer.elapsedTime() == 0.5) latchToggle();
-        if (twoPixelTimer.elapsedTime() == 0.7) latchToggle();
 
-    }
 
     public void scoreLowPosition(){
         lowScoreTimer.start();
         setLowPosition();
-        if (lowScoreTimer.elapsedTime() == 0.5) twoPixelScore();
-        if (lowScoreTimer.elapsedTime() == 1.5) setDownPosition();
+        if (lowScoreTimer.elapsedTime() == 0.5) latchToggle();
+        if (lowScoreTimer.elapsedTime() == 1.5) latchToggle();
+        if (lowScoreTimer.elapsedTime() == 2.5) setDownPosition();
 
     }
 
     public void scoreMidPosition(){
         midScoreTimer.start();
         setMidPosition();
-        if (midScoreTimer.elapsedTime() == 1.5) twoPixelScore();
-        if (midScoreTimer.elapsedTime() == 2.5) setDownPosition();
+        if (lowScoreTimer.elapsedTime() == 1.5) latchToggle();
+        if (lowScoreTimer.elapsedTime() == 2.5) latchToggle();
+        if (lowScoreTimer.elapsedTime() == 3.5) setDownPosition();
     }
 
     public void scoreHighPosition(){
         highScoreTimer.start();
         setHighPosition();
-        if (highScoreTimer.elapsedTime() == 2.5) twoPixelScore();
-        if (highScoreTimer.elapsedTime() == 3.5) setDownPosition();
+        if (lowScoreTimer.elapsedTime() == 2.5) latchToggle();
+        if (lowScoreTimer.elapsedTime() == 3.5) latchToggle();
+        if (lowScoreTimer.elapsedTime() == 4.5) setDownPosition();
     }
 
 
