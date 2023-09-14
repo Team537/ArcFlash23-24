@@ -64,7 +64,7 @@ public class PixelDetectionPipeline extends OpenCvPipeline {
                 for (int j = 0; j < 6; j++) {
                     Imgproc.line(output, vertices[j], vertices[(j + 1) % 6], new Scalar(0, 255, 0), 2);
                 }
-                Imgproc.drawMarker(output, center, new Scalar(255, 0, 0), Imgproc.MARKER_CROSS, 20, 2);
+                Imgproc.circle(output, center, 2, new Scalar(0, 255, 0), -1);
 
                 detectedPixels.add(new Pixel(boundingRect, vertices, center));
             }
