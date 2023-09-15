@@ -6,7 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.outoftheboxrobotics.photoncore.PhotonCore;
+//import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -41,10 +41,10 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
         robot.enabled = true;
 
-        PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
-        PhotonCore.EXPANSION_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
-        PhotonCore.experimental.setMaximumParallelCommands(8);
-        PhotonCore.enable();
+//        PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+//        PhotonCore.EXPANSION_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+//        PhotonCore.experimental.setMaximumParallelCommands(8);
+//        PhotonCore.enable();
 
     }
 
@@ -61,7 +61,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
         telemetry.update();
 
-        robot.clearBulkCache();
+//        robot.clearBulkCache();
 
     }
 }

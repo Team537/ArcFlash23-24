@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode.objectdetection;
 import org.firstinspires.ftc.teamcode.PIDController;
 import org.firstinspires.ftc.teamcode.Pose;
 import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
+import org.firstinspires.ftc.teamcode.pipelines.ColorDetectionPipeline;
+import org.firstinspires.ftc.teamcode.pipelines.PixelDetectionPipeline;
 
 public class PixelChaser {
     private DetectorCamera camera;
     private PFinder pFinder;
     private boolean isToggled = false;
-    private ColorDetectionPipeline.ColorRegion latestRegion;
+    private PixelDetectionPipeline.Pixel latestRegion;
     private PIDController rotController = new PIDController(0.1, 0, 0);
     private PIDController driveController = new PIDController(0.1, 0, 0);
     private double rotPower = 0;
@@ -21,14 +23,14 @@ public class PixelChaser {
             this.camera = camera;
             this.pFinder = pFinder;
 
-            camera.setColorDetect();
+            camera.setPixelDetect();
         }
 
         public void loop() {
             latestRegion = camera.getLastDetectedRegion();
 
             if (isToggled && latestRegion != null) {
-                rotPower = rotController.calculate(latestRegion.relativePosition.x);
+                rotPower = rotController.calculate(latestRegion.center.x);
                 drivePower = driveController.calculate(areaAtTargetDistance-latestRegion.boundingRect.area());
 
                 pFinder.drive(new Pose( drivePower * 0.5, 0, rotPower*0.5));

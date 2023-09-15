@@ -4,8 +4,7 @@ import android.app.Activity;
 import android.view.View;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
-import com.outoftheboxrobotics.photoncore.PhotonCore;
+//import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
@@ -41,7 +40,7 @@ public class RobotHardware {
     public CRServo backRightServo;
     public CRServo shooterServo;
 
-    public Servo latchServo;
+    public Servo angleServo;
     public Servo swivelServo;
     public Servo slideServo1;
     public Servo slideServo2;
@@ -125,7 +124,7 @@ public class RobotHardware {
         backRightServo = hardwareMap.get(CRServo.class, "backRightServo");
         shooterServo = hardwareMap.get(CRServo.class, "shooterServo");
 
-        latchServo = hardwareMap.get(Servo.class, "latchServo");
+        angleServo = hardwareMap.get(Servo.class, "angleServo");
         swivelServo = hardwareMap.get(Servo.class, "swivelServo");
         slideServo1 = hardwareMap.get(Servo.class, "slideServo1");
         slideServo2 = hardwareMap.get(Servo.class, "slideServo2");
@@ -191,9 +190,9 @@ public class RobotHardware {
         }
     }
 
-    public void clearBulkCache() {
-        PhotonCore.CONTROL_HUB.clearBulkCache();
-    }
+//    public void clearBulkCache() {
+//        PhotonCore.CONTROL_HUB.clearBulkCache();
+//    }
 
     public double getAngle() {
         return imuAngle - imuOffset;

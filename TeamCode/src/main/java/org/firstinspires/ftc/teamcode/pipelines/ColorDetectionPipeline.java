@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.objectdetection;
+package org.firstinspires.ftc.teamcode.pipelines;
 
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
@@ -9,14 +9,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColorDetectionPipeline extends OpenCvPipeline {
-    private Scalar lowerGreen = new Scalar(35, 50, 50);   // Lower HSV range for green
-    private Scalar upperGreen = new Scalar(85, 255, 255); // Upper HSV range for green
-    private Scalar lowerPurple = new Scalar(120, 50, 50); // Lower HSV range for purple
-    private Scalar upperPurple = new Scalar(160, 255, 255); // Upper HSV range for purple
-    private Scalar lowerYellow = new Scalar(20, 50, 50);  // Lower HSV range for yellow
+    private Scalar lowerGreen = new Scalar(35, 100, 50);    // Lower HSV range for green
+    private Scalar upperGreen = new Scalar(85, 255, 255);  // Upper HSV range for green
+
+    private Scalar lowerPurple = new Scalar(120, 100, 50); // Lower HSV range for purple
+    private Scalar upperPurple = new Scalar(160, 255, 255);// Upper HSV range for purple
+
+    private Scalar lowerYellow = new Scalar(20, 100, 50);  // Lower HSV range for yellow
     private Scalar upperYellow = new Scalar(30, 255, 255); // Upper HSV range for yellow
-    private Scalar lowerWhite = new Scalar(0, 0, 200);    // Lower HSV range for white
-    private Scalar upperWhite = new Scalar(180, 30, 255); // Upper HSV range for white
+
+    private Scalar lowerWhite = new Scalar(0, 0, 230);     // Lower HSV range for white
+    private Scalar upperWhite = new Scalar(180, 30, 255);  // Upper HSV range for white
+    // Upper HSV range for white
+
+    private Scalar lowerBlack = new Scalar(0, 0, 0);      // Lower HSV range for black
+    private Scalar upperBlack = new Scalar(180, 255, 30);
+
+    private double minContourArea = (176 * 144) / 5.0;
 
     // Custom object to represent a detected color region
     public static class ColorRegion {
@@ -46,16 +55,19 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
         Mat maskPurple = new Mat();
         Mat maskYellow = new Mat();
         Mat maskWhite = new Mat();
+        Mat maskBlack = new Mat();
         Core.inRange(hsv, lowerGreen, upperGreen, maskGreen);
         Core.inRange(hsv, lowerPurple, upperPurple, maskPurple);
         Core.inRange(hsv, lowerYellow, upperYellow, maskYellow);
         Core.inRange(hsv, lowerWhite, upperWhite, maskWhite);
 
+
         // Combine masks to detect all colors
         Mat combinedMask = new Mat();
-        Core.add(maskGreen, maskPurple, combinedMask);
-        Core.add(combinedMask, maskYellow, combinedMask);
-        Core.add(combinedMask, maskWhite, combinedMask);
+       Core.add(maskGreen, maskPurple, combinedMask);
+       Core.add(combinedMask, maskYellow, combinedMask);
+      Core.add(combinedMask, maskWhite, combinedMask);
+
 
         // Find contours in the combined mask
         List<MatOfPoint> contours = new ArrayList<>();
@@ -64,7 +76,7 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
         // Draw rectangles around detected regions
         for (MatOfPoint contour : contours) {
             Rect boundingRect = Imgproc.boundingRect(contour);
-            Imgproc.rectangle(output, boundingRect.tl(), boundingRect.br(), new Scalar(0, 255, 0), 2);
+             if(boundingRect.height > 10 & boundingRect.width > 10) Imgproc.rectangle(output, boundingRect.tl(), boundingRect.br(), new Scalar(0, 255, 0), 2);
         }
 
         colorRegions = getDetectedRegions(output);
@@ -105,10 +117,15 @@ public class ColorDetectionPipeline extends OpenCvPipeline {
             double yOffset = center.y - cameraViewCenter.y;
             colorRegion.relativePosition = new Point(xOffset, yOffset);
             detectedRegions.add(colorRegion);
+
+
+
         }
+
 
         return detectedRegions;
     }
+
 
     public List<ColorRegion> getColorRegions() {
         return colorRegions;
