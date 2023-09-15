@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import android.os.Environment;
+
+import org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegrator;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -15,7 +19,7 @@ import java.io.Writer;
 public class Log {
     private static final String BASE_FOLDER_NAME = "FIRST";
     private Writer fileWriter;
-    private String line;
+    public String line = "";
     private boolean logTime;
     private long startTime;
     private boolean disabled = false;
@@ -37,6 +41,10 @@ public class Log {
         return disabled;
     }
 
+
+    public String getLine(){
+        return line;
+    }
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }
@@ -61,12 +69,17 @@ public class Log {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
 
     public void addData(String data) {
         if (disabled) return;
-        if (!line.equals("")) line += ",";
+        if(data == null)
+            return;
         line += data;
+       line += ",";
+
     }
     public void addData(Object data) {
         addData(data.toString());
