@@ -68,7 +68,8 @@ public class AprilTagCamera {
     }
 
     public AprilTagDetection getLastDetection(){
-
+        if(detections.size() == 0)
+            return null;
         return detections.get(detections.size()-1);
     }
 
@@ -81,9 +82,7 @@ public class AprilTagCamera {
         {
 
 
-            telemetry.addLine(String.format("FPS: .2%f", camera.getFps()));
-            telemetry.addLine(String.format("Overhead ms: .2%d", camera.getOverheadTimeMs()));
-            telemetry.addLine(String.format("Pipeline ms: .2%d", camera.getPipelineTimeMs()));
+
 
             // If we don't see any tags
             if(detections.size() == 0)
@@ -113,18 +112,18 @@ public class AprilTagCamera {
                 {
                     Orientation rot = Orientation.getOrientation(detection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
 
-                    telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
-                    telemetry.addLine(String.format("Decision Margin: %f", detection.decisionMargin));
-                    telemetry.addLine(String.format("Translation X: %.2f inches", detection.pose.x*INCHES_PER_METER));
-                    telemetry.addLine(String.format("Translation Y: %.2f inches", detection.pose.y*INCHES_PER_METER));
-                    telemetry.addLine(String.format("Translation Z: %.2f inches", detection.pose.z*INCHES_PER_METER));
-                    telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", rot.firstAngle));
-                    telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", rot.secondAngle));
-                    telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rot.thirdAngle));
+//                    telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
+//                    telemetry.addLine(String.format("Decision Margin: %f", detection.decisionMargin));
+//                    telemetry.addLine(String.format("Translation X: %.2f inches", detection.pose.x*INCHES_PER_METER));
+//                    telemetry.addLine(String.format("Translation Y: %.2f inches", detection.pose.y*INCHES_PER_METER));
+//                    telemetry.addLine(String.format("Translation Z: %.2f inches", detection.pose.z*INCHES_PER_METER));
+//                    telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", rot.firstAngle));
+//                    telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", rot.secondAngle));
+//                    telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rot.thirdAngle));
                 }
             }
 
-            telemetry.update();
+
         }
 
         try {

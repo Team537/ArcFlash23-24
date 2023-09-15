@@ -62,7 +62,7 @@ public class RedPropDetectionPipeline extends OpenCvPipeline {
             }
 
             // Draw a circle at the object's center
-            Imgproc.circle(input, objectCenter, 2, new Scalar(0, 255, 0), -1);
+            Imgproc.circle(input, objectCenter, 20, new Scalar(0, 255, 0), -1);
         } else {
             objectCenter.x = -1;
             objectCenter.y = -1;
