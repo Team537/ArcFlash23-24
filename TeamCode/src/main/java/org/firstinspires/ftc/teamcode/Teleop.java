@@ -12,7 +12,7 @@ import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.outoftheboxrobotics.photoncore.PhotonCore;
+//import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -74,10 +74,10 @@ public class Teleop extends CommandOpMode {
         pathfinder = new PFinder(robot);
 
         robot.enabled = true;
-
-        PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
-        PhotonCore.experimental.setMaximumParallelCommands(8);
-        PhotonCore.enable();
+//
+//        PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+//        PhotonCore.experimental.setMaximumParallelCommands(8);
+//        PhotonCore.enable();
 
     }
 
@@ -138,7 +138,7 @@ public class Teleop extends CommandOpMode {
         loopTime = loop;
         telemetry.update();
 
-        robot.clearBulkCache();
+//        robot.clearBulkCache();
 
         //PATHFINDER TELEOP, Don't run before commenting other drive stuff
         // Don't know if the logic for the drive pose correlates however, all that needs to be done is to create a pose with a x, y, and heading value

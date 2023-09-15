@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.view.View;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.outoftheboxrobotics.photoncore.PhotonCore;
+//import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
@@ -190,9 +190,9 @@ public class RobotHardware {
         }
     }
 
-    public void clearBulkCache() {
-        PhotonCore.CONTROL_HUB.clearBulkCache();
-    }
+//    public void clearBulkCache() {
+//        PhotonCore.CONTROL_HUB.clearBulkCache();
+//    }
 
     public double getAngle() {
         return imuAngle - imuOffset;
