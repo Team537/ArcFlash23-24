@@ -67,11 +67,11 @@ public class Teleop extends CommandOpMode {
         drivetrain = new SwerveDrivetrain(robot);
         gamepadEx = new GamepadEx(gamepad1);
         gamepadEx2 = new GamepadEx(gamepad2);
-        intake = new Intake(robot);
-        deposit = new Deposit(robot);
-        droneShooter = new DroneShooter(robot);
+//        intake = new Intake(robot);
+//        deposit = new Deposit(robot);
+//        droneShooter = new DroneShooter(robot);
 
-        pathfinder = new PFinder(robot);
+//        pathfinder = new PFinder(robot);
 
         robot.enabled = true;
 //
@@ -108,11 +108,11 @@ public class Teleop extends CommandOpMode {
             headingCorrection = 0;
         }
 
-        SwerveDrivetrain.maintainHeading =
-                (Math.abs(gamepad1.left_stick_x) < 0.002 &&
-                        Math.abs(gamepad1.left_stick_y) < 0.002 &&
-                        Math.abs(turn) < 0.002) &&
-                        Math.abs(headingCorrection) < 0.02;
+//        SwerveDrivetrain.maintainHeading =
+//                (Math.abs(gamepad1.left_stick_x) < 0.002 &&
+//                        Math.abs(gamepad1.left_stick_y) < 0.002 &&
+//                        Math.abs(turn) < 0.002) &&
+//                        Math.abs(headingCorrection) < 0.02;
 
 
         double rotationAmount = (Globals.USING_IMU) ? robot.getAngle() - SwerveDrivetrain.imuOffset : 0;
@@ -135,6 +135,7 @@ public class Teleop extends CommandOpMode {
 
         double loop = System.nanoTime();
         telemetry.addData("hz ", 1000000000 / (loop - loopTime));
+        telemetry.addData("IMU angle", robot.getAngle());
         loopTime = loop;
         telemetry.update();
 
@@ -142,45 +143,45 @@ public class Teleop extends CommandOpMode {
 
         //PATHFINDER TELEOP, Don't run before commenting other drive stuff
         // Don't know if the logic for the drive pose correlates however, all that needs to be done is to create a pose with a x, y, and heading value
-        pathfinder.absoluteDrive(drive);
-        pathfinder.loopAuto();
-
-
-        //INTAKE AND DEPOSIT PLACEHOLDER
-        if(gamepadEx.getButton(GamepadKeys.Button.LEFT_BUMPER)){
-            intake.toggle();
-        }
-        if(gamepadEx.getButton(GamepadKeys.Button.RIGHT_BUMPER)){
-            deposit.latchToggle();
-        }
-        if(gamepadEx.getButton(GamepadKeys.Button.X)){
-            deposit.setLowPosition();
-        }
-        if(gamepadEx.getButton(GamepadKeys.Button.Y)){
-            deposit.setHighPosition();
-        }
-        if(gamepadEx.getButton(GamepadKeys.Button.A)){
-            deposit.setMidPosition();
-        }
-        if(gamepadEx.getButton(GamepadKeys.Button.B)){
-            deposit.setDownPosition();
-        }
-        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_DOWN)){
-            deposit.setSwivelServoCenter();
-        }
-        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_LEFT)){
-            deposit.setSwivelServoLeft();
-        }
-        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_RIGHT)){
-            deposit.setSwivelServoRight();
-        }
-        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_UP)){
-            droneShooter.shoot();
-        }
-
-        intake.loop();
-        deposit.loop();
-        droneShooter.loop();
+//        pathfinder.absoluteDrive(drive);
+//        pathfinder.loopAuto();
+//
+//
+//        //INTAKE AND DEPOSIT PLACEHOLDER
+//        if(gamepadEx.getButton(GamepadKeys.Button.LEFT_BUMPER)){
+//            intake.toggle();
+//        }
+//        if(gamepadEx.getButton(GamepadKeys.Button.RIGHT_BUMPER)){
+//            deposit.latchToggle();
+//        }
+//        if(gamepadEx.getButton(GamepadKeys.Button.X)){
+//            deposit.setLowPosition();
+//        }
+//        if(gamepadEx.getButton(GamepadKeys.Button.Y)){
+//            deposit.setHighPosition();
+//        }
+//        if(gamepadEx.getButton(GamepadKeys.Button.A)){
+//            deposit.setMidPosition();
+//        }
+//        if(gamepadEx.getButton(GamepadKeys.Button.B)){
+//            deposit.setDownPosition();
+//        }
+//        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_DOWN)){
+//            deposit.setSwivelServoCenter();
+//        }
+//        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_LEFT)){
+//            deposit.setSwivelServoLeft();
+//        }
+//        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_RIGHT)){
+//            deposit.setSwivelServoRight();
+//        }
+//        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_UP)){
+//            droneShooter.shoot();
+//        }
+//
+//        intake.loop();
+//        deposit.loop();
+//        droneShooter.loop();
     }
 
     private double joystickScalar(double num, double min) {

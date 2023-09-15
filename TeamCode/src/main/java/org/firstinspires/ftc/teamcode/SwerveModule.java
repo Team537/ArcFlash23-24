@@ -22,7 +22,7 @@ import java.util.Locale;
 
 @Config
 public class SwerveModule {
-    public static double P = 0.6, I = 0, D = 0.1;
+    public static double P = 0.1, I = 0, D = 0;
     public static double K_STATIC = 0.03;
 
     public static double MAX_SERVO = .95, MAX_MOTOR = 0.2; //max speed of either, motor at 20% now for testing
@@ -61,7 +61,7 @@ public class SwerveModule {
         ((CRServoImplEx) this.servo).setPwmRange(new PwmControl.PwmRange(505, 2495, 5000));
 
         this.absoluteAnalogEncoder = absoluteAnalogEncoder;
-        rotationController = new PIDFController(P, I, D, 0.4);
+        rotationController = new PIDFController(P, I, D, 0.1);
         this.driveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
     /**

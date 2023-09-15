@@ -114,7 +114,7 @@ public class RobotHardware {
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
-        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+//        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
 
 
 
@@ -122,12 +122,12 @@ public class RobotHardware {
         frontRightServo = hardwareMap.get(CRServo.class, "frontRightServo");
         backLeftServo = hardwareMap.get(CRServo.class, "backLeftServo");
         backRightServo = hardwareMap.get(CRServo.class, "backRightServo");
-        shooterServo = hardwareMap.get(CRServo.class, "shooterServo");
-
-        angleServo = hardwareMap.get(Servo.class, "angleServo");
-        swivelServo = hardwareMap.get(Servo.class, "swivelServo");
-        slideServo1 = hardwareMap.get(Servo.class, "slideServo1");
-        slideServo2 = hardwareMap.get(Servo.class, "slideServo2");
+//        shooterServo = hardwareMap.get(CRServo.class, "shooterServo");
+//
+//        angleServo = hardwareMap.get(Servo.class, "angleServo");
+//        swivelServo = hardwareMap.get(Servo.class, "swivelServo");
+//        slideServo1 = hardwareMap.get(Servo.class, "slideServo1");
+//        slideServo2 = hardwareMap.get(Servo.class, "slideServo2");
 
         frontLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRightServo.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -139,22 +139,22 @@ public class RobotHardware {
         backLeftEncoder = hardwareMap.get(AnalogInput.class, "backLeftEncoder");
         backRightEncoder = hardwareMap.get(AnalogInput.class, "backRightEncoder");
 
-       parallelPod = hardwareMap.get(Encoder.class, "parallelPod");
-       perpindicularPod = hardwareMap.get(Encoder.class, "perpindicularPod");
-       centerPod = hardwareMap.get(Encoder.class, "centerPod");
+//       parallelPod = hardwareMap.get(Encoder.class, "parallelPod");
+//       perpindicularPod = hardwareMap.get(Encoder.class, "perpindicularPod");
+//       centerPod = hardwareMap.get(Encoder.class, "centerPod");
 
         //Placeholder
 
 
 
 
-
-        webcam1 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), viewportContainerIds[0]);
-        webcam2 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), viewportContainerIds[1]);
-
-        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
-        relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
-        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+//
+//        webcam1 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), viewportContainerIds[0]);
+//        webcam2 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), viewportContainerIds[1]);
+//
+//        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
+//        relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+//        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
         voltage = hardwareMap.voltageSensor.iterator().next().getVoltage();
     }
