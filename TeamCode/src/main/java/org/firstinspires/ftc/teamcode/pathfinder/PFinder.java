@@ -1,22 +1,15 @@
 package org.firstinspires.ftc.teamcode.pathfinder;
 
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.Pose;
 import org.firstinspires.ftc.teamcode.RobotHardware;
-import org.firstinspires.ftc.teamcode.SwerveModule;
-import org.firstinspires.ftc.teamcode.apriltag.AprilTagCamera;
 
 import me.wobblyyyy.pathfinder2.control.PIDController;
 import me.wobblyyyy.pathfinder2.robot.Drive;
 
-import java.util.ArrayList;
 import java.util.List;
+
 import me.wobblyyyy.pathfinder2.Pathfinder;
 import me.wobblyyyy.pathfinder2.control.Controller;
-import me.wobblyyyy.pathfinder2.control.GenericTurnController;
 import me.wobblyyyy.pathfinder2.follower.FollowerGenerator;
 import me.wobblyyyy.pathfinder2.follower.generators.GenericFollowerGenerator;
 import me.wobblyyyy.pathfinder2.geometry.Angle;
@@ -24,10 +17,7 @@ import me.wobblyyyy.pathfinder2.geometry.PointXYZ;
 import me.wobblyyyy.pathfinder2.geometry.Translation;
 import me.wobblyyyy.pathfinder2.robot.Odometry;
 import me.wobblyyyy.pathfinder2.robot.Robot;
-import me.wobblyyyy.pathfinder2.robot.simulated.SimulatedDrive;
-import me.wobblyyyy.pathfinder2.robot.simulated.SimulatedOdometry;
 import me.wobblyyyy.pathfinder2.trajectory.Trajectory;
-import me.wobblyyyy.pathfinder2.trajectory.builder.LinearTrajectoryBuilder;
 
 public class PFinder {
 
@@ -42,17 +32,21 @@ public class PFinder {
     );
     private final Drive drive;
     private final Odometry odometry;
-    private final AprilTagCamera camera;
+
     private final Robot robot;
     private final Pathfinder pathfinder;
 
-    public PFinder(RobotHardware robotMap) {
+    public PFinder(RobotHardware robotMap
+//                   ,Supplier<AprilTagDetection> detectorSupplier
+    ) {
 
         this.robotMap = robotMap;
 
         drive = new PFDrive(robotMap, turnController, 0.1);
-        camera = new AprilTagCamera(robotMap);
-        odometry = new PFOdometry(robotMap,camera);
+
+        odometry = new PFOdometry(robotMap
+//                ,detectorSupplier
+        );
         robot = new Robot(drive, odometry);
         pathfinder = new Pathfinder(
                 robot,
@@ -120,12 +114,12 @@ public class PFinder {
     }
     public void loopAuto() {
         pathfinder.tick();
-        camera.loop();
+
     }
 
     public void loopTele() {
         pathfinder.tick();
-        camera.loop();
+
     }
 
 }

@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.pipelines.ColorDetectionPipeline;
 import org.firstinspires.ftc.teamcode.pipelines.PixelDetectionPipeline;
 
 public class PixelChaser {
-    private DetectorCamera camera;
+
     private PFinder pFinder;
     private boolean isToggled = false;
     private PixelDetectionPipeline.Pixel latestRegion;
@@ -19,15 +19,16 @@ public class PixelChaser {
     //Placeholder
     private static double areaAtTargetDistance = 30;
 
-        public PixelChaser(DetectorCamera camera, PFinder pFinder) {
-            this.camera = camera;
-            this.pFinder = pFinder;
+        public PixelChaser(PixelDetectionPipeline.Pixel latestRegion, PFinder pFinder ) {
 
-            camera.setPixelDetect();
+            this.pFinder = pFinder;
+            this.latestRegion = latestRegion;
+
+
         }
 
         public void loop() {
-            latestRegion = camera.getLastDetectedRegion();
+
 
             if (isToggled && latestRegion != null) {
                 rotPower = rotController.calculate(latestRegion.center.x);

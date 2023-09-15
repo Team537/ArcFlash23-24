@@ -1,18 +1,11 @@
 package org.firstinspires.ftc.teamcode.pathfinder;
 
-import com.arcrobotics.ftclib.hardware.motors.Motor;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.RobotHardware;
-import org.firstinspires.ftc.teamcode.apriltag.AprilTagCamera;
-import org.firstinspires.ftc.teamcode.apriltag.AprilTagFieldConstants;
 import org.firstinspires.ftc.teamcode.util.Encoder;
 import org.openftc.apriltag.AprilTagDetection;
 
 import java.util.Locale;
+import java.util.function.Supplier;
 
 import me.wobblyyyy.pathfinder2.geometry.PointXYZ;
 import me.wobblyyyy.pathfinder2.odometrycore.ThreeWheelOdometry;
@@ -35,23 +28,27 @@ public class PFOdometry extends AbstractOdometry {
     private static final double OFFSET_LEFT = 0.0;
     private static final double OFFSET_RIGHT = 0.0;
     private static final double OFFSET_CENTER = 0.0;
+    private Supplier<AprilTagDetection> detectionSupplier;
 
     // PLACEHOLDER!!!!!
     private Encoder leftEncoder;
     private Encoder rightEncoder;
     private Encoder centerEncoder;
-    private AprilTagCamera camera;
+
 
     /**
      * Create a new instance of the {@code Robot} class to demonstrate how
      * {@link PFOdometry} is instantiated.
      */
 
-        public PFOdometry(RobotHardware robotMap, AprilTagCamera camera){
+        public PFOdometry(RobotHardware robotMap
+//                          ,Supplier<AprilTagDetection> detectionSupplier
+        ) {
             leftEncoder = robotMap.parallelPod;
             rightEncoder = robotMap.perpindicularPod;
             centerEncoder = robotMap.centerPod;
-            this.camera = camera;
+//            this.detectionSupplier = detectionSupplier;
+
         }
 
 
@@ -82,15 +79,16 @@ public class PFOdometry extends AbstractOdometry {
 
     @Override
     public PointXYZ getRawPosition() {
-        AprilTagDetection detection = camera.getLastDetection();
-        Orientation rot = Orientation.getOrientation(detection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+
+
         //Placeholder
-        if(detection.decisionMargin > 30 ){
-            odometry.offsetSoPositionIs( new PointXYZ(
-                    -(AprilTagFieldConstants.getTagPose(detection.id).x() + detection.pose.x),
-                    -(AprilTagFieldConstants.getTagPose(detection.id).y() + detection.pose.y),
-                    -(AprilTagFieldConstants.getTagPose(detection.id).z().deg() + rot.firstAngle)));
-    }
+//        if(detectionSupplier.get().decisionMargin > 30 ){
+//            Orientation rot = Orientation.getOrientation(detectionSupplier.get().pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+//            odometry.offsetSoPositionIs( new PointXYZ(
+//                    -(AprilTagFieldConstants.getTagPose(detectionSupplier.get().id).x() + detectionSupplier.get().pose.x),
+//                    -(AprilTagFieldConstants.getTagPose(detectionSupplier.get().id).y() + detectionSupplier.get().pose.y),
+//                    -(AprilTagFieldConstants.getTagPose(detectionSupplier.get().id).z().deg() + rot.firstAngle)));
+//    }
         PointXYZ position = odometry.getPosition();
         return position;
     }

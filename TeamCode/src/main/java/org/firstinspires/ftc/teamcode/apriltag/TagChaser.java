@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
 import org.openftc.apriltag.AprilTagDetection;
 
 public class TagChaser {
-    private AprilTagCamera camera;
+
     private PFinder pFinder;
     private boolean isToggled = false;
     private AprilTagDetection latestDetection;
@@ -25,13 +25,14 @@ public class TagChaser {
 
 
 
-    public TagChaser(AprilTagCamera camera, PFinder pFinder) {
-        this.camera = camera;
+    public TagChaser(AprilTagDetection latestDetection, PFinder pFinder) {
+
         this.pFinder = pFinder;
+        this.latestDetection = latestDetection;
     }
 
     public void loop() {
-        latestDetection = camera.getLastDetection();
+
         Orientation rot = Orientation.getOrientation(latestDetection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
         if (isToggled && latestDetection != null && latestDetection.id == specifiedID){
             rotPower = rotController.calculate(rot.firstAngle);
