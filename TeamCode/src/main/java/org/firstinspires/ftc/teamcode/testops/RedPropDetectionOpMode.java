@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.testops;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,12 +13,12 @@ import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-
+@Config
 @TeleOp(name = "Red Prop Detection")
 public class RedPropDetectionOpMode extends CommandOpMode {
     private OpenCvCamera camera;
     private RedPropDetectionPipeline pipeline;
-
+    private PropState currentState;
 
 
     @Override
@@ -50,16 +52,30 @@ public class RedPropDetectionOpMode extends CommandOpMode {
 
     @Override
     public void run() {
+        FtcDashboard.getInstance().startCameraStream(camera, 0);
         while (opModeIsActive()) {
             // Access the detected object's center from the pipeline
             Point objectCenter = pipeline.getObjectCenter();
 
+            if(objectCenter.x > 600) {
+                currentState = PropState.RIGHT;
+            } else if(objectCenter.x > 300 && objectCenter.x < 600){
+                currentState = PropState.CENTER;
+            } else if(objectCenter.x < 300) {
+                currentState = PropState.LEFT;
+            }
             // Print the object's center coordinates to the telemetry
             telemetry.addData("Object Center X", objectCenter.x);
             telemetry.addData("Object Center Y", objectCenter.y);
+            telemetry.addData("Prop Position", currentState.toString());
             telemetry.update();
         }
     }
+    public enum PropState {
+        LEFT,
+        CENTER,
+        RIGHT,
 
+    }
 
 }

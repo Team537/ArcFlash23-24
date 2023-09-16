@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.testops;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -15,20 +17,20 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
-
+@Config
 @TeleOp(name = "April Tag Detection")
 public class AprilTagTestOpMode extends CommandOpMode {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
-    static final double INCHES_PER_METER = 3.28084 * 12;
+    static  double INCHES_PER_METER = 39.3701;
 
-    double fx = 578.272;
-    double fy = 578.272;
-    double cx = 402.145;
-    double cy = 221.506;
+    static   double fx = 578.272;
+    static   double fy = 578.272;
+    static  double cx = 402.145;
+    static  double cy = 221.506;
 
-    double tagsize = 0.433;
+  public static double TAGSIZE = 0.17145;
 
     int numFramesWithoutDetection = 0;
 
@@ -41,7 +43,7 @@ public class AprilTagTestOpMode extends CommandOpMode {
     public void initialize() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(TAGSIZE, fx, fy, cx, cy);
 
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -59,7 +61,9 @@ public class AprilTagTestOpMode extends CommandOpMode {
 
     @Override
     public void run() {
+        FtcDashboard.getInstance().startCameraStream(camera, 0);
         telemetry.setMsTransmissionInterval(50);
+
 
         while (opModeIsActive()) {
             ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
