@@ -46,6 +46,7 @@ public class Encoder {
     private int velocityEstimateIdx;
     private double[] velocityEstimates;
     private double lastUpdateTime;
+    private double distancePerPulse;
 
     public Encoder(DcMotorEx motor, NanoClock clock) {
         this.motor = motor;
@@ -107,6 +108,14 @@ public class Encoder {
     public double getRawVelocity() {
         int multiplier = getMultiplier();
         return motor.getVelocity() * multiplier;
+    }
+
+    public void setDistancePerPulse(double distancePerPulse) {
+        this.distancePerPulse = distancePerPulse;
+    }
+
+    public double getDistance() {
+        return distancePerPulse*getCurrentPosition();
     }
 
     /**

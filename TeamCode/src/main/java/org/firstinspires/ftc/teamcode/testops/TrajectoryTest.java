@@ -6,12 +6,14 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.controller.wpilibcontroller.RamseteController;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 //import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.arcrobotics.ftclib.geometry.Pose2d;
 import com.arcrobotics.ftclib.geometry.Rotation2d;
 import com.arcrobotics.ftclib.geometry.Translation2d;
+import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.kinematics.HolonomicOdometry;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.ChassisSpeeds;
 import com.arcrobotics.ftclib.trajectory.Trajectory;
@@ -23,6 +25,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Globals;
 import org.firstinspires.ftc.teamcode.Pose;
+import org.firstinspires.ftc.teamcode.R;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.SwerveDrivetrain;
 import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
@@ -49,6 +52,10 @@ public class TrajectoryTest extends CommandOpMode {
 
     private HolonomicOdometry odometry;
 
+    static final double TICKS_TO_INCHES = 15.3;
+    static final double TRACKWIDTH = 13.7;
+    static final double CENTER_WHEEL_OFFSET = 2.4;
+
 
 
     @Override
@@ -62,15 +69,30 @@ public class TrajectoryTest extends CommandOpMode {
         centerEncoder = robot.centerPod;
 
 
+
         robot.init(hardwareMap, telemetry);
         gamepadEx = new GamepadEx(gamepad1);
         drivetrain = new SwerveDrivetrain(robot);
         gamepadEx = new GamepadEx(gamepad1);
 
-    
+        leftEncoder.setDistancePerPulse(TICKS_TO_INCHES);
+        rightEncoder.setDistancePerPulse(TICKS_TO_INCHES);
+        centerEncoder.setDistancePerPulse(TICKS_TO_INCHES);
+
+        HolonomicOdometry odo = new HolonomicOdometry(
+                leftEncoder::getDistance,
+                rightEncoder::getDistance,
+                centerEncoder::getDistance,
+                TRACKWIDTH, CENTER_WHEEL_OFFSET
+        );
+
+        OdometrySubsystem odometry = new OdometrySubsystem(odo);
 
 
 
+
+
+        generateTrajectory();
         robot.enabled = true;
 
 
@@ -89,8 +111,9 @@ public class TrajectoryTest extends CommandOpMode {
 
     while(opModeIsActive()) {
         Trajectory.State state = trajectory.sample(getRuntime());
+        ChassisSpeeds speeds = follower.calculate(odometry.getPose(), state);
 
-
+        drivetrain.driveVelocity(speeds, Rotation2d.fromDegrees(robot.getAngle()));
         drivetrain.updateModules();
         telemetry.update();
 
