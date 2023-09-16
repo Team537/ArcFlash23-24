@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.view.View;
 
 import com.arcrobotics.ftclib.util.Timing;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -21,6 +22,7 @@ public class Deposit {
     private Servo angleServo;
     private Servo swivelServo;
     private NormalizedColorSensor colorSensor;
+    private RevBlinkinLedDriver blinkin;
     private View relativeLayout;
 
     private double targetPosition1 = 0;
@@ -78,12 +80,14 @@ public class Deposit {
         swivelServo = robot.swivelServo;
         colorSensor = robot.colorSensor;
         relativeLayout = robot.relativeLayout;
+        blinkin = robot.blinkin;
 
         if (colorSensor instanceof SwitchableLight) {
             ((SwitchableLight)colorSensor).enableLight(true);
         }
 
         colorSensor.setGain(colorSensorGain);
+        blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
     }
 
     public void loop(){
@@ -123,6 +127,8 @@ public class Deposit {
             currentSwivelState = targetSwivelState;
         }
 
+        if(currentDepositState == DepositState.HAS_PIXEL)   blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
+
     }
 
     public void latchToggle(){
@@ -131,6 +137,22 @@ public class Deposit {
             anglePosition = isServoToggled ? angleServoOpen : angleServoClosed;
             currentLatchState = isServoToggled ? LatchState.OPEN : LatchState.CLOSED;
         }
+    }
+
+    public void setWhiteLed(){
+        blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
+    }
+
+    public void setYellowLed(){
+        blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
+    }
+
+    public void setPurpleLed(){
+        blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
+    }
+
+    public void setGreenLed(){
+        blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
     }
 
 

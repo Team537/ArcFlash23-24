@@ -6,6 +6,7 @@ import android.view.View;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 //import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -61,6 +62,7 @@ public class RobotHardware {
 
     public OpenCvCamera webcam2;
 
+    public RevBlinkinLedDriver blinkin;
 
     public NormalizedColorSensor colorSensor;
     public View relativeLayout;
@@ -146,6 +148,7 @@ public class RobotHardware {
         //Placeholder
 
 
+        blinkin = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 
 
 //
