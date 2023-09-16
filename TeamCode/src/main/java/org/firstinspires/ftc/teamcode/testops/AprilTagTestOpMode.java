@@ -11,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.Pose;
 import org.firstinspires.ftc.teamcode.pipelines.AprilTagDetectionPipeline;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -30,6 +31,8 @@ public class AprilTagTestOpMode extends CommandOpMode {
     static   double fy = 578.272;
     static  double cx = 402.145;
     static  double cy = 221.506;
+
+    private Pose robotPose = new Pose(0, 0, 0);
 
   public static double TAGSIZE = 0.17145;
 
@@ -67,9 +70,10 @@ public class AprilTagTestOpMode extends CommandOpMode {
         telemetry.setMsTransmissionInterval(50);
 
 
+
         while (opModeIsActive()) {
             ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
-
+            telemetry.addLine(String.format("Robot Pose: %s", robotPose));
             if (detections != null) {
                 telemetry.addData("FPS: %.2f", camera.getFps());
                 telemetry.addData("Overhead ms: %.2f", camera.getOverheadTimeMs());
@@ -98,8 +102,15 @@ public class AprilTagTestOpMode extends CommandOpMode {
                         telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", rot.firstAngle));
                         telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", rot.secondAngle));
                         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rot.thirdAngle));
+
+
+                        robotPose = new Pose(detection.pose.z * INCHES_PER_METER, detection.pose.x * INCHES_PER_METER, rot.firstAngle);
+
+
+
                     }
                 }
+
 
                 telemetry.update();
             }

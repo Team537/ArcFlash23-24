@@ -5,7 +5,7 @@ import me.wobblyyyy.pathfinder2.geometry.PointXYZ;
 public class AprilTagFieldConstants {
 
     //ALL Placeholder!!!
-    public static PointXYZ TAG_0_POSE = new PointXYZ(1,0,0);
+    public static PointXYZ TAG_0_POSE = new PointXYZ(0,0,0);
     public static PointXYZ TAG_1_POSE = new PointXYZ(1,1,0);
     public static PointXYZ TAG_2_POSE = new PointXYZ(1,2,0);
     public static PointXYZ TAG_3_POSE = new PointXYZ(2,2,0);
