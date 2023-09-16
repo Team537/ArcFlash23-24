@@ -7,12 +7,15 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 //import com.outoftheboxrobotics.photoncore.PhotonCore;
+import com.arcrobotics.ftclib.geometry.Rotation2d;
+import com.arcrobotics.ftclib.kinematics.wpilibkinematics.ChassisSpeeds;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Globals;
 import org.firstinspires.ftc.teamcode.Pose;
 import org.firstinspires.ftc.teamcode.RobotHardware;
+import org.firstinspires.ftc.teamcode.SwerveDrivetrain;
 import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
 
 @Config
@@ -20,7 +23,7 @@ import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
 public class TeleopSwerveDrive extends CommandOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();
-    private PFinder pathfinder;
+    private SwerveDrivetrain drivetrain;
 
     private GamepadEx gamepadEx;
     private static double MAX_X_SPEED = 5.0;
@@ -36,7 +39,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
         robot.init(hardwareMap, telemetry);
         gamepadEx = new GamepadEx(gamepad1);
-        pathfinder = new PFinder(robot);
+        drivetrain = new SwerveDrivetrain(robot);
         gamepadEx = new GamepadEx(gamepad1);
 
         robot.enabled = true;
@@ -46,19 +49,20 @@ public class TeleopSwerveDrive extends CommandOpMode {
 //        PhotonCore.experimental.setMaximumParallelCommands(8);
 //        PhotonCore.enable();
 
+        drivetrain.read();
+
     }
 
     @Override
      public void run() {
-        pathfinder.absoluteDrive(
-                new Pose(
-                        gamepadEx.getLeftX() * MAX_X_SPEED,
-                        gamepadEx.getLeftY() * MAX_Y_SPEED,
-                        gamepadEx.getRightX() * MAX_TURN_SPEED
-                )
-        );
-        pathfinder.loopTele();
+        drivetrain.driveVelocity(new ChassisSpeeds(
+                gamepadEx.getLeftY() * MAX_X_SPEED,
+                gamepadEx.getLeftX() * MAX_Y_SPEED,
+                gamepadEx.getRightX() * MAX_TURN_SPEED
+        ),new Rotation2d(robot.getAngle()));
 
+
+        drivetrain.updateModules();
         telemetry.update();
 
 //        robot.clearBulkCache();

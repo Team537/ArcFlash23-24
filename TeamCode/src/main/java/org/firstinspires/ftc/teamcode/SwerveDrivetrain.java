@@ -4,6 +4,12 @@ import static java.lang.Math.atan2;
 import static java.lang.Math.hypot;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.geometry.Rotation2d;
+import com.arcrobotics.ftclib.geometry.Translation2d;
+import com.arcrobotics.ftclib.geometry.Vector2d;
+import com.arcrobotics.ftclib.kinematics.wpilibkinematics.ChassisSpeeds;
+import com.arcrobotics.ftclib.kinematics.wpilibkinematics.SwerveDriveKinematics;
+import com.arcrobotics.ftclib.kinematics.wpilibkinematics.SwerveModuleState;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import static org.firstinspires.ftc.teamcode.Globals.*;
@@ -30,6 +36,12 @@ public class SwerveDrivetrain {
 
     private boolean fieldOriented = false;
 
+    private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
+            new Translation2d(TRACK_WIDTH / 2, WHEEL_BASE / 2),
+            new Translation2d(TRACK_WIDTH / 2, -WHEEL_BASE / 2),
+            new Translation2d(-TRACK_WIDTH / 2, -WHEEL_BASE / 2),
+            new Translation2d(-TRACK_WIDTH / 2, WHEEL_BASE / 2)
+    );
 
     /**
      * Swerve Drive Declaration
@@ -89,6 +101,19 @@ public class SwerveDrivetrain {
             m.setMotorPower(Math.abs(feedforward_static[i]) + ((USE_WHEEL_FEEDFORWARD) ? minPower * Math.signum(feedforward_static[i]) : 0));
             m.setTargetRotation(MathUtils.norm(feedforward_acceleration[i]));
         }
+    }
+
+    public void driveVelocity(ChassisSpeeds speeds, Rotation2d gyroAngle){
+
+        speeds  = fieldOriented ? ChassisSpeeds.fromFieldRelativeSpeeds(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, gyroAngle) : speeds;
+
+        SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
+
+       modules[0].setDesiredState(states[0]);
+       modules[1].setDesiredState(states[1]);
+       modules[2].setDesiredState(states[2]);
+       modules[3].setDesiredState(states[3]);
+
     }
   /**
    * Update Swerve Modules

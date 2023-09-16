@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.config.Config;
 
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.controller.PIDFController;
+import com.arcrobotics.ftclib.kinematics.wpilibkinematics.SwerveModuleState;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.CRServoImplEx;
@@ -170,6 +171,7 @@ public class SwerveModule {
      * */
     public void setPIDFCoefficients(DcMotor.RunMode runMode, PIDFCoefficients coefficients) {
         driveMotor.setPIDFCoefficients(runMode, coefficients);
+
     }
 
    /**
@@ -194,50 +196,59 @@ public class SwerveModule {
         return encoderTicksToInches(driveMotor.getVelocity());
     }
 
+
+    public void setDesiredState(SwerveModuleState state){
+        if (wheelFlipped) state.speedMetersPerSecond *= -1;
+         driveMotor.setVelocity(((state.speedMetersPerSecond/39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ));
+         setTargetRotation(state.angle.getRadians());
+
+
+    }
+
     //idk what this is
-    public SwerveModuleState asState() {
-        return new SwerveModuleState(this);
-    }
-
-
-    // Class for Storing The State of a Swerve Module in terms of its Wheel Position and Module Rotation
-    public static class SwerveModuleState {
-        public SwerveModule module;
-        public double wheelPosition, moduleRotation;
-
-
-        /** Class for Storing The State of a Swerve Module in terms of its Wheel Position and Module Rotation
-         * @param swerveModule Swerve Module Object
-         * */
-        public SwerveModuleState(SwerveModule swerveModule) {
-            module = swerveModule;
-            wheelPosition = 0;
-            moduleRotation = 0;
-        }
-        /**
-         * Update SwerveModule State
-         * */
-        public SwerveModuleState update() {
-            return setState(-module.getWheelPosition(), module.getModuleRotation());
-        }
-        /**
-         * Set Swerve Module State
-         * @param moduleRotation Module Rotation in Radians
-         * @param wheelPosition Wheel Position in Ticks
-         * */
-        public SwerveModuleState setState(double wheelPosition, double moduleRotation) {
-            this.wheelPosition = wheelPosition;
-            this.moduleRotation = moduleRotation;
-            return this;
-        }
-
-        //TODO add averaging for podrots based off of past values
-        public Vector2d calculateDelta() {
-            double oldWheelPosition = wheelPosition;
-            update();
-            return Vector2d.polar(wheelPosition - oldWheelPosition, moduleRotation);
-        }
-    }
+//    public SwerveModuleState asState() {
+//        return new SwerveModuleState(this);
+//    }
+//
+//
+//    // Class for Storing The State of a Swerve Module in terms of its Wheel Position and Module Rotation
+//    public static class SwerveModuleState {
+//        public SwerveModule module;
+//        public double wheelPosition, moduleRotation;
+//
+//
+//        /** Class for Storing The State of a Swerve Module in terms of its Wheel Position and Module Rotation
+//         * @param swerveModule Swerve Module Object
+//         * */
+//        public SwerveModuleState(SwerveModule swerveModule) {
+//            module = swerveModule;
+//            wheelPosition = 0;
+//            moduleRotation = 0;
+//        }
+//        /**
+//         * Update SwerveModule State
+//         * */
+//        public SwerveModuleState update() {
+//            return setState(-module.getWheelPosition(), module.getModuleRotation());
+//        }
+//        /**
+//         * Set Swerve Module State
+//         * @param moduleRotation Module Rotation in Radians
+//         * @param wheelPosition Wheel Position in Ticks
+//         * */
+//        public SwerveModuleState setState(double wheelPosition, double moduleRotation) {
+//            this.wheelPosition = wheelPosition;
+//            this.moduleRotation = moduleRotation;
+//            return this;
+//        }
+//
+//        //TODO add averaging for podrots based off of past values
+//        public Vector2d calculateDelta() {
+//            double oldWheelPosition = wheelPosition;
+//            update();
+//            return Vector2d.polar(wheelPosition - oldWheelPosition, moduleRotation);
+//        }
+//    }
      /**
       * Convert from Encoder Ticks to Inches
       * @param ticks Encoder Ticks
