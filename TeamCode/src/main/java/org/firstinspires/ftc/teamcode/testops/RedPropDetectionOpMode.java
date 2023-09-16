@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.testops;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -52,6 +53,7 @@ public class RedPropDetectionOpMode extends CommandOpMode {
 
     @Override
     public void run() {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         FtcDashboard.getInstance().startCameraStream(camera, 0);
         while (opModeIsActive()) {
             // Access the detected object's center from the pipeline
