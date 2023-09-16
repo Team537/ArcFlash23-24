@@ -34,7 +34,7 @@ public class AprilTagTestOpMode extends CommandOpMode {
 
     private Pose robotPose = new Pose(0, 0, 0);
 
-  public static double TAGSIZE = 0.17145;
+
 
     int numFramesWithoutDetection = 0;
 
@@ -48,7 +48,7 @@ public class AprilTagTestOpMode extends CommandOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(TAGSIZE, fx, fy, cx, cy);
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline( fx, fy, cx, cy);
 
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {

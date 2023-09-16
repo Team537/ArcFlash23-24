@@ -46,11 +46,9 @@ public class AprilTagDetectionPipeline extends OpenCvPipeline
     private boolean needToSetDecimation;
     private final Object decimationSync = new Object();
 
-    public AprilTagDetectionPipeline(double tagsize, double fx, double fy, double cx, double cy)
+    public AprilTagDetectionPipeline(double fx, double fy, double cx, double cy)
     {
-        this.tagsize = tagsize;
-        this.tagsizeX = tagsize;
-        this.tagsizeY = tagsize;
+
         this.fx = fx;
         this.fy = fy;
         this.cx = cx;
@@ -105,6 +103,19 @@ public class AprilTagDetectionPipeline extends OpenCvPipeline
         // OpenCV because I haven't yet figured out how to re-use org.firstinspires.ftc.teamcode.org.firstinspires.ftc.teamcode.AprilTag's pose in OpenCV.
         for(AprilTagDetection detection : detections)
         {
+            if(detection.id == 10 ||detection.id == 7) { tagsizeX = 0.127; tagsizeY = 0.127;}
+            if(detection.id == 8 ||detection.id == 9) { tagsizeX = 0.0508; tagsizeY = 0.0508;}
+            if(
+                    detection.id == 0 ||
+                    detection.id == 1 ||
+                    detection.id == 2 ||
+                    detection.id == 3 ||
+                    detection.id == 4 ||
+                    detection.id == 5 ||
+                    detection.id == 6) {
+
+                tagsizeX = 0.0762; tagsizeY = 0.0762;
+            }
             Pose pose = poseFromTrapezoid(detection.corners, cameraMatrix, tagsizeX, tagsizeY);
             drawAxisMarker(input, tagsizeY/2.0, 6, pose.rvec, pose.tvec, cameraMatrix);
             draw3dCubeMarker(input, tagsizeX, tagsizeX, tagsizeY, 5, pose.rvec, pose.tvec, cameraMatrix);
