@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Pose;
+import org.firstinspires.ftc.teamcode.apriltag.AprilTagFieldConstants;
 import org.firstinspires.ftc.teamcode.pipelines.AprilTagDetectionPipeline;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -104,7 +105,10 @@ public class AprilTagTestOpMode extends CommandOpMode {
                         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", rot.thirdAngle));
 
 
-                        robotPose = new Pose(detection.pose.z * INCHES_PER_METER, detection.pose.x * INCHES_PER_METER, rot.firstAngle);
+                        robotPose = new Pose(
+                                AprilTagFieldConstants.getTagPose(detection.id).x() +  ((3 * ((detection.pose.z * INCHES_PER_METER)) / 2) - 1) + 9 ,
+                                AprilTagFieldConstants.getTagPose(detection.id).y() + -detection.pose.x * INCHES_PER_METER - 1,
+                                AprilTagFieldConstants.getTagPose(detection.id).z().deg() + rot.firstAngle + 180);
 
 
 

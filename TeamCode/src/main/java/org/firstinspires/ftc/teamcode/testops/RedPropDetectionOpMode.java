@@ -59,11 +59,11 @@ public class RedPropDetectionOpMode extends CommandOpMode {
             // Access the detected object's center from the pipeline
             Point objectCenter = pipeline.getObjectCenter();
 
-            if(objectCenter.x > 600) {
+            if(objectCenter.x > 500) {
                 currentState = PropState.RIGHT;
-            } else if(objectCenter.x > 300 && objectCenter.x < 600){
+            } else if(objectCenter.x > 250 && objectCenter.x < 500){
                 currentState = PropState.CENTER;
-            } else if(objectCenter.x < 300) {
+            } else if(objectCenter.x < 250) {
                 currentState = PropState.LEFT;
             }
             // Print the object's center coordinates to the telemetry

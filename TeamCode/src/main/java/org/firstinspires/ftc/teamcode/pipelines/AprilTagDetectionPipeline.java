@@ -32,15 +32,13 @@ public class AprilTagDetectionPipeline extends OpenCvPipeline
     Scalar green = new Scalar(0,255,0,255);
     Scalar white = new Scalar(255,255,255,255);
 
+
+    double tagsize = 0.1778;
+
     double fx;
     double fy;
     double cx;
     double cy;
-
-    // UNITS ARE METERS
-    double tagsize;
-    double tagsizeX;
-    double tagsizeY;
 
     private float decimation;
     private boolean needToSetDecimation;
@@ -92,6 +90,7 @@ public class AprilTagDetectionPipeline extends OpenCvPipeline
         }
 
         // Run org.firstinspires.ftc.teamcode.org.firstinspires.ftc.teamcode.AprilTag
+
         detections = AprilTagDetectorJNI.runAprilTagDetectorSimple(nativeApriltagPtr, grey, tagsize, fx, fy, cx, cy);
 
         synchronized (detectionsUpdateSync)
@@ -103,22 +102,14 @@ public class AprilTagDetectionPipeline extends OpenCvPipeline
         // OpenCV because I haven't yet figured out how to re-use org.firstinspires.ftc.teamcode.org.firstinspires.ftc.teamcode.AprilTag's pose in OpenCV.
         for(AprilTagDetection detection : detections)
         {
-            if(detection.id == 10 ||detection.id == 7) { tagsizeX = 0.127; tagsizeY = 0.127;}
-            if(detection.id == 8 ||detection.id == 9) { tagsizeX = 0.0508; tagsizeY = 0.0508;}
-            if(
-                    detection.id == 0 ||
-                    detection.id == 1 ||
-                    detection.id == 2 ||
-                    detection.id == 3 ||
-                    detection.id == 4 ||
-                    detection.id == 5 ||
-                    detection.id == 6) {
+            int tagId = detection.id;
 
-                tagsizeX = 0.0762; tagsizeY = 0.0762;
-            }
-            Pose pose = poseFromTrapezoid(detection.corners, cameraMatrix, tagsizeX, tagsizeY);
-            drawAxisMarker(input, tagsizeY/2.0, 6, pose.rvec, pose.tvec, cameraMatrix);
-            draw3dCubeMarker(input, tagsizeX, tagsizeX, tagsizeY, 5, pose.rvec, pose.tvec, cameraMatrix);
+            // Calculate tag size based on tag ID (you can define your logic here)
+           calculateTagSize(tagId);
+
+            Pose pose = poseFromTrapezoid(detection.corners, cameraMatrix, tagsize, tagsize);
+            drawAxisMarker(input, tagsize / 2.0, 6, pose.rvec, pose.tvec, cameraMatrix);
+            draw3dCubeMarker(input,  tagsize,  tagsize,  tagsize, 5, pose.rvec, pose.tvec, cameraMatrix);
         }
 
         return input;
@@ -143,7 +134,6 @@ public class AprilTagDetectionPipeline extends OpenCvPipeline
         synchronized (detectionsUpdateSync)
         {
             ArrayList<AprilTagDetection> ret = detectionsUpdate;
-//            detectionsUpdate = null;
             return ret;
         }
     }
@@ -172,6 +162,20 @@ public class AprilTagDetectionPipeline extends OpenCvPipeline
         cameraMatrix.put(2, 0, 0);
         cameraMatrix.put(2,1,0);
         cameraMatrix.put(2,2,1);
+    }
+
+    // Define your logic for calculating the tag size based on tag ID
+    private void calculateTagSize(int tagId)
+    {
+        if (tagId == 0 || tagId == 1) {
+            tagsize = 0.1778;
+        } else if (tagId == 10 || tagId == 7){
+
+            tagsize = 0.127;
+        } else  if (tagId == 8 || tagId == 9 ) {
+            tagsize = 0.0508;
+        }
+
     }
 
     /**
