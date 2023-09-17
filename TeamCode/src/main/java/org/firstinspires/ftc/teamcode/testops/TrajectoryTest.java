@@ -49,8 +49,8 @@ public class TrajectoryTest extends CommandOpMode {
     private Encoder leftEncoder;
     private Encoder rightEncoder;
     private Encoder centerEncoder;
-
-    private HolonomicOdometry odometry;
+    private OdometrySubsystem odometry;
+    private HolonomicOdometry odo;
 
     static final double TICKS_TO_INCHES = 15.3;
     static final double TRACKWIDTH = 13.7;
@@ -79,14 +79,14 @@ public class TrajectoryTest extends CommandOpMode {
         rightEncoder.setDistancePerPulse(TICKS_TO_INCHES);
         centerEncoder.setDistancePerPulse(TICKS_TO_INCHES);
 
-        HolonomicOdometry odo = new HolonomicOdometry(
+         odo = new HolonomicOdometry(
                 leftEncoder::getDistance,
                 rightEncoder::getDistance,
                 centerEncoder::getDistance,
                 TRACKWIDTH, CENTER_WHEEL_OFFSET
         );
 
-        OdometrySubsystem odometry = new OdometrySubsystem(odo);
+        odometry = new OdometrySubsystem(odo);
 
 
 
