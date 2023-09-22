@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -21,7 +22,7 @@ public class Deposit {
     private Servo slideServo2;
     private Servo angleServo;
     private Servo swivelServo;
-    private NormalizedColorSensor colorSensor;
+    private RevColorSensorV3 colorSensor;
     private RevBlinkinLedDriver blinkin;
     private View relativeLayout;
 
@@ -74,10 +75,10 @@ public class Deposit {
 
 
     public Deposit(RobotHardware robot){
-        slideServo1 = robot.slideServo1;
-        slideServo2 = robot.slideServo2;
-        angleServo = robot.angleServo;
-        swivelServo = robot.swivelServo;
+//        slideServo1 = robot.slideServo1;
+//        slideServo2 = robot.slideServo2;
+//        angleServo = robot.angleServo;
+//        swivelServo = robot.swivelServo;
         colorSensor = robot.colorSensor;
         relativeLayout = robot.relativeLayout;
         blinkin = robot.blinkin;
@@ -94,38 +95,38 @@ public class Deposit {
 
 
 
-        slideServo1.setPosition((int)targetPosition1);
-        slideServo2.setPosition((int)targetPosition2);
-        angleServo.setPosition(anglePosition);
-        swivelServo.setPosition(swivelPosition);
-        telemetry.addData("Current Slide State", currentSlideState);
-        telemetry.addData("Target Slide State", targetSlideState);
-        telemetry.addData("Current Swivel State", currentSwivelState);
-        telemetry.addData("Target Swivel State", targetSwivelState);
-        telemetry.addData("Latch State", currentLatchState);
-        telemetry.addData("Deposit State", currentDepositState);
-        telemetry.addData("Slide Servo 1 Current Position",  slideServo1.getPosition());
-        telemetry.addData("Slide Servo 2 Current Position",  slideServo2.getPosition());
-        telemetry.addData("Slide Servo 1 Target Position", targetPosition1);
-        telemetry.addData("Slide Servo 2 Target Position", targetPosition2);
-        telemetry.addData("Angle Servo Current Position", angleServo.getPosition());
-        telemetry.addData("Angle Servo Target Position", anglePosition);
-        telemetry.addData("Swivel Servo Current Position", swivelServo.getPosition());
-        telemetry.addData("Swivel Servo Target Position", swivelPosition);
+//        slideServo1.setPosition((int)targetPosition1);
+//        slideServo2.setPosition((int)targetPosition2);
+//        angleServo.setPosition(anglePosition);
+//        swivelServo.setPosition(swivelPosition);
+//        telemetry.addData("Current Slide State", currentSlideState);
+//        telemetry.addData("Target Slide State", targetSlideState);
+//        telemetry.addData("Current Swivel State", currentSwivelState);
+//        telemetry.addData("Target Swivel State", targetSwivelState);
+//        telemetry.addData("Latch State", currentLatchState);
+//        telemetry.addData("Deposit State", currentDepositState);
+//        telemetry.addData("Slide Servo 1 Current Position",  slideServo1.getPosition());
+//        telemetry.addData("Slide Servo 2 Current Position",  slideServo2.getPosition());
+//        telemetry.addData("Slide Servo 1 Target Position", targetPosition1);
+//        telemetry.addData("Slide Servo 2 Target Position", targetPosition2);
+//        telemetry.addData("Angle Servo Current Position", angleServo.getPosition());
+//        telemetry.addData("Angle Servo Target Position", anglePosition);
+//        telemetry.addData("Swivel Servo Current Position", swivelServo.getPosition());
+//        telemetry.addData("Swivel Servo Target Position", swivelPosition);
 
         runColorSensor();
 
-        if(Math.abs(targetPosition1-slideServo1.getPosition()) < 10 || Math.abs(targetPosition2-slideServo2.getPosition()) < 10){
-            currentSlideState = SlideState.TRANSITION;
-        } else {
-            currentSlideState = targetSlideState;
-        }
-
-        if(Math.abs(swivelPosition-swivelServo.getPosition()) < 0.01){
-            currentSwivelState = SwivelState.TRANSITION;
-        } else {
-            currentSwivelState = targetSwivelState;
-        }
+//        if(Math.abs(targetPosition1-slideServo1.getPosition()) < 10 || Math.abs(targetPosition2-slideServo2.getPosition()) < 10){
+//            currentSlideState = SlideState.TRANSITION;
+//        } else {
+//            currentSlideState = targetSlideState;
+//        }
+//
+//        if(Math.abs(swivelPosition-swivelServo.getPosition()) < 0.01){
+//            currentSwivelState = SwivelState.TRANSITION;
+//        } else {
+//            currentSwivelState = targetSwivelState;
+//        }
 
         if(currentDepositState == DepositState.HAS_PIXEL)   blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
 
@@ -239,18 +240,19 @@ public class Deposit {
         NormalizedRGBA colors = colorSensor.getNormalizedColors();
         Color.colorToHSV(colors.toColor(),  hsvValues);
 
-        telemetry.addLine()
-                .addData("Red", "%.3f", colors.red)
-                .addData("Green", "%.3f", colors.green)
-                .addData("Blue", "%.3f", colors.blue);
-        telemetry.addLine()
-                .addData("Hue", "%.3f", hsvValues[0])
-                .addData("Saturation", "%.3f", hsvValues[1])
-                .addData("Value", "%.3f", hsvValues[2]);
-        telemetry.addData("Alpha", "%.3f", colors.alpha);
-
+//        if(colors != null) {
+//            telemetry.addLine()
+//                    .addData("Red", "%.3f", colors.red)
+//                    .addData("Green", "%.3f", colors.green)
+//                    .addData("Blue", "%.3f", colors.blue);
+//            telemetry.addLine()
+//                    .addData("Hue", "%.3f", hsvValues[0])
+//                    .addData("Saturation", "%.3f", hsvValues[1])
+//                    .addData("Value", "%.3f", hsvValues[2]);
+//            telemetry.addData("Alpha", "%.3f", colors.alpha);
+//        }
         if (colorSensor instanceof DistanceSensor) {
-            telemetry.addData("Distance (cm)", "%.3f", ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM));
+//            telemetry.addData("Distance (cm)", "%.3f", ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM));
 
             if(((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM) < 1){
                 currentDepositState = DepositState.HAS_PIXEL;
@@ -266,6 +268,12 @@ public class Deposit {
             }
         });
 
+
+
+    }
+
+    public DepositState getState(){
+        return currentDepositState;
     }
 
     public enum SlideState{

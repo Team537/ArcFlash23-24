@@ -7,6 +7,7 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 //import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -64,7 +65,7 @@ public class RobotHardware {
 
     public RevBlinkinLedDriver blinkin;
 
-    public NormalizedColorSensor colorSensor;
+    public RevColorSensorV3 colorSensor;
     public View relativeLayout;
     public int relativeLayoutId;
 
@@ -155,9 +156,9 @@ public class RobotHardware {
         webcam1 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), viewportContainerIds[0]);
 //        webcam2 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), viewportContainerIds[1]);
 //
-//        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
-//        relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
-//        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
+        relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
         voltage = hardwareMap.voltageSensor.iterator().next().getVoltage();
     }

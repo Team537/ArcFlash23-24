@@ -69,6 +69,7 @@ public class LEDTestOpMode extends CommandOpMode {
         }
 
         deposit.loop();
+        telemetry.addData("Mode", deposit.getState().toString());
         telemetry.update();
 
 //        robot.clearBulkCache();
