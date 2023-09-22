@@ -70,6 +70,7 @@ public class LEDTestOpMode extends CommandOpMode {
 
         deposit.loop();
         telemetry.addData("Mode", deposit.getState().toString());
+        telemetry.addData("Touch Sensor", deposit.getTouchBool());
         telemetry.update();
 
 //        robot.clearBulkCache();

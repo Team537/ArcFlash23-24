@@ -17,6 +17,10 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+
+
 public class Deposit {
     private Servo slideServo1;
     private Servo slideServo2;
@@ -72,6 +76,21 @@ public class Deposit {
     private float[] hsvValues = new float[3];
 
 
+    TouchSensor touch;
+    public boolean touchActive = false;
+
+    public void TouchSensorTest() {
+
+        if(touch.isPressed()) {
+            touchActive = !touchActive;
+        }
+
+    }
+
+    public Boolean getTouchBool(){
+
+        return touchActive;
+    }
 
 
     public Deposit(RobotHardware robot){
@@ -82,6 +101,8 @@ public class Deposit {
         colorSensor = robot.colorSensor;
         relativeLayout = robot.relativeLayout;
         blinkin = robot.blinkin;
+        touch = robot.touch;
+
 
         if (colorSensor instanceof SwitchableLight) {
             ((SwitchableLight)colorSensor).enableLight(true);
@@ -94,6 +115,9 @@ public class Deposit {
     public void loop(){
 
 
+
+
+        TouchSensorTest();
 
 //        slideServo1.setPosition((int)targetPosition1);
 //        slideServo2.setPosition((int)targetPosition2);
