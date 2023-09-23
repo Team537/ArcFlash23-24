@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.SwerveDrivetrain;
 import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
 
 @Config
-@TeleOp(name = "Test PathFinder Swerve Drive")
+@TeleOp(name = "Test Swerve Drive")
 public class TeleopSwerveDrive extends CommandOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();
@@ -63,6 +63,9 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
 
         drivetrain.updateModules();
+        telemetry.addData("Angle", robot.getAngle());
+        telemetry.addData("Swerve", drivetrain.getTelemetry());
+        telemetry.addData("Swerve Module States", drivetrain.getSwerveModuleStates());
         telemetry.update();
 
 //        robot.clearBulkCache();

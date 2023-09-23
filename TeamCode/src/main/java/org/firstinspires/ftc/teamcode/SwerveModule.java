@@ -43,6 +43,12 @@ public class SwerveModule {
     private double targetAngle = 0.0;
     private double moduleAngle = 0.0;
     public double lastMotorPower = 0;
+    double rotationTarget = 0;
+    double currentAngle = 0;
+    double angleError = 0;
+    double steerPower = 0;
+
+    private SwerveModuleState state = new SwerveModuleState();
 
 
     /**
@@ -92,9 +98,10 @@ public class SwerveModule {
      * */
     public void update() {
         rotationController.setPIDF(P, I, D, 0.4);
-        double rotationTarget = getTargetRotation(), currentAngle = getModuleRotation();
+        rotationTarget = getTargetRotation();
+        currentAngle = getModuleRotation();
 
-        double angleError = normalizeRadians(rotationTarget - currentAngle);
+         angleError = normalizeRadians(rotationTarget - currentAngle);
         if (MOTOR_FLIPPING && Math.abs(angleError) > Math.PI / 2) {
             rotationTarget = normalizeRadians(rotationTarget - Math.PI);
             wheelFlipped = true;
@@ -104,7 +111,7 @@ public class SwerveModule {
 
         angleError = normalizeRadians(rotationTarget - currentAngle);
 
-        double steerPower = Range.clip(rotationController.calculate(0, angleError), -MAX_SERVO, MAX_SERVO);
+        steerPower = Range.clip(rotationController.calculate(0, angleError), -MAX_SERVO, MAX_SERVO);
         if (Double.isNaN(steerPower)) steerPower = 0;
         servo.setPower(steerPower + (Math.abs(angleError) > 0.02 ? K_STATIC : 0) * Math.signum(steerPower));
     }
@@ -141,6 +148,10 @@ public class SwerveModule {
      * */
     public String getTelemetry(String moduleName) {
         return String.format(Locale.ENGLISH, "%s: Motor Flipped: %b \ncurrent position %.2f target position %.2f flip modifer = %d motor power = %.2f", moduleName, wheelFlipped, getModuleRotation(), getTargetRotation(), flipModifier(), lastMotorPower);
+    }
+
+    public SwerveModuleState getState() {
+        return state;
     }
     /**
      * Flip Modifier for Wheel Inversion
@@ -198,6 +209,7 @@ public class SwerveModule {
 
 
     public void setDesiredState(SwerveModuleState state){
+        this.state = state;
         if (wheelFlipped) state.speedMetersPerSecond *= -1;
          driveMotor.setVelocity(((state.speedMetersPerSecond/39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ));
          setTargetRotation(state.angle.getRadians());

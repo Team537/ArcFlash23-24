@@ -30,6 +30,7 @@ public class SwerveDrivetrain {
 
 
     double maxPower = 0.0;
+    ChassisSpeeds moduleSpeeds = new ChassisSpeeds();
 
     public final double minPower = 0.1;
     public static double imuOffset = 0.0;
@@ -105,9 +106,9 @@ public class SwerveDrivetrain {
 
     public void driveVelocity(ChassisSpeeds speeds, Rotation2d gyroAngle){
 
-        speeds  = fieldOriented ? ChassisSpeeds.fromFieldRelativeSpeeds(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, gyroAngle) : speeds;
+        moduleSpeeds  = fieldOriented ? ChassisSpeeds.fromFieldRelativeSpeeds(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, gyroAngle) : speeds;
 
-        SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
+        SwerveModuleState[] states = kinematics.toSwerveModuleStates( moduleSpeeds );
 
        modules[0].setDesiredState(states[0]);
        modules[1].setDesiredState(states[1]);
@@ -147,5 +148,12 @@ public class SwerveDrivetrain {
                 backLeftModule.getTelemetry("leftRearModule") + "\n" +
                 frontRightModule.getTelemetry("rightFrontModule") + "\n" +
                 backRightModule.getTelemetry("rightRearModule") + "\n";
+    }
+
+    public String getSwerveModuleStates(){
+        return frontLeftModule.getState().toString() + "\n" +
+                backLeftModule.getState().toString() + "\n" +
+                frontRightModule.getState().toString()  + "\n" +
+                backRightModule.getState().toString()  + "\n";
     }
 }
