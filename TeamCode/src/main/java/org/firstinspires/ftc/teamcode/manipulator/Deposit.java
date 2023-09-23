@@ -72,6 +72,7 @@ public class Deposit {
     private Timing.Timer midScoreTimer = new Timing.Timer(4);
     private Timing.Timer highScoreTimer = new Timing.Timer(5);
 
+    private Timing.Timer ledTimer = new Timing.Timer(50);
 
     private int colorSensorGain = 2;
     private float[] hsvValues = new float[3];
@@ -97,6 +98,8 @@ public class Deposit {
         relativeLayout = robot.relativeLayout;
         blinkin = robot.blinkin;
         touch = robot.touch;
+
+
 
 
         if (colorSensor instanceof SwitchableLight) {
@@ -153,7 +156,7 @@ public class Deposit {
 
     }
 
-    public LEDState  getCurrentLEDState(){
+    public LEDState getCurrentLEDState(){
     return currentLEDState;
     }
 
@@ -185,14 +188,44 @@ public class Deposit {
         currentLEDState = LEDState.GREEN;
     }
 
-    public void setStrip(){
-        currentLEDState = LEDState.STRIPE;
-    }
+
 
     public void setNoneLed(){
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
         currentLEDState = LEDState.NONE;
     }
+
+    public void setWhiteGreenLed(){
+        currentLEDState = LEDState.WHITE_GREEN;
+        ledTimer.start();
+        if( (int) ledTimer.elapsedTime() % 2 == 0){
+            setWhiteLed();
+        } else {
+            setGreenLed();
+        }
+    }
+
+    public void setWhiteYellowLed(){
+        currentLEDState = LEDState.WHITE_YELLOW;
+        ledTimer.start();
+        if( (int) ledTimer.elapsedTime() % 2 == 0){
+            setWhiteLed();
+        } else {
+            setYellowLed();
+        }
+    }
+
+    public void setWhitePurpleLed(){
+        currentLEDState = LEDState.WHITE_PURPLE;
+        ledTimer.start();
+        if( (int) ledTimer.elapsedTime() % 2 == 0){
+            setWhiteLed();
+        } else {
+            setPurpleLed();
+        }
+    }
+
+
 
 
 
@@ -347,7 +380,9 @@ public class Deposit {
         WHITE,
         PURPLE,
         NONE,
-        STRIPE,
+        WHITE_GREEN,
+        WHITE_YELLOW,
+        WHITE_PURPLE
 
     }
 
