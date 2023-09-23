@@ -82,7 +82,9 @@ public class Deposit {
     public void TouchSensorTest() {
 
         if(touch.isPressed()) {
-            touchActive = !touchActive;
+            touchActive = true;
+        } else {
+            touchActive = false;
         }
 
     }
