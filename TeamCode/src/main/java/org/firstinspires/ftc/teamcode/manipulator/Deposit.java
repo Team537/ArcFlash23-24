@@ -65,6 +65,7 @@ public class Deposit {
     private SwivelState currentSwivelState = SwivelState.CENTER;
     private SwivelState targetSwivelState = SwivelState.CENTER;
     private DepositState currentDepositState = DepositState.NO_PIXEL;
+    private LEDState currentLEDState = LEDState.NONE;
 
 
     private Timing.Timer lowScoreTimer = new Timing.Timer(3);
@@ -76,22 +77,14 @@ public class Deposit {
     private float[] hsvValues = new float[3];
 
 
-    TouchSensor touch;
+    public TouchSensor touch;
     public boolean touchActive = false;
 
-    public void TouchSensorTest() {
 
-        if(touch.isPressed()) {
-            touchActive = true;
-        } else {
-            touchActive = false;
-        }
-
-    }
 
     public Boolean getTouchBool(){
 
-        return touchActive;
+       return touch.isPressed();
     }
 
 
@@ -119,7 +112,9 @@ public class Deposit {
 
 
 
-        TouchSensorTest();
+
+
+
 
 //        slideServo1.setPosition((int)targetPosition1);
 //        slideServo2.setPosition((int)targetPosition2);
@@ -154,8 +149,12 @@ public class Deposit {
 //            currentSwivelState = targetSwivelState;
 //        }
 
-        if(currentDepositState == DepositState.HAS_PIXEL)   blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
+        if(currentDepositState == DepositState.HAS_PIXEL)  currentLEDState = LEDState.NONE;
 
+    }
+
+    public LEDState  getCurrentLEDState(){
+    return currentLEDState;
     }
 
     public void latchToggle(){
@@ -168,19 +167,34 @@ public class Deposit {
 
     public void setWhiteLed(){
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
+        currentLEDState = LEDState.WHITE;
     }
 
     public void setYellowLed(){
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
+        currentLEDState= LEDState.YELLOW;
     }
 
     public void setPurpleLed(){
-        blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
+       blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
+        currentLEDState = LEDState.PURPLE;
     }
 
     public void setGreenLed(){
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+        currentLEDState = LEDState.GREEN;
     }
+
+    public void setStrip(){
+        currentLEDState = LEDState.STRIPE;
+    }
+
+    public void setNoneLed(){
+        blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
+        currentLEDState = LEDState.NONE;
+    }
+
+
 
 
 
@@ -325,6 +339,16 @@ public class Deposit {
     public enum DepositState{
         HAS_PIXEL,
         NO_PIXEL
+    }
+
+    public enum LEDState{
+        GREEN,
+        YELLOW,
+        WHITE,
+        PURPLE,
+        NONE,
+        STRIPE,
+
     }
 
 
