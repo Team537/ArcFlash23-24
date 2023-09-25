@@ -61,6 +61,8 @@ public class TimeLEDTestOpMode extends CommandOpMode {
 
         }
 
+
+
         if(gamepadEx.getButton(GamepadKeys.Button.B)){
             deposit.setPurpleLed();
 
@@ -85,17 +87,17 @@ public class TimeLEDTestOpMode extends CommandOpMode {
         }
 
         if(gamepadEx.getButton(GamepadKeys.Button.DPAD_UP)){
-           deposit.setWhiteGreenLed();
+           deposit.setWhiteGreenLed(getRuntime());
         }
 
 
         if(gamepadEx.getButton(GamepadKeys.Button.DPAD_LEFT)){
-            deposit.setWhitePurpleLed();
+            deposit.setWhitePurpleLed(getRuntime());
 
         }
 
         if(gamepadEx.getButton(GamepadKeys.Button.DPAD_RIGHT)){
-           deposit.setWhiteYellowLed();
+           deposit.setWhiteYellowLed(getRuntime());
         }
 
 

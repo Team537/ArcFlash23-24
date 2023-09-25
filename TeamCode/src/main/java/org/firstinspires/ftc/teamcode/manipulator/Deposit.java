@@ -195,30 +195,29 @@ public class Deposit {
         currentLEDState = LEDState.NONE;
     }
 
-    public void setWhiteGreenLed(){
+    public void setWhiteGreenLed(double time){
         currentLEDState = LEDState.WHITE_GREEN;
-        ledTimer.start();
-        if( (int) ledTimer.elapsedTime() % 2 == 0){
+        if( (int) time % 2 == 0){
             setWhiteLed();
         } else {
             setGreenLed();
         }
     }
 
-    public void setWhiteYellowLed(){
+    public void setWhiteYellowLed(double time){
         currentLEDState = LEDState.WHITE_YELLOW;
         ledTimer.start();
-        if( (int) ledTimer.elapsedTime() % 2 == 0){
+        if( (int) time % 2 == 0){
             setWhiteLed();
         } else {
             setYellowLed();
         }
     }
 
-    public void setWhitePurpleLed(){
+    public void setWhitePurpleLed(double time){
         currentLEDState = LEDState.WHITE_PURPLE;
         ledTimer.start();
-        if( (int) ledTimer.elapsedTime() % 2 == 0){
+        if( (int)time % 2 == 0){
             setWhiteLed();
         } else {
             setPurpleLed();
