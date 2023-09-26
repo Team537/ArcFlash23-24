@@ -17,6 +17,10 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+
+
 public class Deposit {
     private Servo slideServo1;
     private Servo slideServo2;
@@ -61,17 +65,28 @@ public class Deposit {
     private SwivelState currentSwivelState = SwivelState.CENTER;
     private SwivelState targetSwivelState = SwivelState.CENTER;
     private DepositState currentDepositState = DepositState.NO_PIXEL;
+    private LEDState currentLEDState = LEDState.NONE;
 
 
     private Timing.Timer lowScoreTimer = new Timing.Timer(3);
     private Timing.Timer midScoreTimer = new Timing.Timer(4);
     private Timing.Timer highScoreTimer = new Timing.Timer(5);
 
+    private Timing.Timer ledTimer = new Timing.Timer(50);
 
     private int colorSensorGain = 2;
     private float[] hsvValues = new float[3];
 
 
+    public TouchSensor touch;
+    public boolean touchActive = false;
+
+
+
+    public Boolean getTouchBool(){
+
+       return touch.isPressed();
+    }
 
 
     public Deposit(RobotHardware robot){
@@ -82,6 +97,10 @@ public class Deposit {
         colorSensor = robot.colorSensor;
         relativeLayout = robot.relativeLayout;
         blinkin = robot.blinkin;
+        touch = robot.touch;
+
+
+
 
         if (colorSensor instanceof SwitchableLight) {
             ((SwitchableLight)colorSensor).enableLight(true);
@@ -92,6 +111,11 @@ public class Deposit {
     }
 
     public void loop(){
+
+
+
+
+
 
 
 
@@ -128,8 +152,12 @@ public class Deposit {
 //            currentSwivelState = targetSwivelState;
 //        }
 
-        if(currentDepositState == DepositState.HAS_PIXEL)   blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
+        if(currentDepositState == DepositState.HAS_PIXEL)  currentLEDState = LEDState.NONE;
 
+    }
+
+    public LEDState getCurrentLEDState(){
+    return currentLEDState;
     }
 
     public void latchToggle(){
@@ -140,21 +168,69 @@ public class Deposit {
         }
     }
 
+    public void setLEDState(LEDState state){
+        currentLEDState = state;
+    }
+
     public void setWhiteLed(){
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
+
     }
 
     public void setYellowLed(){
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
+
     }
 
     public void setPurpleLed(){
-        blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
+       blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
+
     }
 
     public void setGreenLed(){
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+
     }
+
+
+
+    public void setNoneLed(){
+        blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
+
+    }
+
+    public void setWhiteGreenLed(double time){
+        currentLEDState = LEDState.WHITE_GREEN;
+        if( (int) time % 2 == 0){
+            setWhiteLed();
+        } else {
+            setGreenLed();
+        }
+    }
+
+    public void setWhiteYellowLed(double time){
+        currentLEDState = LEDState.WHITE_YELLOW;
+        ledTimer.start();
+        if( (int) time % 2 == 0){
+            setWhiteLed();
+        } else {
+            setYellowLed();
+        }
+    }
+
+    public void setWhitePurpleLed(double time){
+        currentLEDState = LEDState.WHITE_PURPLE;
+        ledTimer.start();
+        if( (int)time % 2 == 0){
+            setWhiteLed();
+        } else {
+            setPurpleLed();
+        }
+    }
+
+
+
+
 
 
 
@@ -299,6 +375,18 @@ public class Deposit {
     public enum DepositState{
         HAS_PIXEL,
         NO_PIXEL
+    }
+
+    public enum LEDState{
+        GREEN,
+        YELLOW,
+        WHITE,
+        PURPLE,
+        NONE,
+        WHITE_GREEN,
+        WHITE_YELLOW,
+        WHITE_PURPLE
+
     }
 
 

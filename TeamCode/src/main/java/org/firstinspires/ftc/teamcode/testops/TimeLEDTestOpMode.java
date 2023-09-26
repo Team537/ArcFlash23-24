@@ -6,21 +6,16 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-//import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.Globals;
-import org.firstinspires.ftc.teamcode.Pose;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.manipulator.Deposit;
-import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
 
 @Config
-@TeleOp(name = "Test LED OpMode")
-public class LEDTestOpMode extends CommandOpMode {
+@TeleOp(name = "Test Time LED OpMode")
+public class TimeLEDTestOpMode extends CommandOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();
     private Deposit deposit;
@@ -62,84 +57,63 @@ public class LEDTestOpMode extends CommandOpMode {
         deposit.loop();
         if(gamepadEx.getButton(GamepadKeys.Button.A)){
             deposit.setWhiteLed();
-            isWhiteGreen = false;
-            isWhiteYellow = false;
-            isWhitePurple = false;
+            deposit.setLEDState(Deposit.LEDState.WHITE);
 
         }
 
+
+
         if(gamepadEx.getButton(GamepadKeys.Button.B)){
             deposit.setPurpleLed();
-            isWhiteGreen = false;
-            isWhiteYellow = false;
-            isWhitePurple = false;
+            deposit.setLEDState(Deposit.LEDState.PURPLE);
+
 
         }
 
         if(gamepadEx.getButton(GamepadKeys.Button.X)){
             deposit.setGreenLed();
-            isWhiteGreen = false;
-            isWhiteYellow = false;
-            isWhitePurple = false;
+            deposit.setLEDState(Deposit.LEDState.GREEN);
+
 
         }
 
         if(gamepadEx.getButton(GamepadKeys.Button.Y)){
             deposit.setYellowLed();
-            isWhiteGreen = false;
-            isWhiteYellow = false;
-            isWhitePurple = false;
+            deposit.setLEDState(Deposit.LEDState.YELLOW);
+
 
         }
 
         if(gamepadEx.getButton(GamepadKeys.Button.DPAD_DOWN)){
             deposit.setNoneLed();
-            isWhiteGreen = false;
-            isWhiteYellow = false;
-            isWhitePurple = false;
+            deposit.setLEDState(Deposit.LEDState.NONE);
+
         }
 
         if(gamepadEx.getButton(GamepadKeys.Button.DPAD_UP)){
-            isWhiteGreen = true;
-            isWhiteYellow = false;
-            isWhitePurple = false;
+           deposit.setLEDState(Deposit.LEDState.WHITE_GREEN);
         }
 
 
         if(gamepadEx.getButton(GamepadKeys.Button.DPAD_LEFT)){
-            isWhiteGreen = false;
-            isWhiteYellow = true;
-            isWhitePurple = false;
+            deposit.setLEDState(Deposit.LEDState.WHITE_PURPLE);
 
         }
 
         if(gamepadEx.getButton(GamepadKeys.Button.DPAD_RIGHT)){
-            isWhiteGreen = false;
-            isWhiteYellow = false;
-            isWhitePurple = true;
+           deposit.setLEDState(Deposit.LEDState.WHITE_YELLOW);
         }
 
-        if(isWhiteGreen){
-//            sleep(5);
-            deposit.setWhiteLed();
-//            sleep(5);
-            deposit.setGreenLed();
-
+        if(deposit.getCurrentLEDState() == Deposit.LEDState.WHITE_GREEN){
+            deposit.setWhiteGreenLed(getRuntime());
         }
 
-        if(isWhiteYellow){
-//            sleep(5);
-            deposit.setWhiteLed();
-//            sleep(5);
-            deposit.setYellowLed();
-
+        if(deposit.getCurrentLEDState() == Deposit.LEDState.WHITE_PURPLE){
+            deposit.setWhitePurpleLed(getRuntime());
         }
 
-        if(isWhitePurple){
-//            sleep(5);
-            deposit.setWhiteLed();
-//            sleep(5);
-            deposit.setPurpleLed();
+        if(deposit.getCurrentLEDState() == Deposit.LEDState.WHITE_YELLOW){
+            deposit.setWhiteYellowLed(getRuntime());
         }
 
 
@@ -149,7 +123,7 @@ public class LEDTestOpMode extends CommandOpMode {
 
 
 
-
+        telemetry.addData("Runtime", getRuntime());
         telemetry.addData("Mode", deposit.getState().toString());
         telemetry.addData("Touch Sensor", deposit.getTouchBool());
         telemetry.addData("LED State", deposit.getCurrentLEDState().toString());

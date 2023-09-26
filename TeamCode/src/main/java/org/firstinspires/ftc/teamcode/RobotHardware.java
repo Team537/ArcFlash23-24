@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -35,7 +36,7 @@ public class RobotHardware {
     public DcMotorEx intakeMotor;
 
 
-
+    public TouchSensor touch;
     public CRServo frontLeftServo;
     public CRServo frontRightServo;
     public CRServo backLeftServo;
@@ -112,6 +113,7 @@ public class RobotHardware {
                         2, //The number of sub-containers to create
                         OpenCvCameraFactory.ViewportSplitMethod.VERTICALLY);
         voltageTimer = new ElapsedTime();
+        touch = hardwareMap.get(TouchSensor.class, "Touch");
 
         frontLeftMotor = hardwareMap.get(DcMotorEx.class, "frontLeftMotor");
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
