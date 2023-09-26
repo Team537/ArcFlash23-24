@@ -168,6 +168,10 @@ public class Deposit {
         }
     }
 
+    public void setLEDState(LEDState state){
+        currentLEDState = state;
+    }
+
     public void setWhiteLed(){
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
         currentLEDState = LEDState.WHITE;
