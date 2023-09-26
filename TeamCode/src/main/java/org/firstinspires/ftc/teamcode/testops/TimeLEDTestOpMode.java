@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.manipulator.Deposit;
 
 @Config
-@TeleOp(name = "Test LED OpMode")
+@TeleOp(name = "Test Time LED OpMode")
 public class TimeLEDTestOpMode extends CommandOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();
@@ -57,7 +57,7 @@ public class TimeLEDTestOpMode extends CommandOpMode {
         deposit.loop();
         if(gamepadEx.getButton(GamepadKeys.Button.A)){
             deposit.setWhiteLed();
-
+            deposit.setLEDState(Deposit.LEDState.WHITE);
 
         }
 
@@ -65,24 +65,28 @@ public class TimeLEDTestOpMode extends CommandOpMode {
 
         if(gamepadEx.getButton(GamepadKeys.Button.B)){
             deposit.setPurpleLed();
+            deposit.setLEDState(Deposit.LEDState.PURPLE);
 
 
         }
 
         if(gamepadEx.getButton(GamepadKeys.Button.X)){
             deposit.setGreenLed();
+            deposit.setLEDState(Deposit.LEDState.GREEN);
 
 
         }
 
         if(gamepadEx.getButton(GamepadKeys.Button.Y)){
             deposit.setYellowLed();
+            deposit.setLEDState(Deposit.LEDState.YELLOW);
 
 
         }
 
         if(gamepadEx.getButton(GamepadKeys.Button.DPAD_DOWN)){
             deposit.setNoneLed();
+            deposit.setLEDState(Deposit.LEDState.NONE);
 
         }
 
@@ -119,7 +123,7 @@ public class TimeLEDTestOpMode extends CommandOpMode {
 
 
 
-
+        telemetry.addData("Runtime", getRuntime());
         telemetry.addData("Mode", deposit.getState().toString());
         telemetry.addData("Touch Sensor", deposit.getTouchBool());
         telemetry.addData("LED State", deposit.getCurrentLEDState().toString());

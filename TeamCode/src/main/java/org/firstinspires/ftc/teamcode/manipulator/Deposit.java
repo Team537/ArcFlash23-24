@@ -174,29 +174,29 @@ public class Deposit {
 
     public void setWhiteLed(){
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
-        currentLEDState = LEDState.WHITE;
+
     }
 
     public void setYellowLed(){
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
-        currentLEDState= LEDState.YELLOW;
+
     }
 
     public void setPurpleLed(){
        blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
-        currentLEDState = LEDState.PURPLE;
+
     }
 
     public void setGreenLed(){
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
-        currentLEDState = LEDState.GREEN;
+
     }
 
 
 
     public void setNoneLed(){
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
-        currentLEDState = LEDState.NONE;
+
     }
 
     public void setWhiteGreenLed(double time){
