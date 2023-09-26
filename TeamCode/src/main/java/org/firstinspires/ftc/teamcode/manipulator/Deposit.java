@@ -8,6 +8,7 @@ import android.view.View;
 import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -15,11 +16,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.PIDController;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 
 public class Deposit {
-    private Servo slideServo1;
-    private Servo slideServo2;
+    private DcMotorEx slideMotor1;
+    private DcMotorEx slideMotor2;
     private Servo angleServo;
     private Servo swivelServo;
     private RevColorSensorV3 colorSensor;
@@ -38,14 +40,14 @@ public class Deposit {
     // PLACEHOLDER VALUES
     private static double downPosition = 0;
 
-    private static double lowPosition1 = 0.2;
-    private static double lowPosition2 = 0.2;
+    private static double lowPosition1 = 50;
+    private static double lowPosition2 = 50;
 
-    private static double midPosition1 = 0.6;
-    private static double midPosition2 = 0.6;
+    private static double midPosition1 = 75;
+    private static double midPosition2 = 75;
 
-    private static double highPosition1 = 0.8;
-    private static double highPosition2 = 0.8;
+    private static double highPosition1 = 100;
+    private static double highPosition2 = 100;
 
     private static double swivelServoLeft = 0;
     private static double swivelServoRight = 0.3;
@@ -67,6 +69,9 @@ public class Deposit {
     private Timing.Timer midScoreTimer = new Timing.Timer(4);
     private Timing.Timer highScoreTimer = new Timing.Timer(5);
 
+    private PIDController pidController = new PIDController(0.01, 0, 0);
+    private double slideMotor1Position;
+    private static double ticksPerDegree = 700/180;
 
     private int colorSensorGain = 2;
     private float[] hsvValues = new float[3];
@@ -75,8 +80,8 @@ public class Deposit {
 
 
     public Deposit(RobotHardware robot){
-//        slideServo1 = robot.slideServo1;
-//        slideServo2 = robot.slideServo2;
+        slideMotor1 = robot.slideMotor1;
+        slideMotor2 = robot.slideMotor2;
 //        angleServo = robot.angleServo;
 //        swivelServo = robot.swivelServo;
         colorSensor = robot.colorSensor;
@@ -94,12 +99,25 @@ public class Deposit {
     public void loop(){
 
 
+        slideMotor1Position = slideMotor1.getCurrentPosition();
+        slideSpeed = pidController.calculate(targetPosition1-slideMotor1Position);
 
+
+        slideMotor1.setTargetPosition((int)targetPosition1);
+        slideMotor2.setTargetPosition((int)targetPosition2);
+        slideMotor1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        slideMotor2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        slideMotor1.setPower(slideSpeed);
+        slideMotor2.setPower(slideSpeed);
+
+        telemetry.addData("Slide Motor 1 Current Position", slideMotor1.getCurrentPosition());
+        telemetry.addData("Slide Motor 2 Current Position", slideMotor2.getCurrentPosition());
 //        slideServo1.setPosition((int)targetPosition1);
 //        slideServo2.setPosition((int)targetPosition2);
 //        angleServo.setPosition(anglePosition);
 //        swivelServo.setPosition(swivelPosition);
 //        telemetry.addData("Current Slide State", currentSlideState);
+//        telemetry.addData("Target Slide State", targetSlideState);
 //        telemetry.addData("Target Slide State", targetSlideState);
 //        telemetry.addData("Current Swivel State", currentSwivelState);
 //        telemetry.addData("Target Swivel State", targetSwivelState);
@@ -116,6 +134,11 @@ public class Deposit {
 
         runColorSensor();
 
+        if(Math.abs(targetPosition1-slideMotor1Position) < 10 || Math.abs(targetPosition2-slideMotor2.getCurrentPosition()) < 10){
+            currentSlideState = SlideState.TRANSITION;
+        } else {
+            currentSlideState = targetSlideState;
+        }
 //        if(Math.abs(targetPosition1-slideServo1.getPosition()) < 10 || Math.abs(targetPosition2-slideServo2.getPosition()) < 10){
 //            currentSlideState = SlideState.TRANSITION;
 //        } else {
