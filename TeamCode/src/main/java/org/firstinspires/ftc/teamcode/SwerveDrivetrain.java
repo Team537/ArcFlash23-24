@@ -35,7 +35,7 @@ public class SwerveDrivetrain {
     public final double minPower = 0.1;
     public static double imuOffset = 0.0;
 
-    private boolean fieldOriented = false;
+    private boolean fieldOriented = true;
 
     private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
             new Translation2d(TRACK_WIDTH / 2, WHEEL_BASE / 2),
@@ -108,7 +108,7 @@ public class SwerveDrivetrain {
 
         moduleSpeeds  = fieldOriented ? ChassisSpeeds.fromFieldRelativeSpeeds(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, gyroAngle) : speeds;
 
-        SwerveModuleState[] states = kinematics.toSwerveModuleStates( moduleSpeeds );
+        SwerveModuleState[] states = kinematics.toSwerveModuleStates(moduleSpeeds);
 
        modules[0].setDesiredState(states[0]);
        modules[1].setDesiredState(states[1]);

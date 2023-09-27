@@ -28,7 +28,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
     private GamepadEx gamepadEx;
     private static double MAX_X_SPEED = 5.0;
     private static double MAX_Y_SPEED = 5.0;
-    private static double MAX_TURN_SPEED = 180;
+    private static double MAX_TURN_SPEED = Math.PI/4;
 
 
     @Override
@@ -44,6 +44,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
         robot.enabled = true;
 
+
 //        PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
 //        PhotonCore.EXPANSION_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
 //        PhotonCore.experimental.setMaximumParallelCommands(8);
@@ -55,6 +56,8 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
     @Override
      public void run() {
+
+        robot.startIMUThread(this);
         drivetrain.driveVelocity(new ChassisSpeeds(
                 gamepadEx.getLeftY() * MAX_X_SPEED,
                 gamepadEx.getLeftX() * MAX_Y_SPEED,
