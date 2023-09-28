@@ -129,8 +129,8 @@ public class RobotHardware {
         backRightServo = hardwareMap.get(CRServo.class, "backRightServo");
 //        shooterServo = hardwareMap.get(CRServo.class, "shooterServo");
 //
-        angleServo = hardwareMap.get(Servo.class, "angleServo");
-        swivelServo = hardwareMap.get(Servo.class, "swivelServo");
+      //  angleServo = hardwareMap.get(Servo.class, "angleServo");
+        //swivelServo = hardwareMap.get(Servo.class, "swivelServo");
         slideMotor1 = hardwareMap.get(DcMotorEx.class, "slideMotor1");
         slideMotor2 = hardwareMap.get(DcMotorEx.class, "slideMotor2");
 

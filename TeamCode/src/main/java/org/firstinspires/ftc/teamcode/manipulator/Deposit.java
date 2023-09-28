@@ -288,7 +288,7 @@ public class Deposit {
 
 
     public void setDownPosition(){
-         if(currentLatchState == LatchState.OPEN) latchToggle();
+         if(currentLatchState == LatchState.OPEN) {latchToggle();}
 
             targetPosition1 = downPosition;
             targetPosition2 = downPosition;

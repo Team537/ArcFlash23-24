@@ -26,6 +26,7 @@ public class TimeLEDTestOpMode extends CommandOpMode {
     int i = 0;
 
     private GamepadEx gamepadEx;
+    private GamepadEx gamepadEx2;
     private static double MAX_X_SPEED = 5.0;
     private static double MAX_Y_SPEED = 5.0;
     private static double MAX_TURN_SPEED = 180;
@@ -40,7 +41,7 @@ public class TimeLEDTestOpMode extends CommandOpMode {
         robot.init(hardwareMap, telemetry);
         gamepadEx = new GamepadEx(gamepad1);
         deposit = new Deposit(robot);
-        gamepadEx = new GamepadEx(gamepad1);
+        gamepadEx2 = new GamepadEx(gamepad2);
 
 
         robot.enabled = true;
@@ -102,6 +103,22 @@ public class TimeLEDTestOpMode extends CommandOpMode {
 
         if(gamepadEx.getButton(GamepadKeys.Button.DPAD_RIGHT)){
            deposit.setLEDState(Deposit.LEDState.WHITE_YELLOW);
+        }
+
+        if(gamepadEx2.getButton((GamepadKeys.Button.B))) {
+            deposit.setDownPosition();
+        }
+
+        if(gamepadEx2.getButton((GamepadKeys.Button.A))) {
+            deposit.setLowPosition();
+        }
+
+        if(gamepadEx2.getButton((GamepadKeys.Button.X))) {
+            deposit.setMidPosition();
+        }
+
+        if(gamepadEx2.getButton((GamepadKeys.Button.Y))) {
+            deposit.setHighPosition();
         }
 
         if(deposit.getCurrentLEDState() == Deposit.LEDState.WHITE_GREEN){
