@@ -126,12 +126,12 @@ public class Deposit {
 
 
 
-        slideMotor1.setTargetPosition((int)targetPosition1);
-        slideMotor2.setTargetPosition((int)targetPosition2);
-        slideMotor1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        slideMotor2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        slideMotor1.setPower(slideSpeed);
-        slideMotor2.setPower(slideSpeed);
+//        slideMotor1.setTargetPosition((int)targetPosition1);
+//        slideMotor2.setTargetPosition((int)targetPosition2);
+//        slideMotor1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+//        slideMotor2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+//        slideMotor1.setPower(slideSpeed);
+//        slideMotor2.setPower(slideSpeed);
 
         telemetry.addData("Slide Motor 1 Current Position", slideMotor1.getCurrentPosition());
         telemetry.addData("Slide Motor 2 Current Position", slideMotor2.getCurrentPosition());
