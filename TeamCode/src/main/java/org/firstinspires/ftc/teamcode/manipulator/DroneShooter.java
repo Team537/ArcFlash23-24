@@ -23,8 +23,8 @@ public class DroneShooter {
 
     public void loop(){
         shooterServo.setPower(power);
-        telemetry.addData("Shooter State", shooterServo);
-        telemetry.addData("Shooter Power", power);
+//        telemetry.addData("Shooter State", shooterServo);
+//        telemetry.addData("Shooter Power", power);
 
 
     }

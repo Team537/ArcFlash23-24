@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -121,6 +122,14 @@ public class TimeLEDTestOpMode extends CommandOpMode {
             deposit.setHighPosition();
         }
 
+        if(gamepadEx2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) >= 0.9) {
+            deposit.setAngleServoScore();
+        }
+
+        if(gamepadEx2.getButton(GamepadKeys.Button.LEFT_BUMPER)) {
+            deposit.latchToggle();
+        }
+
         if(deposit.getCurrentLEDState() == Deposit.LEDState.WHITE_GREEN){
             deposit.setWhiteGreenLed(getRuntime());
         }
@@ -139,7 +148,8 @@ public class TimeLEDTestOpMode extends CommandOpMode {
 
 
 
-
+        telemetry.addData("Angle Servo", deposit.getCurrentAngleState().toString());
+        telemetry.addData("Latch Servo", deposit.getCurrentLatchState().toString());
         telemetry.addData("Runtime", getRuntime());
         telemetry.addData("Mode", deposit.getState().toString());
         telemetry.addData("Slide State", deposit.getCurrentSlideState().toString());

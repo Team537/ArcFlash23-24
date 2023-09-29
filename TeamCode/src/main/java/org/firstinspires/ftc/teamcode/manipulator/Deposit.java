@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.manipulator;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import android.graphics.Color;
 import android.view.View;
 
@@ -10,7 +8,6 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
@@ -19,7 +16,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.PIDController;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 
@@ -27,6 +23,8 @@ public class Deposit {
     private DcMotorEx slideMotor1;
     private DcMotorEx slideMotor2;
     private Servo angleServo;
+    private Servo angleServo2;
+    private Servo latchServo;
     private Servo swivelServo;
     private RevColorSensorV3 colorSensor;
     private RevBlinkinLedDriver blinkin;
@@ -35,10 +33,22 @@ public class Deposit {
     private double targetPosition1 = 0;
     private double targetPosition2 = 0;
     private double anglePosition = 0;
+    private double anglePosition2 = 0;
+
+    private double latchPosition = 0;
     private double swivelPosition = 0;
 
-    private static double angleServoOpen = 0.3;
-    private static double angleServoClosed = 0;
+    private static double angleServoTransmit = 0.3;
+    private static double angleServoIntake = 0;
+    private static double angleServoScore = 0;
+
+    private static double angleServoTransmit2 = 0.3;
+    private static double angleServoIntake2 = 0;
+    private static double angleServoScore2 = 0;
+
+
+    private static double latchServoOpen = 0.3;
+    private static double latchServoClosed = 0;
 
 
     // PLACEHOLDER VALUES
@@ -64,6 +74,7 @@ public class Deposit {
     private SlideState currentSlideState = SlideState.DOWN;
     private SlideState targetSlideState = SlideState.DOWN;
     private LatchState currentLatchState = LatchState.CLOSED;
+    private AngleState currentAngleState = AngleState.INTAKE;
     private SwivelState currentSwivelState = SwivelState.CENTER;
     private SwivelState targetSwivelState = SwivelState.CENTER;
     private DepositState currentDepositState = DepositState.NO_PIXEL;
@@ -101,7 +112,9 @@ public class Deposit {
     public Deposit(RobotHardware robot){
         slideMotor1 = robot.slideMotor1;
         slideMotor2 = robot.slideMotor2;
-//        angleServo = robot.angleServo;
+        angleServo = robot.angleServo;
+        angleServo2 = robot.angleServo2;
+        latchServo = robot.latchServo;
 //        swivelServo = robot.swivelServo;
         colorSensor = robot.colorSensor;
         relativeLayout = robot.relativeLayout;
@@ -198,9 +211,17 @@ public class Deposit {
     public void latchToggle(){
         if(currentSlideState != SlideState.TRANSITION && currentSwivelState != SwivelState.TRANSITION) {
             isServoToggled = !isServoToggled;
-            anglePosition = isServoToggled ? angleServoOpen : angleServoClosed;
+            latchPosition = isServoToggled ? latchServoOpen : latchServoClosed;
             currentLatchState = isServoToggled ? LatchState.OPEN : LatchState.CLOSED;
         }
+    }
+
+    public LatchState getCurrentLatchState() {
+        return currentLatchState;
+    }
+
+    public AngleState getCurrentAngleState() {
+        return currentAngleState;
     }
 
     public void setLEDState(LEDState state){
@@ -297,7 +318,7 @@ public class Deposit {
 
     public void setDownPosition(){
          if(currentLatchState == LatchState.OPEN) {latchToggle();}
-
+         setAngleServoIntake();
             targetPosition1 = downPosition;
             targetPosition2 = downPosition;
             targetSlideState = SlideState.DOWN;
@@ -306,6 +327,7 @@ public class Deposit {
     public void setLowPosition(){
         if(currentDepositState == DepositState.HAS_PIXEL) {
             if(currentLatchState == LatchState.OPEN) latchToggle();
+            setAngleServoTransmit();
             targetPosition1 = lowPosition1;
             targetPosition2 = lowPosition2;
             targetSlideState = SlideState.LOW;
@@ -316,6 +338,7 @@ public class Deposit {
     public void setMidPosition(){
         if(currentDepositState == DepositState.HAS_PIXEL) {
             if(currentLatchState == LatchState.OPEN) latchToggle();
+            setAngleServoTransmit();
             targetPosition1 = midPosition1;
             targetPosition2 = midPosition2;
             targetSlideState = SlideState.MID;
@@ -325,6 +348,7 @@ public class Deposit {
     public void setHighPosition(){
         if(currentDepositState == DepositState.HAS_PIXEL) {
             if(currentLatchState == LatchState.OPEN) latchToggle();
+            setAngleServoTransmit();
             targetPosition1 = highPosition1;
             targetPosition2 = highPosition2;
             targetSlideState = SlideState.HIGH;
@@ -345,6 +369,27 @@ public class Deposit {
         swivelPosition = swivelServoCenter;
         targetSwivelState = SwivelState.CENTER;
     }
+
+    public void setAngleServoScore() {
+        anglePosition = angleServoScore;
+        anglePosition2 = angleServoScore2;
+        currentAngleState = AngleState.SCORE;
+    }
+    public void setAngleServoIntake() {
+        anglePosition = angleServoIntake;
+        anglePosition2 = angleServoIntake2;
+        currentAngleState = AngleState.INTAKE;
+    }
+
+    public void setAngleServoTransmit() {
+        anglePosition = angleServoTransmit;
+        anglePosition2 = angleServoTransmit2;
+        currentAngleState = AngleState.TRANSMIT;
+    }
+
+
+
+
 
     public void runColorSensor(){
 
@@ -405,6 +450,12 @@ public class Deposit {
     public enum LatchState{
         OPEN,
         CLOSED
+    }
+
+    public enum AngleState{
+        SCORE,
+        TRANSMIT,
+        INTAKE
     }
 
     public enum DepositState{
