@@ -37,6 +37,7 @@ public class RobotHardware {
 
 
     public TouchSensor touch;
+    public TouchSensor touch2;
     public CRServo frontLeftServo;
     public CRServo frontRightServo;
     public CRServo backLeftServo;
@@ -114,6 +115,7 @@ public class RobotHardware {
                         OpenCvCameraFactory.ViewportSplitMethod.VERTICALLY);
         voltageTimer = new ElapsedTime();
         touch = hardwareMap.get(TouchSensor.class, "Touch");
+        touch2 = hardwareMap.get(TouchSensor.class, "Touch2");
 
         frontLeftMotor = hardwareMap.get(DcMotorEx.class, "frontLeftMotor");
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");

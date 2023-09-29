@@ -87,13 +87,14 @@ public class Deposit {
 
 
     public TouchSensor touch;
+    public TouchSensor touch2;
     public boolean touchActive = false;
 
 
 
     public Boolean getTouchBool(){
 
-       return touch.isPressed();
+       return touch.isPressed() || touch2.isPressed();
     }
 
 
@@ -106,6 +107,7 @@ public class Deposit {
         relativeLayout = robot.relativeLayout;
         blinkin = robot.blinkin;
         touch = robot.touch;
+        touch2 = robot.touch2;
 
 
 
@@ -120,6 +122,12 @@ public class Deposit {
 
     public void loop(){
 
+        if( getTouchBool() == false && targetSlideState == SlideState.DOWN ) {
+            currentSlideState = SlideState.TRANSITION;
+
+        } else {
+            currentSlideState = targetSlideState;
+        }
 
         slideMotor1Position = slideMotor1.getCurrentPosition();
         slideSpeed = pidController.calculate(targetPosition1-slideMotor1Position);
@@ -133,8 +141,7 @@ public class Deposit {
 //        slideMotor1.setPower(slideSpeed);
 //        slideMotor2.setPower(slideSpeed);
 
-        telemetry.addData("Slide Motor 1 Current Position", slideMotor1.getCurrentPosition());
-        telemetry.addData("Slide Motor 2 Current Position", slideMotor2.getCurrentPosition());
+
 
 
 
@@ -162,11 +169,11 @@ public class Deposit {
 
         runColorSensor();
 
-        if(Math.abs(targetPosition1-slideMotor1Position) < 10 || Math.abs(targetPosition2-slideMotor2.getCurrentPosition()) < 10){
-            currentSlideState = SlideState.TRANSITION;
-        } else {
-            currentSlideState = targetSlideState;
-        }
+//        if(Math.abs(targetPosition1-slideMotor1Position) < 10 || Math.abs(targetPosition2-slideMotor2.getCurrentPosition()) < 10){
+//            currentSlideState = SlideState.TRANSITION;
+//        } else {
+//            currentSlideState = targetSlideState;
+//        }
 //        if(Math.abs(targetPosition1-slideServo1.getPosition()) < 10 || Math.abs(targetPosition2-slideServo2.getPosition()) < 10){
 //            currentSlideState = SlideState.TRANSITION;
 //        } else {
@@ -187,6 +194,7 @@ public class Deposit {
     return currentLEDState;
     }
 
+    public SlideState getCurrentSlideState() { return  currentSlideState;}
     public void latchToggle(){
         if(currentSlideState != SlideState.TRANSITION && currentSwivelState != SwivelState.TRANSITION) {
             isServoToggled = !isServoToggled;

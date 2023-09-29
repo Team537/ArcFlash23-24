@@ -142,6 +142,7 @@ public class TimeLEDTestOpMode extends CommandOpMode {
 
         telemetry.addData("Runtime", getRuntime());
         telemetry.addData("Mode", deposit.getState().toString());
+        telemetry.addData("Slide State", deposit.getCurrentSlideState().toString());
         telemetry.addData("Touch Sensor", deposit.getTouchBool());
         telemetry.addData("LED State", deposit.getCurrentLEDState().toString());
         telemetry.update();
