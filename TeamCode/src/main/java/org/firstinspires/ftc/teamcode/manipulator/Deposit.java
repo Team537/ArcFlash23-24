@@ -141,7 +141,7 @@ public class Deposit {
 //        slideMotor1.setPower(slideSpeed);
 //        slideMotor2.setPower(slideSpeed);
 
-
+    if(currentLEDState == LEDState.NONE) setNoneLed();
 
 
 
