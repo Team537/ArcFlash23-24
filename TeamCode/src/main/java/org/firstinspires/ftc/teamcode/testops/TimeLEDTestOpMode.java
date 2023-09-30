@@ -18,19 +18,28 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Globals;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.manipulator.Deposit;
+
 import org.firstinspires.ftc.teamcode.manipulator.DroneShooter;
 
+import org.firstinspires.ftc.teamcode.manipulator.Intake;
+
+
 @Config
-@TeleOp(name = "Test Time LED OpMode")
+@TeleOp(name = "Manipulator Test OpMode")
 public class TimeLEDTestOpMode extends CommandOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();
     private Deposit deposit;
+
     private DroneShooter droneShooter;
+
+    private Intake intake;
+
     private boolean isWhiteGreen = false;
     private boolean isWhiteGreenDone = false;
     private boolean isWhitePurple;
     private boolean isWhiteYellow;
+    private boolean isIntakeToggled =  false;
     int i = 0;
 
     private GamepadEx gamepadEx;
@@ -56,7 +65,11 @@ public class TimeLEDTestOpMode extends CommandOpMode {
         robot.init(hardwareMap, telemetry);
         gamepadEx = new GamepadEx(gamepad1);
         deposit = new Deposit(robot);
+
         droneShooter = new DroneShooter(robot);
+
+        intake = new Intake(robot);
+
         gamepadEx2 = new GamepadEx(gamepad2);
 
 
@@ -185,6 +198,18 @@ public class TimeLEDTestOpMode extends CommandOpMode {
             deposit.setWhiteYellowLed(getRuntime());
         }
 
+        if(gamepadEx.getButton(GamepadKeys.Button.RIGHT_BUMPER) ) {
+            intake.run();
+
+        }
+
+        if(gamepadEx.getButton(GamepadKeys.Button.LEFT_BUMPER) ) {
+            intake.stop();
+
+        }
+
+
+
 
 
         telemetry.addData("Angle Servo", deposit.getCurrentAngleState().toString());
@@ -194,6 +219,7 @@ public class TimeLEDTestOpMode extends CommandOpMode {
         telemetry.addData("Mode", deposit.getState().toString());
         telemetry.addData("Slide State", deposit.getCurrentSlideState().toString());
         telemetry.addData("Touch Sensor", deposit.getTouchBool());
+        telemetry.addData("Intake State", intake.getIntakeState().toString());
         telemetry.addData("LED State", deposit.getCurrentLEDState().toString());
         telemetry.addData("Low Score Timer", lowScoreTimer.elapsedTime());
         telemetry.update();
