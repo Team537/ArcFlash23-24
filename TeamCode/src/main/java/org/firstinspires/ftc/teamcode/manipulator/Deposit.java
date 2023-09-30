@@ -208,12 +208,22 @@ public class Deposit {
     }
 
     public SlideState getCurrentSlideState() { return  currentSlideState;}
-    public void latchToggle(){
-        if(currentSlideState != SlideState.TRANSITION && currentSwivelState != SwivelState.TRANSITION) {
-            isServoToggled = !isServoToggled;
-            latchPosition = isServoToggled ? latchServoOpen : latchServoClosed;
-            currentLatchState = isServoToggled ? LatchState.OPEN : LatchState.CLOSED;
-        }
+//    public void latchToggle(){
+//        if(currentSlideState != SlideState.TRANSITION && currentSwivelState != SwivelState.TRANSITION) {
+//            isServoToggled = !isServoToggled;
+//            latchPosition = isServoToggled ? latchServoOpen : latchServoClosed
+//            currentLatchState = isServoToggled ? LatchState.OPEN : LatchState.CLOSED;
+//        }
+//    }
+
+    public void latchOpen() {
+        latchPosition = latchServoOpen;
+        currentLatchState = LatchState.OPEN;
+    }
+
+    public void latchClose() {
+        latchPosition = latchServoClosed;
+        currentLatchState = LatchState.CLOSED;
     }
 
     public LatchState getCurrentLatchState() {
@@ -293,8 +303,8 @@ public class Deposit {
     public void scoreLowPosition(){
         lowScoreTimer.start();
         setLowPosition();
-        if (lowScoreTimer.elapsedTime() == 0.5) latchToggle();
-        if (lowScoreTimer.elapsedTime() == 1.5) latchToggle();
+       // if (lowScoreTimer.elapsedTime() == 0.5) latchToggle();
+       // if (lowScoreTimer.elapsedTime() == 1.5) latchToggle();
         if (lowScoreTimer.elapsedTime() == 2.5) setDownPosition();
 
     }
@@ -302,22 +312,22 @@ public class Deposit {
     public void scoreMidPosition(){
         midScoreTimer.start();
         setMidPosition();
-        if (lowScoreTimer.elapsedTime() == 1.5) latchToggle();
-        if (lowScoreTimer.elapsedTime() == 2.5) latchToggle();
+        //if (lowScoreTimer.elapsedTime() == 1.5) latchToggle();
+        //if (lowScoreTimer.elapsedTime() == 2.5) latchToggle();
         if (lowScoreTimer.elapsedTime() == 3.5) setDownPosition();
     }
 
     public void scoreHighPosition(){
         highScoreTimer.start();
         setHighPosition();
-        if (lowScoreTimer.elapsedTime() == 2.5) latchToggle();
-        if (lowScoreTimer.elapsedTime() == 3.5) latchToggle();
+       // if (lowScoreTimer.elapsedTime() == 2.5) latchToggle();
+       // if (lowScoreTimer.elapsedTime() == 3.5) latchToggle();
         if (lowScoreTimer.elapsedTime() == 4.5) setDownPosition();
     }
 
 
     public void setDownPosition(){
-         if(currentLatchState == LatchState.OPEN) {latchToggle();}
+       //  if(currentLatchState == LatchState.OPEN) {latchToggle();}
          setAngleServoIntake();
             targetPosition1 = downPosition;
             targetPosition2 = downPosition;
@@ -326,7 +336,7 @@ public class Deposit {
 
     public void setLowPosition(){
         if(currentDepositState == DepositState.HAS_PIXEL) {
-            if(currentLatchState == LatchState.OPEN) latchToggle();
+         //   if(currentLatchState == LatchState.OPEN) latchToggle();
             setAngleServoTransmit();
             targetPosition1 = lowPosition1;
             targetPosition2 = lowPosition2;
@@ -337,7 +347,7 @@ public class Deposit {
 
     public void setMidPosition(){
         if(currentDepositState == DepositState.HAS_PIXEL) {
-            if(currentLatchState == LatchState.OPEN) latchToggle();
+         //   if(currentLatchState == LatchState.OPEN) latchToggle();
             setAngleServoTransmit();
             targetPosition1 = midPosition1;
             targetPosition2 = midPosition2;
@@ -347,7 +357,7 @@ public class Deposit {
 
     public void setHighPosition(){
         if(currentDepositState == DepositState.HAS_PIXEL) {
-            if(currentLatchState == LatchState.OPEN) latchToggle();
+         //   if(currentLatchState == LatchState.OPEN) latchToggle();
             setAngleServoTransmit();
             targetPosition1 = highPosition1;
             targetPosition2 = highPosition2;

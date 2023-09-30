@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Globals;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.manipulator.Deposit;
+import org.firstinspires.ftc.teamcode.manipulator.DroneShooter;
 
 @Config
 @TeleOp(name = "Test Time LED OpMode")
@@ -20,6 +21,7 @@ public class TimeLEDTestOpMode extends CommandOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();
     private Deposit deposit;
+    private DroneShooter droneShooter;
     private boolean isWhiteGreen = false;
     private boolean isWhiteGreenDone = false;
     private boolean isWhitePurple;
@@ -33,6 +35,8 @@ public class TimeLEDTestOpMode extends CommandOpMode {
     private static double MAX_TURN_SPEED = 180;
 
 
+    private boolean isLatchToggle = false;
+
     @Override
     public void initialize() {
         CommandScheduler.getInstance().reset();
@@ -42,6 +46,7 @@ public class TimeLEDTestOpMode extends CommandOpMode {
         robot.init(hardwareMap, telemetry);
         gamepadEx = new GamepadEx(gamepad1);
         deposit = new Deposit(robot);
+        droneShooter = new DroneShooter(robot);
         gamepadEx2 = new GamepadEx(gamepad2);
 
 
@@ -127,7 +132,17 @@ public class TimeLEDTestOpMode extends CommandOpMode {
         }
 
         if(gamepadEx2.getButton(GamepadKeys.Button.LEFT_BUMPER)) {
-            deposit.latchToggle();
+            isLatchToggle = !isLatchToggle;
+            if(isLatchToggle) {
+                deposit.latchOpen();
+            } else if(isLatchToggle == false) {
+                deposit.latchClose();
+            }
+
+        }
+
+        if(gamepadEx2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) >= 0.9) {
+            droneShooter.droneStrike();
         }
 
         if(deposit.getCurrentLEDState() == Deposit.LEDState.WHITE_GREEN){
@@ -144,12 +159,9 @@ public class TimeLEDTestOpMode extends CommandOpMode {
 
 
 
-
-
-
-
         telemetry.addData("Angle Servo", deposit.getCurrentAngleState().toString());
         telemetry.addData("Latch Servo", deposit.getCurrentLatchState().toString());
+        telemetry.addData("Shooter State", droneShooter.getShooterState().toString());
         telemetry.addData("Runtime", getRuntime());
         telemetry.addData("Mode", deposit.getState().toString());
         telemetry.addData("Slide State", deposit.getCurrentSlideState().toString());
