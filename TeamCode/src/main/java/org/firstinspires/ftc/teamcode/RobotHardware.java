@@ -42,9 +42,12 @@ public class RobotHardware {
     public CRServo frontRightServo;
     public CRServo backLeftServo;
     public CRServo backRightServo;
-    public CRServo shooterServo;
+    public Servo shooterServo;
 
     public Servo angleServo;
+    public Servo angleServo2;
+
+    public Servo latchServo;
     public Servo swivelServo;
     public DcMotorEx slideMotor1;
     public DcMotorEx slideMotor2;
@@ -129,10 +132,9 @@ public class RobotHardware {
         frontRightServo = hardwareMap.get(CRServo.class, "frontRightServo");
         backLeftServo = hardwareMap.get(CRServo.class, "backLeftServo");
         backRightServo = hardwareMap.get(CRServo.class, "backRightServo");
-//        shooterServo = hardwareMap.get(CRServo.class, "shooterServo");
-//
-      //  angleServo = hardwareMap.get(Servo.class, "angleServo");
-        //swivelServo = hardwareMap.get(Servo.class, "swivelServo");
+        shooterServo = hardwareMap.get(Servo.class, "shooterServo");
+        angleServo = hardwareMap.get(Servo.class, "angleServo");
+        swivelServo = hardwareMap.get(Servo.class, "swivelServo");
         slideMotor1 = hardwareMap.get(DcMotorEx.class, "slideMotor1");
         slideMotor2 = hardwareMap.get(DcMotorEx.class, "slideMotor2");
 

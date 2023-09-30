@@ -20,18 +20,24 @@ public class Intake {
     }
 
     public void loop(){
-        intakeMotor.setPower(power);
-        telemetry.addData("Intake State", intakeState);
-        telemetry.addData("Intake Power", power);
+//        intakeMotor.setPower(power);
+//        telemetry.addData("Intake State", intakeState);
+//        telemetry.addData("Intake Power", power);
 
     }
 
-    public void toggle(){
-        isToggled = !isToggled;
-        power =  isToggled ? .5 : 0;
-        intakeState = isToggled ? IntakeState.RUNNING : IntakeState.STOPPED;
+    public IntakeState getIntakeState(){
+        return intakeState;
+    }
 
+    public void run(){
+        power = 0.5;
+        intakeState = IntakeState.RUNNING ;
+    }
 
+    public void stop(){
+        power = 0;
+        intakeState = IntakeState.STOPPED ;
     }
 
     public enum IntakeState{
