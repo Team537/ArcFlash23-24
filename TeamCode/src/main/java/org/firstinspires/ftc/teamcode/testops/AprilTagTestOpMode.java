@@ -4,6 +4,10 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.geometry.Rotation2d;
+import com.arcrobotics.ftclib.kinematics.wpilibkinematics.ChassisSpeeds;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -11,7 +15,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.Globals;
 import org.firstinspires.ftc.teamcode.Pose;
+import org.firstinspires.ftc.teamcode.RobotHardware;
+import org.firstinspires.ftc.teamcode.SwerveDrivetrain;
 import org.firstinspires.ftc.teamcode.apriltag.AprilTagFieldConstants;
 import org.firstinspires.ftc.teamcode.pipelines.AprilTagDetectionPipeline;
 import org.openftc.apriltag.AprilTagDetection;
@@ -35,6 +42,13 @@ public class AprilTagTestOpMode extends CommandOpMode {
 
     private Pose robotPose = new Pose(0, 0, 0);
 
+    private final RobotHardware robot = RobotHardware.getInstance();
+    private SwerveDrivetrain drivetrain;
+
+    private GamepadEx gamepadEx;
+    private static double MAX_X_SPEED = 5.0;
+    private static double MAX_Y_SPEED = 5.0;
+    private static double MAX_TURN_SPEED = 180;
 
 
     int numFramesWithoutDetection = 0;
@@ -46,6 +60,7 @@ public class AprilTagTestOpMode extends CommandOpMode {
 
     @Override
     public void initialize() {
+        CommandScheduler.getInstance().reset();
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -63,6 +78,17 @@ public class AprilTagTestOpMode extends CommandOpMode {
 
             }
         });
+
+        Globals.AUTO = false;
+
+        robot.init(hardwareMap, telemetry);
+        gamepadEx = new GamepadEx(gamepad1);
+        drivetrain = new SwerveDrivetrain(robot);
+
+
+        robot.enabled = true;
+
+        drivetrain.read();
     }
 
     @Override
@@ -73,6 +99,18 @@ public class AprilTagTestOpMode extends CommandOpMode {
 
 
         while (opModeIsActive()) {
+            drivetrain.driveVelocity(new ChassisSpeeds(
+                    gamepadEx.getLeftY() * MAX_X_SPEED,
+                    gamepadEx.getLeftX() * MAX_Y_SPEED,
+                    gamepadEx.getRightX() * MAX_TURN_SPEED
+            ),new Rotation2d(robot.getAngle()));
+
+
+            drivetrain.updateModules();
+            telemetry.addData("Angle", robot.getAngle());
+            telemetry.addData("Swerve", drivetrain.getTelemetry());
+            telemetry.addData("Swerve Module States", drivetrain.getSwerveModuleStates());
+
             ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
             telemetry.addLine(String.format("Robot Pose: %s", robotPose));
             if (detections != null) {

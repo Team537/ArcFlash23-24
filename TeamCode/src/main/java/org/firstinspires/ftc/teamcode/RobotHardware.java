@@ -111,11 +111,11 @@ public class RobotHardware {
 
         cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
-        int[] viewportContainerIds = OpenCvCameraFactory.getInstance()
-                .splitLayoutForMultipleViewports(
-                        cameraMonitorViewId, //The container we're splitting
-                        2, //The number of sub-containers to create
-                        OpenCvCameraFactory.ViewportSplitMethod.VERTICALLY);
+//        int[] viewportContainerIds = OpenCvCameraFactory.getInstance()
+//                .splitLayoutForMultipleViewports(
+//                        cameraMonitorViewId, //The container we're splitting
+//                        2, //The number of sub-containers to create
+//                        OpenCvCameraFactory.ViewportSplitMethod.VERTICALLY);
         voltageTimer = new ElapsedTime();
         touch = hardwareMap.get(TouchSensor.class, "Touch");
         touch2 = hardwareMap.get(TouchSensor.class, "Touch2");
@@ -159,7 +159,7 @@ public class RobotHardware {
 
 
 //
-        webcam1 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), viewportContainerIds[0]);
+        //webcam1 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), viewportContainerIds[0]);
 //        webcam2 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), viewportContainerIds[1]);
 //
         colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
