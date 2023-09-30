@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.manipulator;
 import android.graphics.Color;
 import android.view.View;
 
+import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
@@ -19,7 +20,7 @@ import org.firstinspires.ftc.teamcode.RobotHardware;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 
-public class Deposit {
+public class Deposit extends SubsystemBase {
     private DcMotorEx slideMotor1;
     private DcMotorEx slideMotor2;
     private Servo angleServo;
@@ -133,7 +134,8 @@ public class Deposit {
         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
     }
 
-    public void loop(){
+   @Override
+    public void periodic(){
 
         if( getTouchBool() == false && targetSlideState == SlideState.DOWN ) {
             currentSlideState = SlideState.TRANSITION;
@@ -208,13 +210,13 @@ public class Deposit {
     }
 
     public SlideState getCurrentSlideState() { return  currentSlideState;}
-//    public void latchToggle(){
-//        if(currentSlideState != SlideState.TRANSITION && currentSwivelState != SwivelState.TRANSITION) {
-//            isServoToggled = !isServoToggled;
-//            latchPosition = isServoToggled ? latchServoOpen : latchServoClosed
-//            currentLatchState = isServoToggled ? LatchState.OPEN : LatchState.CLOSED;
-//        }
-//    }
+        public void latchToggle(){
+        if(currentSlideState != SlideState.TRANSITION && currentSwivelState != SwivelState.TRANSITION) {
+            isServoToggled = !isServoToggled;
+            latchPosition = isServoToggled ? latchServoOpen : latchServoClosed;
+            currentLatchState = isServoToggled ? LatchState.OPEN : LatchState.CLOSED;
+        }
+    }
 
     public void latchOpen() {
         latchPosition = latchServoOpen;
@@ -303,8 +305,8 @@ public class Deposit {
     public void scoreLowPosition(){
         lowScoreTimer.start();
         setLowPosition();
-       // if (lowScoreTimer.elapsedTime() == 0.5) latchToggle();
-       // if (lowScoreTimer.elapsedTime() == 1.5) latchToggle();
+        if (lowScoreTimer.elapsedTime() == 0.5) latchToggle();
+        if (lowScoreTimer.elapsedTime() == 1.5) latchToggle();
         if (lowScoreTimer.elapsedTime() == 2.5) setDownPosition();
 
     }
@@ -312,22 +314,22 @@ public class Deposit {
     public void scoreMidPosition(){
         midScoreTimer.start();
         setMidPosition();
-        //if (lowScoreTimer.elapsedTime() == 1.5) latchToggle();
-        //if (lowScoreTimer.elapsedTime() == 2.5) latchToggle();
-        if (lowScoreTimer.elapsedTime() == 3.5) setDownPosition();
+        if (midScoreTimer.elapsedTime() == 1.5) latchToggle();
+        if (midScoreTimer.elapsedTime() == 2.5) latchToggle();
+        if (midScoreTimer.elapsedTime() == 3.5) setDownPosition();
     }
 
     public void scoreHighPosition(){
         highScoreTimer.start();
         setHighPosition();
-       // if (lowScoreTimer.elapsedTime() == 2.5) latchToggle();
-       // if (lowScoreTimer.elapsedTime() == 3.5) latchToggle();
-        if (lowScoreTimer.elapsedTime() == 4.5) setDownPosition();
+        if (highScoreTimer.elapsedTime() == 2.5) latchToggle();
+        if (highScoreTimer.elapsedTime() == 3.5) latchToggle();
+        if (highScoreTimer.elapsedTime() == 4.5) setDownPosition();
     }
 
 
     public void setDownPosition(){
-       //  if(currentLatchState == LatchState.OPEN) {latchToggle();}
+         if(currentLatchState == LatchState.OPEN) {latchClose();}
          setAngleServoIntake();
             targetPosition1 = downPosition;
             targetPosition2 = downPosition;
@@ -336,7 +338,7 @@ public class Deposit {
 
     public void setLowPosition(){
         if(currentDepositState == DepositState.HAS_PIXEL) {
-         //   if(currentLatchState == LatchState.OPEN) latchToggle();
+            if(currentLatchState == LatchState.OPEN) {latchClose();}
             setAngleServoTransmit();
             targetPosition1 = lowPosition1;
             targetPosition2 = lowPosition2;
@@ -347,7 +349,7 @@ public class Deposit {
 
     public void setMidPosition(){
         if(currentDepositState == DepositState.HAS_PIXEL) {
-         //   if(currentLatchState == LatchState.OPEN) latchToggle();
+            if(currentLatchState == LatchState.OPEN) {latchClose();}
             setAngleServoTransmit();
             targetPosition1 = midPosition1;
             targetPosition2 = midPosition2;
@@ -357,7 +359,7 @@ public class Deposit {
 
     public void setHighPosition(){
         if(currentDepositState == DepositState.HAS_PIXEL) {
-         //   if(currentLatchState == LatchState.OPEN) latchToggle();
+            if(currentLatchState == LatchState.OPEN) {latchClose();}
             setAngleServoTransmit();
             targetPosition1 = highPosition1;
             targetPosition2 = highPosition2;

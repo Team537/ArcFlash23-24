@@ -5,9 +5,14 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.RunCommand;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitCommand;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Globals;
@@ -33,6 +38,11 @@ public class TimeLEDTestOpMode extends CommandOpMode {
     private static double MAX_X_SPEED = 5.0;
     private static double MAX_Y_SPEED = 5.0;
     private static double MAX_TURN_SPEED = 180;
+    private Timing.Timer lowScoreTimer = new Timing.Timer(3);
+    private Timing.Timer midScoreTimer = new Timing.Timer(4);
+    private Timing.Timer highScoreTimer = new Timing.Timer(5);
+
+
 
 
     private boolean isLatchToggle = false;
@@ -57,11 +67,14 @@ public class TimeLEDTestOpMode extends CommandOpMode {
 //        PhotonCore.experimental.setMaximumParallelCommands(8);
 //        PhotonCore.enable();
 
+
+
+
     }
 
     @Override
     public void run() {
-        deposit.loop();
+   deposit.periodic();
         if(gamepadEx.getButton(GamepadKeys.Button.A)){
             deposit.setWhiteLed();
             deposit.setLEDState(Deposit.LEDState.WHITE);
@@ -123,6 +136,16 @@ public class TimeLEDTestOpMode extends CommandOpMode {
             deposit.setMidPosition();
         }
 
+        if(gamepadEx2.getButton((GamepadKeys.Button.LEFT_BUMPER))) {
+            deposit.latchOpen();
+        }
+
+        if(gamepadEx2.getButton((GamepadKeys.Button.RIGHT_BUMPER))) {
+            deposit.latchClose();
+        }
+
+
+
         if(gamepadEx2.getButton((GamepadKeys.Button.Y))) {
             deposit.setHighPosition();
         }
@@ -131,15 +154,20 @@ public class TimeLEDTestOpMode extends CommandOpMode {
             deposit.setAngleServoScore();
         }
 
-        if(gamepadEx2.getButton(GamepadKeys.Button.LEFT_BUMPER)) {
-            isLatchToggle = !isLatchToggle;
-            if(isLatchToggle) {
-                deposit.latchOpen();
-            } else if(isLatchToggle == false) {
-                deposit.latchClose();
-            }
+//        if(gamepadEx2.getButton(GamepadKeys.Button.LEFT_BUMPER)) {
+//            isLatchToggle = !isLatchToggle;
+//            if(isLatchToggle) {
+//                deposit.latchOpen();
+//            } else if(isLatchToggle == false) {
+//                deposit.latchClose();
+//            }
+//
+//        }
 
-        }
+
+
+
+
 
         if(gamepadEx2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) >= 0.9) {
             droneShooter.droneStrike();
@@ -167,9 +195,15 @@ public class TimeLEDTestOpMode extends CommandOpMode {
         telemetry.addData("Slide State", deposit.getCurrentSlideState().toString());
         telemetry.addData("Touch Sensor", deposit.getTouchBool());
         telemetry.addData("LED State", deposit.getCurrentLEDState().toString());
+        telemetry.addData("Low Score Timer", lowScoreTimer.elapsedTime());
         telemetry.update();
 
 //        robot.clearBulkCache();
+
+    }
+
+    public void scoreLowPosition(){
+
 
     }
 
