@@ -90,7 +90,7 @@ public class SwerveModule {
      * @return Module Absolute Angle in Radians
      */
     public void read() {
-        moduleAngle = absoluteAnalogEncoder.getCurrentPosition();
+        moduleAngle = absoluteAnalogEncoder.getCurrentPosition() * 2048 /360;
     }
 
     /**
@@ -210,7 +210,7 @@ public class SwerveModule {
 
     public void setDesiredState(SwerveModuleState state){
         this.state = state;
-        if (wheelFlipped) state.speedMetersPerSecond *= -1;
+
          driveMotor.setVelocity(((state.speedMetersPerSecond/39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ));
          setTargetRotation(state.angle.getRadians());
 
