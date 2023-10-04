@@ -49,7 +49,7 @@ public class AprilTagTestOpMode extends CommandOpMode {
     private static double MAX_X_SPEED = 5.0;
     private static double MAX_Y_SPEED = 5.0;
     private static double MAX_TURN_SPEED = 180;
-
+    ArrayList<AprilTagDetection> detections;
 
     int numFramesWithoutDetection = 0;
 
@@ -57,6 +57,10 @@ public class AprilTagTestOpMode extends CommandOpMode {
     final float DECIMATION_LOW = 2;
     final float THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f;
     final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
+
+    private double xSpeed;
+    private double ySpeed;
+    private double omegaSpeed;
 
     @Override
     public void initialize() {
@@ -99,10 +103,24 @@ public class AprilTagTestOpMode extends CommandOpMode {
 
 
         while (opModeIsActive()) {
+
+            if(detections.get(detections.size()-1) != null){
+                Orientation rot = Orientation.getOrientation(detections.get(detections.size()-1).pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+                xSpeed = detections.get(detections.size()-1).pose.z * 0.25;
+                ySpeed = -detections.get(detections.size()-1).pose.x * 0.25;
+                omegaSpeed = (rot.firstAngle + 180) * 0.1;
+
+            } else {
+
+                xSpeed = gamepadEx.getLeftY() * MAX_X_SPEED;
+                ySpeed = gamepadEx.getLeftX() * MAX_Y_SPEED;
+                omegaSpeed = gamepadEx.getRightX() * MAX_TURN_SPEED;
+            }
+
             drivetrain.driveVelocity(new ChassisSpeeds(
-                    gamepadEx.getLeftY() * MAX_X_SPEED,
-                    gamepadEx.getLeftX() * MAX_Y_SPEED,
-                    gamepadEx.getRightX() * MAX_TURN_SPEED
+                    xSpeed,
+                    ySpeed,
+                    omegaSpeed
             ),new Rotation2d(robot.getAngle()));
 
 
@@ -111,7 +129,7 @@ public class AprilTagTestOpMode extends CommandOpMode {
             telemetry.addData("Swerve", drivetrain.getTelemetry());
             telemetry.addData("Swerve Module States", drivetrain.getSwerveModuleStates());
 
-            ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
+            detections = aprilTagDetectionPipeline.getDetectionsUpdate();
             telemetry.addLine(String.format("Robot Pose: %s", robotPose));
             if (detections != null) {
                 telemetry.addData("FPS: %.2f", camera.getFps());
