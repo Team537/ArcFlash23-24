@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.geometry.Rotation2d;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.ChassisSpeeds;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -27,6 +28,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
+
+import kotlin.Unit;
+
 @Config
 @TeleOp(name = "April Tag Detection")
 public class AprilTagTestOpMode extends CommandOpMode {
@@ -48,8 +52,8 @@ public class AprilTagTestOpMode extends CommandOpMode {
     private GamepadEx gamepadEx;
     private static double MAX_X_SPEED = 5.0;
     private static double MAX_Y_SPEED = 5.0;
-    private static double MAX_TURN_SPEED = 180;
-    ArrayList<AprilTagDetection> detections;
+    private static double MAX_TURN_SPEED = Math.PI/4;
+    ArrayList<AprilTagDetection> detections = new ArrayList<>(5);
 
     int numFramesWithoutDetection = 0;
 
@@ -61,6 +65,7 @@ public class AprilTagTestOpMode extends CommandOpMode {
     private double xSpeed;
     private double ySpeed;
     private double omegaSpeed;
+    private AprilTagDetection latestDetection;
 
     @Override
     public void initialize() {
@@ -104,11 +109,18 @@ public class AprilTagTestOpMode extends CommandOpMode {
 
         while (opModeIsActive()) {
 
-            if(detections.get(detections.size()-1) != null){
-                Orientation rot = Orientation.getOrientation(detections.get(detections.size()-1).pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
-                xSpeed = detections.get(detections.size()-1).pose.z * 0.25;
-                ySpeed = -detections.get(detections.size()-1).pose.x * 0.25;
-                omegaSpeed = (rot.firstAngle + 180) * 0.1;
+
+
+            if(latestDetection != null && gamepadEx.getButton(GamepadKeys.Button.BACK)) {
+
+                    Orientation rot = Orientation.getOrientation(latestDetection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+                    xSpeed = ((latestDetection.pose.z*INCHES_PER_METER+15)/MAX_X_SPEED) * 0.5 ;
+                    ySpeed = ((-latestDetection.pose.x*INCHES_PER_METER)/MAX_Y_SPEED) * 0.50;
+                    omegaSpeed = (Math.toRadians(rot.firstAngle + 180)/MAX_TURN_SPEED) * 0.1;
+//                omegaSpeed = 0;
+
+
+
 
             } else {
 
@@ -166,8 +178,11 @@ public class AprilTagTestOpMode extends CommandOpMode {
                                 AprilTagFieldConstants.getTagPose(detection.id).y() + -detection.pose.x * INCHES_PER_METER - 1,
                                 AprilTagFieldConstants.getTagPose(detection.id).z().deg() + rot.firstAngle + 180);
 
-
-
+                        latestDetection = detection;
+                        telemetry.addData("Latest Detection", latestDetection);
+                        telemetry.addData("Latest Detection Speed X", xSpeed );
+                        telemetry.addData("Latest Detection Speed Y", ySpeed );
+                        telemetry.addData("Latest Detection Speed Omega",omegaSpeed);
                     }
                 }
 
