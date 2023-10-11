@@ -66,7 +66,7 @@ public class BlueMecanumAuto extends LinearOpMode {
         pipeline = new BluePropDetectionPipeline();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(
-                hardwareMap.get(WebcamName.class, "Webcame 1"), cameraMonitorViewId
+                hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId
         );
 
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
