@@ -94,33 +94,36 @@ public class RedMecanumAuto extends LinearOpMode {
 
             Point objectCenter = pipeline.getObjectCenter();
 
-            if(objectCenter.x > 500) {
+            if (objectCenter.x > 500) {
                 currentState = PropState.RIGHT;
-            } else if(objectCenter.x > 250 && objectCenter.x < 500) {
+            } else if (objectCenter.x > 250 && objectCenter.x < 500) {
                 currentState = PropState.CENTER;
-            } else if(objectCenter.x < 250) {
+            } else if (objectCenter.x < 250) {
                 currentState = PropState.RIGHT;
             }
             sleep(20);
+
+
+            switch (currentState) {
+                case LEFT:
+                    waitForStart();
+                    drivetrain.followTrajectorySequence(leftPath);
+                    break;
+
+                case CENTER:
+                    waitForStart();
+                    drivetrain.followTrajectorySequence(centerPath);
+                    break;
+
+                case RIGHT:
+                    waitForStart();
+                    drivetrain.followTrajectorySequence(rightPath);
+                    break;
+
+                default:
+                    break;
+            }
         }
-
-        switch (currentState) {
-            case LEFT: waitForStart();
-            drivetrain.followTrajectorySequence(leftPath);
-            break;
-
-            case CENTER: waitForStart();
-            drivetrain.followTrajectorySequence(centerPath);
-            break;
-
-            case RIGHT: waitForStart();
-            drivetrain.followTrajectorySequence(rightPath);
-            break;
-
-            default:
-            break;
-        }
-
 
     }
 
