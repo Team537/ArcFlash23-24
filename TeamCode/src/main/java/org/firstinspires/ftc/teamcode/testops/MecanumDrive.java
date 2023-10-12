@@ -99,18 +99,23 @@ public class MecanumDrive extends CommandOpMode {
 
         if(gamepadEx2.getButton((GamepadKeys.Button.B))) {
             deposit.setDownPosition();
+            deposit.setAngleServoIntake();
+
         }
 
         if(gamepadEx2.getButton((GamepadKeys.Button.A))) {
             deposit.setLowPosition();
+            deposit.setAngleServoScore();
         }
 
         if(gamepadEx2.getButton((GamepadKeys.Button.X))) {
             deposit.setMidPosition();
+            deposit.setAngleServoScore();
         }
 
         if(gamepadEx2.getButton((GamepadKeys.Button.Y))) {
             deposit.setHighPosition();
+            deposit.setAngleServoScore();
         }
 
         if(gamepadEx.getButton(GamepadKeys.Button.A)){
