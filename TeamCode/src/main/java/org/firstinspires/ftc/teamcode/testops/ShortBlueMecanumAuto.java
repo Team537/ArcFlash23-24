@@ -17,9 +17,9 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous (name = "Blue Mecanum Auto")
+@Autonomous (name = "Short Blue Mecanum Auto")
 
-public class BlueMecanumAuto extends LinearOpMode {
+public class ShortBlueMecanumAuto extends LinearOpMode {
 
     private Deposit deposit;
     private final RobotHardware robot = RobotHardware.getInstance();
@@ -32,9 +32,11 @@ public class BlueMecanumAuto extends LinearOpMode {
     TrajectorySequence centerPath = drivetrain.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
             .forward(36)
             .addDisplacementMarker(1, () -> {
+                deposit.setDownPosition();
                 deposit.latchOpen();
             })
-            .strafeLeft(75)
+
+            .strafeLeft(27)
             .turn(Math.toRadians(90))
             .build()
             ;
@@ -44,9 +46,10 @@ public class BlueMecanumAuto extends LinearOpMode {
             .turn(Math.toRadians(-90))
             .forward(3)
             .addDisplacementMarker(1, () -> {
+                deposit.setDownPosition();
                 deposit.latchOpen();
             })
-            .back(72)
+            .back(30)
             .build()
             ;
     TrajectorySequence rightPath = drivetrain.trajectorySequenceBuilder(new Pose2d(38, 0, Math.toRadians(0)))
@@ -54,9 +57,10 @@ public class BlueMecanumAuto extends LinearOpMode {
             .turn(Math.toRadians(90))
             .forward(3)
             .addDisplacementMarker(1, () -> {
+                deposit.setDownPosition();
                 deposit.latchOpen();
             })
-            .forward(78)
+            .forward(24)
             .build()
             ;
 
@@ -91,36 +95,33 @@ public class BlueMecanumAuto extends LinearOpMode {
 
             Point objectCenter = pipeline.getObjectCenter();
 
-            if (objectCenter.x > 500) {
+            if(objectCenter.x > 500) {
                 currentState = PropState.RIGHT;
-            } else if (objectCenter.x > 250 && objectCenter.x < 500) {
+            } else if(objectCenter.x > 250 && objectCenter.x < 500) {
                 currentState = PropState.CENTER;
-            } else if (objectCenter.x < 250) {
+            } else if(objectCenter.x < 250) {
                 currentState = PropState.RIGHT;
             }
             sleep(20);
-
-
-            switch (currentState) {
-                case LEFT:
-                    waitForStart();
-                    drivetrain.followTrajectorySequence(leftPath);
-                    break;
-
-                case CENTER:
-                    waitForStart();
-                    drivetrain.followTrajectorySequence(centerPath);
-                    break;
-
-                case RIGHT:
-                    waitForStart();
-                    drivetrain.followTrajectorySequence(rightPath);
-                    break;
-
-                default:
-                    break;
-            }
         }
+
+        switch (currentState) {
+            case LEFT: waitForStart();
+                drivetrain.followTrajectorySequence(leftPath);
+                break;
+
+            case CENTER: waitForStart();
+                drivetrain.followTrajectorySequence(centerPath);
+                break;
+
+            case RIGHT: waitForStart();
+                drivetrain.followTrajectorySequence(rightPath);
+                break;
+
+            default:
+                break;
+        }
+
 
     }
 

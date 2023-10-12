@@ -1,30 +1,33 @@
 package org.firstinspires.ftc.teamcode.testops;
 
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.robot.Robot;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.manipulator.Deposit;
 import org.firstinspires.ftc.teamcode.pipelines.BluePropDetectionPipeline;
+import org.firstinspires.ftc.teamcode.pipelines.RedPropDetectionPipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.opencv.core.Point;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous (name = "Blue Mecanum Auto")
 
-public class BlueMecanumAuto extends LinearOpMode {
+@Autonomous (name = "Short Red Mecanum Auto")
+public class ShortRedMecanumAuto extends LinearOpMode {
 
     private Deposit deposit;
     private final RobotHardware robot = RobotHardware.getInstance();
     private OpenCvCamera camera;
-    private BluePropDetectionPipeline pipeline;
+    private RedPropDetectionPipeline pipeline;
     private PropState currentState;
 
     SampleMecanumDrive drivetrain = new SampleMecanumDrive(hardwareMap);
@@ -32,10 +35,11 @@ public class BlueMecanumAuto extends LinearOpMode {
     TrajectorySequence centerPath = drivetrain.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
             .forward(36)
             .addDisplacementMarker(1, () -> {
+                deposit.setDownPosition();
                 deposit.latchOpen();
             })
-            .strafeLeft(75)
-            .turn(Math.toRadians(90))
+            .strafeLeft(27)
+            .turn(Math.toRadians(-90))
             .build()
             ;
 
@@ -44,9 +48,10 @@ public class BlueMecanumAuto extends LinearOpMode {
             .turn(Math.toRadians(-90))
             .forward(3)
             .addDisplacementMarker(1, () -> {
+                deposit.setDownPosition();
                 deposit.latchOpen();
             })
-            .back(72)
+            .forward(30)
             .build()
             ;
     TrajectorySequence rightPath = drivetrain.trajectorySequenceBuilder(new Pose2d(38, 0, Math.toRadians(0)))
@@ -54,9 +59,10 @@ public class BlueMecanumAuto extends LinearOpMode {
             .turn(Math.toRadians(90))
             .forward(3)
             .addDisplacementMarker(1, () -> {
+                deposit.setDownPosition();
                 deposit.latchOpen();
             })
-            .forward(78)
+            .back(24)
             .build()
             ;
 
@@ -66,7 +72,7 @@ public class BlueMecanumAuto extends LinearOpMode {
         robot.init(hardwareMap, telemetry);
         deposit = new Deposit(robot);
 
-        pipeline = new BluePropDetectionPipeline();
+        pipeline = new RedPropDetectionPipeline();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(
                 hardwareMap.get(WebcamName.class, "Webcame 1"), cameraMonitorViewId
@@ -137,4 +143,3 @@ public class BlueMecanumAuto extends LinearOpMode {
 
 
 }
-
