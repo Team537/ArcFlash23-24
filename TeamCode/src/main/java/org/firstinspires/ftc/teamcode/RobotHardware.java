@@ -135,6 +135,7 @@ public class RobotHardware {
         shooterServo = hardwareMap.get(Servo.class, "shooterServo");
         angleServo = hardwareMap.get(Servo.class, "angleServo");
         swivelServo = hardwareMap.get(Servo.class, "swivelServo");
+        latchServo = hardwareMap.get(Servo.class, "latchServo");
         slideMotor1 = hardwareMap.get(DcMotorEx.class, "slideMotor1");
         slideMotor2 = hardwareMap.get(DcMotorEx.class, "slideMotor2");
 
@@ -162,7 +163,7 @@ public class RobotHardware {
         //webcam1 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), viewportContainerIds[0]);
 //        webcam2 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), viewportContainerIds[1]);
 //
-        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
+//        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
         relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
         relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
@@ -213,7 +214,7 @@ public class RobotHardware {
             imuThread = new Thread(() -> {
                 while (!opMode.isStopRequested() && opMode.opModeIsActive()) {
                     synchronized (imuLock) {
-                        imuAngle = imu.getAngularOrientation().firstAngle;
+                        imuAngle = imu.getAngularOrientation().firstAngle - Math.PI/2;
                     }
                 }
             });

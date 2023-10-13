@@ -7,6 +7,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -117,32 +118,31 @@ public class Deposit extends SubsystemBase {
         angleServo2 = robot.angleServo2;
         latchServo = robot.latchServo;
 //        swivelServo = robot.swivelServo;
-        colorSensor = robot.colorSensor;
-        relativeLayout = robot.relativeLayout;
+//        colorSensor = robot.colorSensor;
+//        relativeLayout = robot.relativeLayout;
         blinkin = robot.blinkin;
-        touch = robot.touch;
-        touch2 = robot.touch2;
+//        touch = robot.touch;
+//        touch2 = robot.touch2;
 
 
 
 
-        if (colorSensor instanceof SwitchableLight) {
-            ((SwitchableLight)colorSensor).enableLight(true);
-        }
+//    slideMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//    slideMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        colorSensor.setGain(colorSensorGain);
-        blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
+
+//         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
     }
 
    @Override
     public void periodic(){
-
-        if( getTouchBool() == false && targetSlideState == SlideState.DOWN ) {
-            currentSlideState = SlideState.TRANSITION;
-
-        } else {
-            currentSlideState = targetSlideState;
-        }
+//
+//        if( getTouchBool() == false && targetSlideState == SlideState.DOWN ) {
+//            currentSlideState = SlideState.TRANSITION;
+//
+//        } else {
+//            currentSlideState = targetSlideState;
+       // }
 
         slideMotor1Position = slideMotor1.getCurrentPosition();
         slideSpeed = pidController.calculate(targetPosition1-slideMotor1Position);
@@ -156,7 +156,7 @@ public class Deposit extends SubsystemBase {
         slideMotor1.setPower(slideSpeed);
         slideMotor2.setPower(slideSpeed);
 
-    if(currentLEDState == LEDState.NONE) setNoneLed();
+//    if(currentLEDState == LEDState.NONE) setNoneLed();
 
 
 
@@ -182,7 +182,7 @@ public class Deposit extends SubsystemBase {
 //        telemetry.addData("Swivel Servo Current Position", swivelServo.getPosition());
 //        telemetry.addData("Swivel Servo Target Position", swivelPosition);
 
-        runColorSensor();
+//        runColorSensor();
 
 //        if(Math.abs(targetPosition1-slideMotor1Position) < 10 || Math.abs(targetPosition2-slideMotor2.getCurrentPosition()) < 10){
 //            currentSlideState = SlideState.TRANSITION;
@@ -337,34 +337,34 @@ public class Deposit extends SubsystemBase {
     }
 
     public void setLowPosition(){
-        if(currentDepositState == DepositState.HAS_PIXEL) {
+//        if(currentDepositState == DepositState.HAS_PIXEL) {
             if(currentLatchState == LatchState.OPEN) {latchClose();}
             setAngleServoTransmit();
             targetPosition1 = lowPosition1;
             targetPosition2 = lowPosition2;
             targetSlideState = SlideState.LOW;
-        }
+//        }
 
     }
 
     public void setMidPosition(){
-        if(currentDepositState == DepositState.HAS_PIXEL) {
+//        if(currentDepositState == DepositState.HAS_PIXEL) {
             if(currentLatchState == LatchState.OPEN) {latchClose();}
             setAngleServoTransmit();
             targetPosition1 = midPosition1;
             targetPosition2 = midPosition2;
             targetSlideState = SlideState.MID;
-        }
+//        }
     }
 
     public void setHighPosition(){
-        if(currentDepositState == DepositState.HAS_PIXEL) {
+//        if(currentDepositState == DepositState.HAS_PIXEL) {
             if(currentLatchState == LatchState.OPEN) {latchClose();}
             setAngleServoTransmit();
             targetPosition1 = highPosition1;
             targetPosition2 = highPosition2;
             targetSlideState = SlideState.HIGH;
-        }
+//        }
     }
 
     public void setSwivelServoLeft(){

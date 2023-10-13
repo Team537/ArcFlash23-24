@@ -65,7 +65,7 @@ public class MecanumDrive extends CommandOpMode {
 //        PhotonCore.experimental.setMaximumParallelCommands(8);
 //        PhotonCore.enable();
 
-        drivetrain.read();
+//        drivetrain.read();
 
     }
 
@@ -88,84 +88,37 @@ public class MecanumDrive extends CommandOpMode {
         backLeft.setPower(leftBackPower);
         backRight.setPower(rightBackPower);
 
-        if(gamepadEx2.getButton((GamepadKeys.Button.LEFT_BUMPER))) {
-            deposit.latchOpen();
-        }
-
-        if(gamepadEx2.getButton((GamepadKeys.Button.RIGHT_BUMPER))) {
-            deposit.latchClose();
-        }
-
-
-        if(gamepadEx2.getButton((GamepadKeys.Button.B))) {
-            deposit.setDownPosition();
-            deposit.setAngleServoIntake();
-
-        }
-
-        if(gamepadEx2.getButton((GamepadKeys.Button.A))) {
-            deposit.setLowPosition();
-            deposit.setAngleServoScore();
-        }
-
-        if(gamepadEx2.getButton((GamepadKeys.Button.X))) {
-            deposit.setMidPosition();
-            deposit.setAngleServoScore();
-        }
-
-        if(gamepadEx2.getButton((GamepadKeys.Button.Y))) {
-            deposit.setHighPosition();
-            deposit.setAngleServoScore();
-        }
-
-        if(gamepadEx.getButton(GamepadKeys.Button.A)){
-            deposit.setWhiteLed();
-            deposit.setLEDState(Deposit.LEDState.WHITE);
-
-        }
+//        if(gamepadEx2.getButton((GamepadKeys.Button.LEFT_BUMPER))) {
+//            deposit.latchOpen();
+//        }
+//
+//        if(gamepadEx2.getButton((GamepadKeys.Button.RIGHT_BUMPER))) {
+//            deposit.latchClose();
+//        }
+//
+//
+//        if(gamepadEx2.getButton((GamepadKeys.Button.B))) {
+//            deposit.setDownPosition();
+//            deposit.setAngleServoIntake();
+//
+//        }
+//
+//        if(gamepadEx2.getButton((GamepadKeys.Button.A))) {
+//            deposit.setLowPosition();
+//            deposit.setAngleServoScore();
+//        }
+//
+//        if(gamepadEx2.getButton((GamepadKeys.Button.X))) {
+//            deposit.setMidPosition();
+//            deposit.setAngleServoScore();
+//        }
+//
+//        if(gamepadEx2.getButton((GamepadKeys.Button.Y))) {
+//            deposit.setHighPosition();
+//            deposit.setAngleServoScore();
+//        }
 
 
-
-        if(gamepadEx.getButton(GamepadKeys.Button.B)){
-            deposit.setPurpleLed();
-            deposit.setLEDState(Deposit.LEDState.PURPLE);
-
-
-        }
-
-        if(gamepadEx.getButton(GamepadKeys.Button.X)){
-            deposit.setGreenLed();
-            deposit.setLEDState(Deposit.LEDState.GREEN);
-
-
-        }
-
-        if(gamepadEx.getButton(GamepadKeys.Button.Y)){
-            deposit.setYellowLed();
-            deposit.setLEDState(Deposit.LEDState.YELLOW);
-
-
-        }
-
-        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_DOWN)){
-            deposit.setNoneLed();
-            deposit.setLEDState(Deposit.LEDState.NONE);
-
-        }
-
-        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_UP)){
-            deposit.setLEDState(Deposit.LEDState.WHITE_GREEN);
-        }
-
-
-        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_LEFT)){
-            deposit.setLEDState(Deposit.LEDState.WHITE_PURPLE);
-
-        }
-
-        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_RIGHT)){
-            deposit.setLEDState(Deposit.LEDState.WHITE_YELLOW);
-        }
         telemetry.addData("Robot Angle: ",robot.getAngle()); //this is all telemetry stuff
         telemetry.addData("Front Left Power: ", leftFrontPower);
         telemetry.addData("Front Right Power: ", rightFrontPower);
