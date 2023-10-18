@@ -32,6 +32,8 @@ public class MecanumDrive extends CommandOpMode {
     private DcMotorEx backLeft;
     private DcMotorEx frontRight;
     private DcMotorEx backRight;
+    private DcMotorEx slideMotor1;
+    private DcMotorEx slideMotor2;
     private Deposit deposit;
     private GamepadEx gamepadEx;
     private GamepadEx gamepadEx2;
@@ -55,6 +57,9 @@ public class MecanumDrive extends CommandOpMode {
         frontRight = robot.frontRightMotor;
         backLeft = robot.backLeftMotor;
         backRight = robot.backRightMotor;
+
+        slideMotor1 = robot.slideMotor1;
+        slideMotor2 = robot.slideMotor2;
 
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -88,13 +93,13 @@ public class MecanumDrive extends CommandOpMode {
         backLeft.setPower(leftBackPower);
         backRight.setPower(rightBackPower);
 
-//        if(gamepadEx2.getButton((GamepadKeys.Button.LEFT_BUMPER))) {
-//            deposit.latchOpen();
-//        }
-//
-//        if(gamepadEx2.getButton((GamepadKeys.Button.RIGHT_BUMPER))) {
-//            deposit.latchClose();
-//        }
+        if(gamepadEx2.getButton((GamepadKeys.Button.LEFT_BUMPER))) {
+            deposit.latchOpen();
+        }
+
+        if(gamepadEx2.getButton((GamepadKeys.Button.RIGHT_BUMPER))) {
+            deposit.latchClose();
+        }
 //
 //
 //        if(gamepadEx2.getButton((GamepadKeys.Button.B))) {

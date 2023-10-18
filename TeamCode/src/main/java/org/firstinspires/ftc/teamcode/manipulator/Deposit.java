@@ -49,7 +49,7 @@ public class Deposit extends SubsystemBase {
     private static double angleServoScore2 = 0;
 
 
-    private static double latchServoOpen = 0.3;
+    private static double latchServoOpen = 0;
     private static double latchServoClosed = 0;
 
 
@@ -160,7 +160,7 @@ public class Deposit extends SubsystemBase {
 
 
 
-        latchServo.setPosition(latchPosition);
+//        latchServo.setPosition(latchPosition);
 
 //        slideServo1.setPosition((int)targetPosition1);
 //        slideServo2.setPosition((int)targetPosition2);
