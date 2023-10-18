@@ -78,9 +78,9 @@ public class MecanumDrive extends CommandOpMode {
         double LeftStickAngle = Math.atan2(gamepadEx.getLeftX(), -gamepadEx.getLeftY()) - Math.PI / 4; //get angle
         double rightX = -gamepad1.right_stick_x; //rotation
 
-        double leftFrontPower = speed * Math.cos(LeftStickAngle - robot.getAngle()) + rightX;
+        double leftFrontPower = speed * Math.sin(LeftStickAngle - robot.getAngle()) + rightX;
         double rightFrontPower = speed * Math.sin(LeftStickAngle - robot.getAngle()) - rightX;
-        double leftBackPower = speed * Math.sin(LeftStickAngle - robot.getAngle()) + rightX;
+        double leftBackPower = speed * Math.cos(LeftStickAngle - robot.getAngle()) + rightX;
         double rightBackPower = speed * Math.cos(LeftStickAngle - robot.getAngle()) - rightX;
 
         frontLeft.setPower(leftFrontPower);
