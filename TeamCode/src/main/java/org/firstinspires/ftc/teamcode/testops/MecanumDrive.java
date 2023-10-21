@@ -34,6 +34,9 @@ public class MecanumDrive extends CommandOpMode {
     private DcMotorEx backRight;
     private DcMotorEx slideMotor1;
     private DcMotorEx slideMotor2;
+    private Deposit.SlideState currentSlideState;
+    private Deposit.SlideState targetSlideState;
+    private Deposit.AngleState currentAngleState;
     private Deposit deposit;
     private GamepadEx gamepadEx;
     private GamepadEx gamepadEx2;
@@ -61,6 +64,9 @@ public class MecanumDrive extends CommandOpMode {
         slideMotor1 = robot.slideMotor1;
         slideMotor2 = robot.slideMotor2;
 
+        currentSlideState = deposit.getCurrentSlideState();
+        targetSlideState = deposit.getTargetSlideState();
+        currentAngleState = deposit.getCurrentAngleState();
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -76,6 +82,10 @@ public class MecanumDrive extends CommandOpMode {
 
     @Override
     public void run() {
+
+        currentSlideState = deposit.getCurrentSlideState();
+        targetSlideState = deposit.getTargetSlideState();
+        currentAngleState = deposit.getCurrentAngleState();
 
         robot.startIMUThread(this);
 
@@ -93,35 +103,36 @@ public class MecanumDrive extends CommandOpMode {
         backLeft.setPower(leftBackPower);
         backRight.setPower(rightBackPower);
 
-        if(gamepadEx2.getButton((GamepadKeys.Button.LEFT_BUMPER))) {
+        if(gamepadEx.getButton((GamepadKeys.Button.LEFT_BUMPER))) {
             deposit.latchOpen();
         }
 
-        if(gamepadEx2.getButton((GamepadKeys.Button.RIGHT_BUMPER))) {
+        if(gamepadEx.getButton((GamepadKeys.Button.RIGHT_BUMPER))) {
             deposit.latchClose();
         }
+
 //
 //
-//        if(gamepadEx2.getButton((GamepadKeys.Button.B))) {
-//            deposit.setDownPosition();
-//            deposit.setAngleServoIntake();
+        if(gamepadEx.getButton((GamepadKeys.Button.B))) {
+            deposit.setDownPosition();
+            deposit.setAngleServoIntake();
+
+        }
 //
-//        }
+        if(gamepadEx.getButton((GamepadKeys.Button.A))) {
+            deposit.scoreLowPosition();
+            deposit.setAngleServoScore();
+        }
 //
-//        if(gamepadEx2.getButton((GamepadKeys.Button.A))) {
-//            deposit.setLowPosition();
-//            deposit.setAngleServoScore();
-//        }
+        if(gamepadEx.getButton((GamepadKeys.Button.X))) {
+            deposit.scoreMidPosition();
+            deposit.setAngleServoScore();
+        }
 //
-//        if(gamepadEx2.getButton((GamepadKeys.Button.X))) {
-//            deposit.setMidPosition();
-//            deposit.setAngleServoScore();
-//        }
-//
-//        if(gamepadEx2.getButton((GamepadKeys.Button.Y))) {
-//            deposit.setHighPosition();
-//            deposit.setAngleServoScore();
-//        }
+        if(gamepadEx.getButton((GamepadKeys.Button.Y))) {
+            deposit.scoreHighPosition();
+            deposit.setAngleServoScore();
+        }
 
 
         telemetry.addData("Robot Angle: ",robot.getAngle()); //this is all telemetry stuff
@@ -129,6 +140,9 @@ public class MecanumDrive extends CommandOpMode {
         telemetry.addData("Front Right Power: ", rightFrontPower);
         telemetry.addData("Rear Left Power: ", leftBackPower);
         telemetry.addData("Rear Right Power: ", rightBackPower);
+        telemetry.addData("Slide State: ", currentSlideState);
+        telemetry.addData("Target Slide State: ", targetSlideState);
+        telemetry.addData("Angle State: ", currentAngleState);
         deposit.periodic();
         telemetry.update();
 

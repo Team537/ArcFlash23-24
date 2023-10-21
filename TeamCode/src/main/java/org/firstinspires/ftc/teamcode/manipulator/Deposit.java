@@ -33,7 +33,7 @@ public class Deposit extends SubsystemBase {
     private View relativeLayout;
 
     private double targetPosition1 = 0;
-    private double targetPosition2 = 0;
+    private double targetPosition2 = 0; 
     private double anglePosition = 0;
     private double anglePosition2 = 0;
 
@@ -42,28 +42,28 @@ public class Deposit extends SubsystemBase {
 
     private static double angleServoTransmit = 0.3;
     private static double angleServoIntake = 0;
-    private static double angleServoScore = 0;
+    private static double angleServoScore = 0.3;
 
     private static double angleServoTransmit2 = 0.3;
     private static double angleServoIntake2 = 0;
-    private static double angleServoScore2 = 0;
+    private static double angleServoScore2 = 0.3;
 
 
-    private static double latchServoOpen = 0;
+    private static double latchServoOpen = 0.4;
     private static double latchServoClosed = 0;
 
 
     // PLACEHOLDER VALUES
     private static double downPosition = 0;
 
-    private static double lowPosition1 = 50;
-    private static double lowPosition2 = 50;
+    private static double lowPosition1 = 10;
+    private static double lowPosition2 = 10;
 
-    private static double midPosition1 = 75;
-    private static double midPosition2 = 75;
+    private static double midPosition1 = 25;
+    private static double midPosition2 = 25;
 
-    private static double highPosition1 = 100;
-    private static double highPosition2 = 100;
+    private static double highPosition1 = 40;
+    private static double highPosition2 = 40;
 
     private static double swivelServoLeft = 0;
     private static double swivelServoRight = 0.3;
@@ -149,12 +149,12 @@ public class Deposit extends SubsystemBase {
 
 
 
-        slideMotor1.setTargetPosition((int)targetPosition1);
+        slideMotor1.setTargetPosition((int)-targetPosition1);
         slideMotor2.setTargetPosition((int)targetPosition2);
         slideMotor1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         slideMotor2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        slideMotor1.setPower(slideSpeed);
-        slideMotor2.setPower(slideSpeed);
+        slideMotor1.setPower(2*slideSpeed);
+        slideMotor2.setPower(2*slideSpeed);
 
 //    if(currentLEDState == LEDState.NONE) setNoneLed();
 
@@ -210,12 +210,13 @@ public class Deposit extends SubsystemBase {
     }
 
     public SlideState getCurrentSlideState() { return  currentSlideState;}
+    public SlideState getTargetSlideState() { return  targetSlideState;}
         public void latchToggle(){
-        if(currentSlideState != SlideState.TRANSITION && currentSwivelState != SwivelState.TRANSITION) {
+//        if(currentSlideState != SlideState.TRANSITION && currentSwivelState != SwivelState.TRANSITION) {
             isServoToggled = !isServoToggled;
             latchPosition = isServoToggled ? latchServoOpen : latchServoClosed;
             currentLatchState = isServoToggled ? LatchState.OPEN : LatchState.CLOSED;
-        }
+//        }
     }
 
     public void latchOpen() {
@@ -339,7 +340,7 @@ public class Deposit extends SubsystemBase {
     public void setLowPosition(){
 //        if(currentDepositState == DepositState.HAS_PIXEL) {
             if(currentLatchState == LatchState.OPEN) {latchClose();}
-            setAngleServoTransmit();
+            setAngleServoScore();
             targetPosition1 = lowPosition1;
             targetPosition2 = lowPosition2;
             targetSlideState = SlideState.LOW;
@@ -350,7 +351,7 @@ public class Deposit extends SubsystemBase {
     public void setMidPosition(){
 //        if(currentDepositState == DepositState.HAS_PIXEL) {
             if(currentLatchState == LatchState.OPEN) {latchClose();}
-            setAngleServoTransmit();
+            setAngleServoScore();
             targetPosition1 = midPosition1;
             targetPosition2 = midPosition2;
             targetSlideState = SlideState.MID;
@@ -360,7 +361,7 @@ public class Deposit extends SubsystemBase {
     public void setHighPosition(){
 //        if(currentDepositState == DepositState.HAS_PIXEL) {
             if(currentLatchState == LatchState.OPEN) {latchClose();}
-            setAngleServoTransmit();
+            setAngleServoScore();
             targetPosition1 = highPosition1;
             targetPosition2 = highPosition2;
             targetSlideState = SlideState.HIGH;
