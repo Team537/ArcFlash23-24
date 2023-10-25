@@ -12,7 +12,7 @@ import java.util.Timer;
 
 public class DroneShooter {
     private Servo shooterServo;
-    private double shootPosition = 0.3;
+    private double shootPosition = -0.3;
 
     private double currentPosition = 0;
     public ShooterState shooterState = ShooterState.ARMED;

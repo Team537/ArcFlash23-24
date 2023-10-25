@@ -117,8 +117,8 @@ public class RobotHardware {
 //                        2, //The number of sub-containers to create
 //                        OpenCvCameraFactory.ViewportSplitMethod.VERTICALLY);
         voltageTimer = new ElapsedTime();
-        touch = hardwareMap.get(TouchSensor.class, "Touch");
-        touch2 = hardwareMap.get(TouchSensor.class, "Touch2");
+//        touch = hardwareMap.get(TouchSensor.class, "Touch");
+//        touch2 = hardwareMap.get(TouchSensor.class, "Touch2");
 
         frontLeftMotor = hardwareMap.get(DcMotorEx.class, "frontLeftMotor");
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
@@ -128,26 +128,26 @@ public class RobotHardware {
 
 
 
-        frontLeftServo = hardwareMap.get(CRServo.class, "frontLeftServo");
-        frontRightServo = hardwareMap.get(CRServo.class, "frontRightServo");
-        backLeftServo = hardwareMap.get(CRServo.class, "backLeftServo");
-        backRightServo = hardwareMap.get(CRServo.class, "backRightServo");
-        shooterServo = hardwareMap.get(Servo.class, "shooterServo");
-        angleServo = hardwareMap.get(Servo.class, "angleServo");
-        swivelServo = hardwareMap.get(Servo.class, "swivelServo");
-        latchServo = hardwareMap.get(Servo.class, "latchServo");
-        slideMotor1 = hardwareMap.get(DcMotorEx.class, "slideMotor1");
-        slideMotor2 = hardwareMap.get(DcMotorEx.class, "slideMotor2");
+//        frontLeftServo = hardwareMap.get(CRServo.class, "frontLeftServo");
+//        frontRightServo = hardwareMap.get(CRServo.class, "frontRightServo");
+//        backLeftServo = hardwareMap.get(CRServo.class, "backLeftServo");
+//        backRightServo = hardwareMap.get(CRServo.class, "backRightServo");
+        shooterServo = hardwareMap.get(Servo.class, "droneShooter");
+//        angleServo = hardwareMap.get(Servo.class, "angleServo");
+//        swivelServo = hardwareMap.get(Servo.class, "swivelServo");
+//        latchServo = hardwareMap.get(Servo.class, "latchServo");
+//        slideMotor1 = hardwareMap.get(DcMotorEx.class, "slideMotor1");
+//        slideMotor2 = hardwareMap.get(DcMotorEx.class, "slideMotor2");
 
-        frontLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
-        frontRightServo.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRightServo.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        frontLeftEncoder = hardwareMap.get(AnalogInput.class, "frontLeftEncoder");
-        frontRightEncoder = hardwareMap.get(AnalogInput.class, "frontRightEncoder");
-        backLeftEncoder = hardwareMap.get(AnalogInput.class, "backLeftEncoder");
-        backRightEncoder = hardwareMap.get(AnalogInput.class, "backRightEncoder");
+//        frontLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
+//        frontRightServo.setDirection(DcMotorSimple.Direction.REVERSE);
+//        backLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
+//        backRightServo.setDirection(DcMotorSimple.Direction.REVERSE);
+//
+//        frontLeftEncoder = hardwareMap.get(AnalogInput.class, "frontLeftEncoder");
+//        frontRightEncoder = hardwareMap.get(AnalogInput.class, "frontRightEncoder");
+//        backLeftEncoder = hardwareMap.get(AnalogInput.class, "backLeftEncoder");
+//        backRightEncoder = hardwareMap.get(AnalogInput.class, "backRightEncoder");
 
 //       parallelPod = hardwareMap.get(Encoder.class, "parallelPod");
 //       perpindicularPod = hardwareMap.get(Encoder.class, "perpindicularPod");
@@ -156,7 +156,7 @@ public class RobotHardware {
         //Placeholder
 
 
-        blinkin = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+//        blinkin = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 
 
 //
