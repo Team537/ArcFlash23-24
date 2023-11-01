@@ -29,7 +29,8 @@ public class TeleopSwerveDrive extends CommandOpMode {
     private static double MAX_X_SPEED = 5.0;
     private static double MAX_Y_SPEED = 5.0;
     private static double MAX_TURN_SPEED = Math.PI/4;
-
+    public static double TRACK_WIDTH = 9, WHEEL_BASE = 9;
+    private static double kV = 0, kA = 0, kStatic = 0;
 
     @Override
     public void initialize() {
@@ -39,7 +40,8 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
         robot.init(hardwareMap, telemetry);
         gamepadEx = new GamepadEx(gamepad1);
-        drivetrain = new SwerveDrivetrain(robot);
+        drivetrain = new SwerveDrivetrain(kV,kA,kStatic,TRACK_WIDTH,WHEEL_BASE);
+        drivetrain.init(robot);
         gamepadEx = new GamepadEx(gamepad1);
 
         robot.enabled = true;
