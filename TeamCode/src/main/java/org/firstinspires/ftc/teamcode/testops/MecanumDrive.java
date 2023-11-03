@@ -21,6 +21,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.Globals;
+import org.firstinspires.ftc.teamcode.PIDController;
 import org.firstinspires.ftc.teamcode.Pose;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.SwerveDrivetrain;
@@ -49,6 +50,11 @@ public class MecanumDrive extends CommandOpMode {
     public BNO055IMU imu;
     private LynxModule controlHub;
     public DroneShooter shooter;
+    private double slideMotor1Position = 0;
+    private double slideSpeed = 0;
+    private PIDController pidController = new PIDController(0.1, 0, 0);
+    private double targetPosition1 = 0;
+    private double targetPosition2 = 0;
 
 
 
@@ -112,14 +118,28 @@ public class MecanumDrive extends CommandOpMode {
         double leftBackPower = speed * Math.cos(LeftStickAngle - getAngle()) + rightX;
         double rightBackPower = speed * Math.cos(LeftStickAngle - getAngle()) - rightX;
 
-        frontLeft.setPower(leftFrontPower);
-        frontRight.setPower(rightFrontPower);
-        backLeft.setPower(leftBackPower);
-        backRight.setPower(rightBackPower);
+//        frontLeft.setPower(leftFrontPower);
+//        frontRight.setPower(rightFrontPower);
+//        backLeft.setPower(leftBackPower);
+//        backRight.setPower(rightBackPower);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
     if(gamepadEx.getButton(GamepadKeys.Button.A)){
         shooter.droneStrike();
     }
+        if(gamepadEx.getButton(GamepadKeys.Button.B)){
+            frontLeft.setPower(0.75);
+        } else {
+            frontLeft.setPower(0);
+        }
+        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_UP)){
+            targetPosition1 = 100;
+            targetPosition2 = 100;
+        }
+        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_DOWN)){
+            targetPosition1 = 0;
+            targetPosition2 = 0;
+        }
 
         telemetry.addData("Robot Angle: ", getAngle());
         telemetry.addData("Current", controlHub.getCurrent(CurrentUnit.AMPS));
@@ -127,13 +147,27 @@ public class MecanumDrive extends CommandOpMode {
         telemetry.addData("Front Right Power: ", rightFrontPower);
         telemetry.addData("Rear Left Power: ", leftBackPower);
         telemetry.addData("Rear Right Power: ", rightBackPower);
-
+        telemetry.addData("Target Position", targetPosition1);
+        telemetry.addData("Current Position", frontRight.getCurrentPosition());
+        telemetry.addData("Slide Speed", slideSpeed);
 //        deposit.periodic();
         telemetry.update();
 
 //        robot.clearBulkCache();
+        slideMotor1Position = frontRight.getCurrentPosition();
+        slideSpeed = pidController.calculate(targetPosition1-slideMotor1Position);
+
+
+
+        frontRight.setTargetPosition((int)targetPosition1);
+        backLeft.setTargetPosition((int)targetPosition2);
+        frontRight.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        backLeft.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        frontRight.setVelocity(0.5*slideSpeed);
+        backLeft.setVelocity(0.5*slideSpeed);
 
     }
+
 
     // Gets imu angle
     public double getAngle(){
