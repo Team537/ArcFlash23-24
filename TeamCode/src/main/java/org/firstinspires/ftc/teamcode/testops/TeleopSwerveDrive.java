@@ -35,6 +35,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
     private static double MAX_X_SPEED = 5.0;
     private static double MAX_Y_SPEED = 5.0;
     private static double MAX_TURN_SPEED = Math.PI/4;
+    private boolean intakeToggle = false;
 
 
     @Override
@@ -79,11 +80,17 @@ public class TeleopSwerveDrive extends CommandOpMode {
         telemetry.addData("Angle", robot.getAngle());
         telemetry.addData("Swerve", drivetrain.getTelemetry());
         telemetry.addData("Swerve Module States", drivetrain.getSwerveModuleStates());
+        telemetry.addData("Swerve Module Servo", drivetrain.getSwerveServoPowers());
         telemetry.update();
 
         if(gamepadEx.getButton(GamepadKeys.Button.A)) {
+            intakeToggle = !intakeToggle;
+
+        }
+
+        if(intakeToggle){
             intake.run();
-        } else {
+        }else{
             intake.stop();
         }
 

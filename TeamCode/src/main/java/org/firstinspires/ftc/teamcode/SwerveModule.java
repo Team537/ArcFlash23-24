@@ -217,6 +217,10 @@ public class SwerveModule {
 
     }
 
+    public double getSteerPower(){
+        return steerPower;
+    }
+
     //idk what this is
 //    public SwerveModuleState asState() {
 //        return new SwerveModuleState(this);
