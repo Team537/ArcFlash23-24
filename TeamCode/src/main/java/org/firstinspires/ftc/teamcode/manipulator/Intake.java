@@ -20,7 +20,7 @@ public class Intake {
     }
 
     public void loop(){
-//        intakeMotor.setPower(power);
+      intakeMotor.setPower(power);
 //        telemetry.addData("Intake State", intakeState);
 //        telemetry.addData("Intake Power", power);
 
@@ -31,7 +31,7 @@ public class Intake {
     }
 
     public void run(){
-        power = 0.5;
+        power = 1;
         intakeState = IntakeState.RUNNING ;
     }
 

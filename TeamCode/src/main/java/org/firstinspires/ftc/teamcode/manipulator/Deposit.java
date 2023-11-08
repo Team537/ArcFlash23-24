@@ -61,8 +61,8 @@ public class Deposit extends SubsystemBase {
     private static double midPosition1 = 75;
     private static double midPosition2 = 75;
 
-    private static double highPosition1 = 100;
-    private static double highPosition2 = 100;
+    private static double highPosition1 = 800;
+    private static double highPosition2 = 800;
 
     private static double swivelServoLeft = 0;
     private static double swivelServoRight = 0.3;
@@ -78,7 +78,7 @@ public class Deposit extends SubsystemBase {
     private AngleState currentAngleState = AngleState.INTAKE;
     private SwivelState currentSwivelState = SwivelState.CENTER;
     private SwivelState targetSwivelState = SwivelState.CENTER;
-    private DepositState currentDepositState = DepositState.NO_PIXEL;
+    private DepositState currentDepositState = DepositState.HAS_PIXEL;
     private LEDState currentLEDState = LEDState.NONE;
 
 
@@ -87,9 +87,11 @@ public class Deposit extends SubsystemBase {
     private Timing.Timer highScoreTimer = new Timing.Timer(5);
 
 
-    private PIDController pidController = new PIDController(0.01, 0, 0);
+    private PIDController pidController = new PIDController(0.01, 0, 0.01);
+    private double ticks_per_degree = 700/180;
     private double slideMotor1Position;
     private static double ticksPerDegree = 700/180;
+    private double f = 0.1;
 
     private Timing.Timer ledTimer = new Timing.Timer(50);
 
@@ -109,6 +111,13 @@ public class Deposit extends SubsystemBase {
        return touch.isPressed() || touch2.isPressed();
     }
 
+    public double getSlideMotor1Position(){
+        return slideMotor1.getCurrentPosition();
+    }
+
+    public double getSlideMotor2Position(){
+        return slideMotor2.getCurrentPosition();
+    }
 
     public Deposit(RobotHardware robot){
         slideMotor1 = robot.slideMotor1;
@@ -117,46 +126,47 @@ public class Deposit extends SubsystemBase {
         angleServo2 = robot.angleServo2;
         latchServo = robot.latchServo;
 //        swivelServo = robot.swivelServo;
-        colorSensor = robot.colorSensor;
-        relativeLayout = robot.relativeLayout;
-        blinkin = robot.blinkin;
-        touch = robot.touch;
-        touch2 = robot.touch2;
+//        colorSensor = robot.colorSensor;
+//        relativeLayout = robot.relativeLayout;
+//        blinkin = robot.blinkin;
+//        touch = robot.touch;
+//        touch2 = robot.touch2;
 
 
 
 
-        if (colorSensor instanceof SwitchableLight) {
-            ((SwitchableLight)colorSensor).enableLight(true);
-        }
+//        if (colorSensor instanceof SwitchableLight) {
+//            ((SwitchableLight)colorSensor).enableLight(true);
+//        }
 
-        colorSensor.setGain(colorSensorGain);
-        blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
+//        colorSensor.setGain(colorSensorGain);
+//        blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
     }
 
    @Override
     public void periodic(){
+        currentSlideState = targetSlideState;
 
-        if( getTouchBool() == false && targetSlideState == SlideState.DOWN ) {
-            currentSlideState = SlideState.TRANSITION;
-
-        } else {
-            currentSlideState = targetSlideState;
-        }
+//        if( getTouchBool() == false && targetSlideState == SlideState.DOWN ) {
+//            currentSlideState = SlideState.TRANSITION;
+//
+//        } else {
+//            currentSlideState = targetSlideState;
+//        }
 
         slideMotor1Position = slideMotor1.getCurrentPosition();
-        slideSpeed = pidController.calculate(targetPosition1-slideMotor1Position);
+        double pid = pidController.calculate(targetPosition1-slideMotor1Position);
 
 
-
+            double ff = Math.cos(Math.toRadians(targetPosition2 / ticks_per_degree)) * f;
 //        slideMotor1.setTargetPosition((int)targetPosition1);
-//        slideMotor2.setTargetPosition((int)targetPosition2);
-//        slideMotor1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-//        slideMotor2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-//        slideMotor1.setPower(slideSpeed);
-//        slideMotor2.setPower(slideSpeed);
 
-    if(currentLEDState == LEDState.NONE) setNoneLed();
+        slideSpeed = pid + ff;
+
+//        slideMotor1.setPower(slideSpeed);
+        slideMotor2.setPower(slideSpeed);
+
+//    if(currentLEDState == LEDState.NONE) setNoneLed();
 
 
 
@@ -182,7 +192,7 @@ public class Deposit extends SubsystemBase {
 //        telemetry.addData("Swivel Servo Current Position", swivelServo.getPosition());
 //        telemetry.addData("Swivel Servo Target Position", swivelPosition);
 
-        runColorSensor();
+//        runColorSensor();
 
 //        if(Math.abs(targetPosition1-slideMotor1Position) < 10 || Math.abs(targetPosition2-slideMotor2.getCurrentPosition()) < 10){
 //            currentSlideState = SlideState.TRANSITION;

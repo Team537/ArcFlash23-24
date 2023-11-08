@@ -109,7 +109,7 @@ public class RobotHardware {
             }
         }
 
-        cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+       // cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
 //        int[] viewportContainerIds = OpenCvCameraFactory.getInstance()
 //                .splitLayoutForMultipleViewports(
@@ -117,14 +117,14 @@ public class RobotHardware {
 //                        2, //The number of sub-containers to create
 //                        OpenCvCameraFactory.ViewportSplitMethod.VERTICALLY);
         voltageTimer = new ElapsedTime();
-        touch = hardwareMap.get(TouchSensor.class, "Touch");
-        touch2 = hardwareMap.get(TouchSensor.class, "Touch2");
+//        touch = hardwareMap.get(TouchSensor.class, "Touch");
+//        touch2 = hardwareMap.get(TouchSensor.class, "Touch2");
 
         frontLeftMotor = hardwareMap.get(DcMotorEx.class, "frontLeftMotor");
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
-//        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
 
 
 
@@ -134,7 +134,7 @@ public class RobotHardware {
         backRightServo = hardwareMap.get(CRServo.class, "backRightServo");
         shooterServo = hardwareMap.get(Servo.class, "shooterServo");
         angleServo = hardwareMap.get(Servo.class, "angleServo");
-        swivelServo = hardwareMap.get(Servo.class, "swivelServo");
+//        swivelServo = hardwareMap.get(Servo.class, "swivelServo");
         slideMotor1 = hardwareMap.get(DcMotorEx.class, "slideMotor1");
         slideMotor2 = hardwareMap.get(DcMotorEx.class, "slideMotor2");
 
@@ -155,16 +155,16 @@ public class RobotHardware {
         //Placeholder
 
 
-        blinkin = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+      //  blinkin = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
 
 
 //
         //webcam1 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), viewportContainerIds[0]);
 //        webcam2 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), viewportContainerIds[1]);
 //
-        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
-        relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
-        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+//        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
+//        relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+//        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
         voltage = hardwareMap.voltageSensor.iterator().next().getVoltage();
     }
