@@ -36,6 +36,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
     private static double MAX_Y_SPEED = 5.0;
     private static double MAX_TURN_SPEED = Math.PI/4;
     private boolean intakeToggle = false;
+    private double intakeToggleNumber = 0;
 
 
     @Override
@@ -84,7 +85,17 @@ public class TeleopSwerveDrive extends CommandOpMode {
         telemetry.update();
 
         if(gamepadEx.getButton(GamepadKeys.Button.A)) {
-            intakeToggle = !intakeToggle;
+            intakeToggleNumber++;
+            intakeToggleNumber++;
+            if(intakeToggleNumber <= 0) {
+                intakeToggle = !intakeToggle;
+            }
+        }
+
+        if(intakeToggleNumber > 20) {
+            intakeToggleNumber = 20;
+        } else if(intakeToggleNumber > 0) {
+            intakeToggleNumber--;
 
         }
 
