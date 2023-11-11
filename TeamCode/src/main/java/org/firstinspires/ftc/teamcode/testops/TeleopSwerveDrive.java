@@ -39,6 +39,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
     private double intakeToggleNumber = 0;
 
 
+
     @Override
     public void initialize() {
         CommandScheduler.getInstance().reset();
@@ -49,9 +50,11 @@ public class TeleopSwerveDrive extends CommandOpMode {
         robot.init(hardwareMap, telemetry);
         deposit = new Deposit(robot);
         gamepadEx = new GamepadEx(gamepad1);
-        drivetrain = new SwerveDrivetrain(robot);
+
+
 
         intake = new Intake(robot);
+
 
         robot.enabled = true;
 
