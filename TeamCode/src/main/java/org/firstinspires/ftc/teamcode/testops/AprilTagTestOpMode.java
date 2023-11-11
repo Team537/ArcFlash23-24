@@ -36,7 +36,8 @@ import kotlin.Unit;
 public class AprilTagTestOpMode extends CommandOpMode {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
-
+    public static double TRACK_WIDTH = 9, WHEEL_BASE = 9;
+    private static double kV = 0, kA = 0, kStatic = 0;
     static  double INCHES_PER_METER = 39.3701;
 
     static   double fx = 578.272;
@@ -92,8 +93,8 @@ public class AprilTagTestOpMode extends CommandOpMode {
 
         robot.init(hardwareMap, telemetry);
         gamepadEx = new GamepadEx(gamepad1);
-        drivetrain = new SwerveDrivetrain(robot);
-
+        drivetrain = new SwerveDrivetrain(kV,kA,kStatic,TRACK_WIDTH,WHEEL_BASE);
+        drivetrain.init(robot);
 
         robot.enabled = true;
 

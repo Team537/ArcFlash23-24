@@ -47,7 +47,8 @@ public class Teleop extends CommandOpMode {
     public static double fw_r = 4;
     public static double str_r = 4;
     private boolean lock_robot_heading = false;
-
+    public static double TRACK_WIDTH = 9, WHEEL_BASE = 9;
+    private static double kV = 0, kA = 0, kStatic = 0;
 
 
     GamepadEx gamepadEx, gamepadEx2;
@@ -64,7 +65,8 @@ public class Teleop extends CommandOpMode {
         Globals.USE_WHEEL_FEEDFORWARD = false;
 
         robot.init(hardwareMap, telemetry);
-        drivetrain = new SwerveDrivetrain(robot);
+        drivetrain = new SwerveDrivetrain(kV,kA,kStatic,TRACK_WIDTH,WHEEL_BASE);
+        drivetrain.init(robot);
         gamepadEx = new GamepadEx(gamepad1);
         gamepadEx2 = new GamepadEx(gamepad2);
 //        intake = new Intake(robot);
