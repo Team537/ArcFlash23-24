@@ -162,9 +162,9 @@ public class RobotHardware {
         //webcam1 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), viewportContainerIds[0]);
 //        webcam2 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), viewportContainerIds[1]);
 //
-//        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
-//        relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
-//        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
+        relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
         voltage = hardwareMap.voltageSensor.iterator().next().getVoltage();
     }
