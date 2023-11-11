@@ -85,15 +85,16 @@ public class TeleopSwerveDrive extends CommandOpMode {
         telemetry.update();
 
         if(gamepadEx.getButton(GamepadKeys.Button.A)) {
-            intakeToggleNumber++;
-            intakeToggleNumber++;
             if(intakeToggleNumber <= 0) {
                 intakeToggle = !intakeToggle;
             }
+            intakeToggleNumber++;
+            intakeToggleNumber++;
+
         }
 
-        if(intakeToggleNumber > 20) {
-            intakeToggleNumber = 20;
+        if(intakeToggleNumber > 4) {
+            intakeToggleNumber = 4;
         } else if(intakeToggleNumber > 0) {
             intakeToggleNumber--;
 
@@ -105,13 +106,24 @@ public class TeleopSwerveDrive extends CommandOpMode {
             intake.stop();
         }
 
-        if(gamepadEx.getButton(GamepadKeys.Button.B)){
+        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_UP)){
             deposit.setHighPosition();
         }
 
-        if(gamepadEx.getButton(GamepadKeys.Button.X)){
+        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_RIGHT)){
+            deposit.setMidPosition();
+        }
+
+        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_LEFT)){
+            deposit.setLowPosition();
+        }
+        
+        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_DOWN)){
             deposit.setDownPosition();
         }
+
+
+
 
         intake.loop();
         deposit.periodic();

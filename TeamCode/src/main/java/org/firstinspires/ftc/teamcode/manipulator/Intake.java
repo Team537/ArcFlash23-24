@@ -31,7 +31,7 @@ public class Intake {
     }
 
     public void run(){
-        power = 1;
+        power = -1;
         intakeState = IntakeState.RUNNING ;
     }
 
