@@ -81,6 +81,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
         telemetry.addData("Swerve", drivetrain.getTelemetry());
         telemetry.addData("Swerve Module States", drivetrain.getSwerveModuleStates());
         telemetry.addData("Swerve Module Servo", drivetrain.getSwerveServoPowers());
+        telemetry.addData("Module Velocities", drivetrain.getVelocities());
         telemetry.update();
 
         if(gamepadEx.getButton(GamepadKeys.Button.A)) {

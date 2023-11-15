@@ -163,4 +163,10 @@ public class SwerveDrivetrain {
                 frontRightModule.getServoPower()  + "\n" +
                 backRightModule.getServoPower()  + "\n";
     }
+    public String getVelocities(){
+        return frontLeftModule.getVelocity() + "\n" +
+                backLeftModule.getVelocity() + "\n" +
+                frontRightModule.getVelocity()  + "\n" +
+                backRightModule.getVelocity()  + "\n";
+    }
 }
