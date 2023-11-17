@@ -5,7 +5,7 @@ import com.acmerobotics.roadrunner.util.Angle;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 
 @Config
-public class AbsoluteAnalogEncoder {
+public class    AbsoluteAnalogEncoder {
     public static double DEFAULT_RANGE = 3.3;
     public static boolean VALUE_REJECTION = false;
     private final AnalogInput encoder;

@@ -75,7 +75,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
                 gamepadEx.getRightX() * MAX_TURN_SPEED
         ),new Rotation2d(robot.getAngle()));
 
-
+        robot.read(drivetrain);
         drivetrain.updateModules();
         telemetry.addData("Angle", robot.getAngle());
         telemetry.addData("Swerve", drivetrain.getTelemetry());

@@ -95,14 +95,15 @@ public class SwerveModule {
      * @return Module Absolute Angle in Radians
      */
     public void read() {
-        moduleAngle = absoluteAnalogEncoder.getCurrentPosition() * 2048 /360;
+        moduleAngle = absoluteAnalogEncoder.getCurrentPosition();
     }
 
     /**
      * Update Swerve Module by Adjusting Angle Error in Radians and Drive Power Percentage
      * */
     public void update() {
-        rotationController.setPIDF(P, I, D, 0.4);
+//        read();
+        rotationController.setPIDF(P, I, D, 0);
         rotationTarget = getTargetRotation();
         currentAngle = getModuleRotation();
 
@@ -214,7 +215,8 @@ public class SwerveModule {
 
 
     public void setDesiredState(SwerveModuleState state){
-        this.state = optimize(state, Rotation2d.fromDegrees(getModuleRotation() *180 / Math.PI));
+        this.state = state;
+                //optimize(state, Rotation2d.fromDegrees(getModuleRotation() *180 / Math.PI));
 
 //        double wheelInverse;
 

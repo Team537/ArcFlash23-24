@@ -136,6 +136,10 @@ public class Teleop extends CommandOpMode {
         double loop = System.nanoTime();
         telemetry.addData("hz ", 1000000000 / (loop - loopTime));
         telemetry.addData("IMU angle", robot.getAngle());
+        telemetry.addData("Swerve", drivetrain.getTelemetry());
+        telemetry.addData("Swerve Module States", drivetrain.getSwerveModuleStates());
+        telemetry.addData("Swerve Module Servo", drivetrain.getSwerveServoPowers());
+        telemetry.addData("Module Velocities", drivetrain.getVelocities());
         loopTime = loop;
         telemetry.update();
 
