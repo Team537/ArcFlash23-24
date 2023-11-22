@@ -5,7 +5,9 @@ import android.view.View;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.PIDController;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 
@@ -66,6 +68,10 @@ public class ArmSystem {
         colorSensor1 = robot.colorSensor;
 //        colorSensor2 = robot.colorSensor2;
         relativeLayout = robot.relativeLayout;
+
+        if (colorSensor1 instanceof SwitchableLight) {
+           ((SwitchableLight)colorSensor1).enableLight(true);
+        }
     }
 
     public void loop(){
@@ -177,6 +183,14 @@ public class ArmSystem {
 
     public double getClaw2Position(){
         return clawServo2.getPosition();
+    }
+
+    public boolean getPixel1Detcted(){
+        return colorSensor1.getDistance(DistanceUnit.CM) < 5;
+    }
+
+    public boolean getPixel2Detcted(){
+        return colorSensor2.getDistance(DistanceUnit.CM) < 5;
     }
 
 

@@ -38,6 +38,11 @@ public class TeleopSwerveDrive extends CommandOpMode {
     private boolean claw2Boolean = false;
     private boolean clawBoolean = false;
 
+    private boolean claw1OpenFirst = true;
+    private boolean claw2OpenFirst = true;
+
+    private boolean pixel1Detected = false;
+    private boolean pixel2Detected = false;
 
 
 
@@ -81,22 +86,12 @@ public class TeleopSwerveDrive extends CommandOpMode {
         ),new Rotation2d(robot.getAngle()));
 
 
-        drivetrain.updateModules();
-        telemetry.addData("Angle", robot.getAngle());
-        telemetry.addData("Swerve", drivetrain.getTelemetry());
-        telemetry.addData("Swerve Module States", drivetrain.getSwerveModuleStates());
-        telemetry.addData("Swerve Module Servo", drivetrain.getSwerveServoPowers());
-        telemetry.addData("Module Velocities", drivetrain.getVelocities());
-        telemetry.addData("Pivot Position", arm.getPivotPosition());
-        telemetry.addData("Pivot Speed", arm.getPivotSpeed());
-        telemetry.addData("Extend Position", arm.getExtendPosition());
-        telemetry.addData("Extend Speed", arm.getExtendSpeed());
-        telemetry.addData("Wrist Position", arm.getWristPosition());
-        telemetry.addData("Claw 1 Position", arm.getClaw1Position());
-        telemetry.addData("Claw 2 Position", arm.getClaw2Position());
-        telemetry.update();
 
-        arm.loop();
+
+        pixel1Detected = arm.getPixel1Detcted();
+        pixel2Detected = arm.getPixel2Detcted();
+
+
 
         if(gamepadEx2.getButton(GamepadKeys.Button.DPAD_UP)){
             arm.setHighPosition();
@@ -116,22 +111,15 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
         if(gamepadEx2.getButton(GamepadKeys.Button.LEFT_BUMPER)){
             claw1Boolean = !claw1Boolean;
+            toggleClaw1();
 
-            if(claw1Boolean){
-                arm.setClaw1Open();
-            } else {
-                arm.setClaw1Closed();
-            }
+
         }
 
         if(gamepadEx2.getButton(GamepadKeys.Button.RIGHT_BUMPER)){
             claw2Boolean = !claw2Boolean;
+            toggleClaw2();
 
-            if(claw2Boolean){
-                arm.setClaw2Open();
-            } else {
-                arm.setClaw2Closed();
-            }
         }
 
         if(gamepadEx2.getButton(GamepadKeys.Button.Y)){
@@ -140,15 +128,50 @@ public class TeleopSwerveDrive extends CommandOpMode {
             claw1Boolean = clawBoolean;
             claw2Boolean = clawBoolean;
 
-            if(clawBoolean){
-                arm.setClawOpen();
+            toggleClaw1();
+            toggleClaw2();
 
-            } else {
-                arm.setClawClosed();
+        }
+
+        if(pixel1Detected){
+            if(claw1OpenFirst) {
+                arm.setClaw1Closed();
+                claw1Boolean = false;
+                claw1OpenFirst = false;
+            } else if (claw1Boolean){
+                claw1OpenFirst = true;
+            }
+        }
+
+        if(pixel2Detected){
+            if(claw2OpenFirst) {
+                arm.setClaw2Closed();
+                claw2Boolean = false;
+                claw2OpenFirst = false;
+            } else if (claw2Boolean){
+                claw2OpenFirst = true;
             }
         }
 
 
+
+
+
+        drivetrain.updateModules();
+        telemetry.addData("Angle", robot.getAngle());
+        telemetry.addData("Swerve", drivetrain.getTelemetry());
+        telemetry.addData("Swerve Module States", drivetrain.getSwerveModuleStates());
+        telemetry.addData("Swerve Module Servo", drivetrain.getSwerveServoPowers());
+        telemetry.addData("Module Velocities", drivetrain.getVelocities());
+        telemetry.addData("Pivot Position", arm.getPivotPosition());
+        telemetry.addData("Pivot Speed", arm.getPivotSpeed());
+        telemetry.addData("Extend Position", arm.getExtendPosition());
+        telemetry.addData("Extend Speed", arm.getExtendSpeed());
+        telemetry.addData("Wrist Position", arm.getWristPosition());
+        telemetry.addData("Claw 1 Position", arm.getClaw1Position());
+        telemetry.addData("Claw 2 Position", arm.getClaw2Position());
+        arm.loop();
+        telemetry.update();
 
 
 
@@ -157,6 +180,21 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
     }
 
+    public void toggleClaw1(){
+        if(claw1Boolean){
+            arm.setClaw1Open();
+        } else {
+            arm.setClaw1Closed();
+        }
+    }
+
+    public void toggleClaw2(){
+        if(claw2Boolean){
+            arm.setClaw2Open();
+        } else {
+            arm.setClaw2Closed();
+        }
+    }
 
 
 }
