@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.manipulator;
 
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import android.graphics.Color;
 import android.view.View;
 
@@ -37,8 +35,8 @@ public class Intake {
 
 
     public Intake(RobotHardware robot){
-        intakeMotor = robot.intakeMotor;
-        colorSensor = robot.colorSensor;
+        intakeMotor = robot.armExtend;
+        colorSensor = robot.colorSensor1;
         relativeLayout = robot.relativeLayout;
 
     }

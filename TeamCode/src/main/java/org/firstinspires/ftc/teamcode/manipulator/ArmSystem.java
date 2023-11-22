@@ -60,13 +60,13 @@ public class ArmSystem {
     private double ticks_per_degree = 700/180;
 
     public ArmSystem(RobotHardware robot){
-        armPivot = robot.slideMotor1;
-        armExtend = robot.intakeMotor;
-        clawServo1 = robot.angleServo;
-        clawServo2 = robot.angleServo2;
-        wristServo = robot.latchServo;
-        colorSensor1 = robot.colorSensor;
-//        colorSensor2 = robot.colorSensor2;
+        armPivot = robot.armPivot;
+        armExtend = robot.armExtend;
+        clawServo1 = robot.clawServo1;
+        clawServo2 = robot.clawServo2;
+        wristServo = robot.wristServo;
+        colorSensor1 = robot.colorSensor1;
+        colorSensor2 = robot.colorSensor2;
         relativeLayout = robot.relativeLayout;
 
         if (colorSensor1 instanceof SwitchableLight) {

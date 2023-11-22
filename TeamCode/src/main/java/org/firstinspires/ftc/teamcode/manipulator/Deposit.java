@@ -11,7 +11,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.PIDController;
@@ -120,11 +119,11 @@ public class Deposit extends SubsystemBase {
     }
 
     public Deposit(RobotHardware robot){
-        slideMotor1 = robot.slideMotor1;
+        slideMotor1 = robot.armPivot;
         slideMotor2 = robot.slideMotor2;
-        angleServo = robot.angleServo;
-        angleServo2 = robot.angleServo2;
-        latchServo = robot.latchServo;
+        angleServo = robot.clawServo1;
+        angleServo2 = robot.clawServo2;
+        latchServo = robot.wristServo;
 //        swivelServo = robot.swivelServo;
 //        colorSensor = robot.colorSensor;
 //        relativeLayout = robot.relativeLayout;

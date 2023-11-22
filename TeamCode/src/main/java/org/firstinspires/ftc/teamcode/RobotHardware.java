@@ -14,17 +14,14 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.util.Encoder;
 import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
 
 import javax.annotation.concurrent.GuardedBy;
 
@@ -33,7 +30,7 @@ public class RobotHardware {
     public DcMotorEx frontRightMotor;
     public DcMotorEx backLeftMotor;
     public DcMotorEx backRightMotor;
-    public DcMotorEx intakeMotor;
+    public DcMotorEx armExtend;
 
 
     public TouchSensor touch;
@@ -44,12 +41,12 @@ public class RobotHardware {
     public CRServo backRightServo;
     public Servo shooterServo;
 
-    public Servo angleServo;
-    public Servo angleServo2;
+    public Servo clawServo1;
+    public Servo clawServo2;
 
-    public Servo latchServo;
+    public Servo wristServo;
     public Servo swivelServo;
-    public DcMotorEx slideMotor1;
+    public DcMotorEx armPivot;
     public DcMotorEx slideMotor2;
 
     public AnalogInput frontLeftEncoder;
@@ -70,7 +67,8 @@ public class RobotHardware {
 
     public RevBlinkinLedDriver blinkin;
 
-    public RevColorSensorV3 colorSensor;
+    public RevColorSensorV3 colorSensor1;
+    public RevColorSensorV3 colorSensor2;
     public View relativeLayout;
     public int relativeLayoutId;
 
@@ -124,7 +122,7 @@ public class RobotHardware {
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
-        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        armExtend = hardwareMap.get(DcMotorEx.class, "armExtend");
 
 
 
@@ -133,9 +131,10 @@ public class RobotHardware {
         backLeftServo = hardwareMap.get(CRServo.class, "backLeftServo");
         backRightServo = hardwareMap.get(CRServo.class, "backRightServo");
         shooterServo = hardwareMap.get(Servo.class, "shooterServo");
-        angleServo = hardwareMap.get(Servo.class, "angleServo");
-//        swivelServo = hardwareMap.get(Servo.class, "swivelServo");
-        slideMotor1 = hardwareMap.get(DcMotorEx.class, "slideMotor1");
+        clawServo1 = hardwareMap.get(Servo.class, "clawServo1");
+        clawServo2 = hardwareMap.get(Servo.class, "clawServo2");
+        wristServo = hardwareMap.get(Servo.class, "wristServo");
+        armPivot = hardwareMap.get(DcMotorEx.class, "armPivot");
         slideMotor2 = hardwareMap.get(DcMotorEx.class, "slideMotor2");
 
         frontLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -162,7 +161,8 @@ public class RobotHardware {
         //webcam1 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), viewportContainerIds[0]);
 //        webcam2 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), viewportContainerIds[1]);
 //
-        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
+        colorSensor1 = hardwareMap.get(RevColorSensorV3.class, "colorSensor1");
+        colorSensor2 = hardwareMap.get(RevColorSensorV3.class, "colorSensor2");
         relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
         relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
