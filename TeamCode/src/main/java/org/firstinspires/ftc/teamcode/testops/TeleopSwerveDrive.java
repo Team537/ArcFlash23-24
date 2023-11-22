@@ -10,16 +10,12 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.geometry.Rotation2d;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.ChassisSpeeds;
-import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Globals;
-import org.firstinspires.ftc.teamcode.Pose;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.SwerveDrivetrain;
-import org.firstinspires.ftc.teamcode.manipulator.Deposit;
-
-
+import org.firstinspires.ftc.teamcode.manipulator.ArmSystem;
 
 
 @Config
@@ -28,13 +24,19 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();
     private SwerveDrivetrain drivetrain;
+    private ArmSystem arm;
 
 
 
-    private GamepadEx gamepadEx;
+    private GamepadEx gamepadEx1;
+    private GamepadEx gamepadEx2;
     private static double MAX_X_SPEED = 5.0;
     private static double MAX_Y_SPEED = 5.0;
     private static double MAX_TURN_SPEED = Math.PI/4;
+
+    private boolean claw1Boolean = false;
+    private boolean claw2Boolean = false;
+    private boolean clawBoolean = false;
 
 
 
@@ -47,8 +49,9 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
 
         robot.init(hardwareMap, telemetry);
-
-        gamepadEx = new GamepadEx(gamepad1);
+        arm = new ArmSystem(robot);
+        gamepadEx1 = new GamepadEx(gamepad1);
+        gamepadEx2 = new GamepadEx(gamepad2);
         drivetrain = new SwerveDrivetrain(robot);
 
 
@@ -72,9 +75,9 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
         robot.startIMUThread(this);
         drivetrain.driveVelocity(new ChassisSpeeds(
-                gamepadEx.getLeftY() * MAX_X_SPEED,
-                gamepadEx.getLeftX() * MAX_Y_SPEED,
-                gamepadEx.getRightX() * MAX_TURN_SPEED
+                gamepadEx1.getLeftY() * MAX_X_SPEED,
+                gamepadEx1.getLeftX() * MAX_Y_SPEED,
+                gamepadEx1.getRightX() * MAX_TURN_SPEED
         ),new Rotation2d(robot.getAngle()));
 
 
@@ -84,31 +87,66 @@ public class TeleopSwerveDrive extends CommandOpMode {
         telemetry.addData("Swerve Module States", drivetrain.getSwerveModuleStates());
         telemetry.addData("Swerve Module Servo", drivetrain.getSwerveServoPowers());
         telemetry.addData("Module Velocities", drivetrain.getVelocities());
+        telemetry.addData("Pivot Position", arm.getPivotPosition());
+        telemetry.addData("Pivot Speed", arm.getPivotSpeed());
+        telemetry.addData("Extend Position", arm.getExtendPosition());
+        telemetry.addData("Extend Speed", arm.getExtendSpeed());
+        telemetry.addData("Wrist Position", arm.getWristPosition());
+        telemetry.addData("Claw 1 Position", arm.getClaw1Position());
+        telemetry.addData("Claw 2 Position", arm.getClaw2Position());
         telemetry.update();
 
 
-
-
-
-
-
-
-
-        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_UP)){
-
+        if(gamepadEx2.getButton(GamepadKeys.Button.DPAD_UP)){
+            arm.setHighPosition();
         }
 
-        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_RIGHT)){
-
+        if(gamepadEx2.getButton(GamepadKeys.Button.DPAD_RIGHT)){
+            arm.setMidPosition();
         }
 
-        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_LEFT)){
-
+        if(gamepadEx2.getButton(GamepadKeys.Button.DPAD_LEFT)){
+            arm.setLowPosition();
         }
         
-        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_DOWN)){
-
+        if(gamepadEx2.getButton(GamepadKeys.Button.DPAD_DOWN)){
+            arm.setDownPosition();
         }
+
+        if(gamepadEx2.getButton(GamepadKeys.Button.LEFT_BUMPER)){
+            claw1Boolean = !claw1Boolean;
+
+            if(claw1Boolean){
+                arm.setClaw1Open();
+            } else {
+                arm.setClaw1Closed();
+            }
+        }
+
+        if(gamepadEx2.getButton(GamepadKeys.Button.RIGHT_BUMPER)){
+            claw2Boolean = !claw2Boolean;
+
+            if(claw2Boolean){
+                arm.setClaw2Open();
+            } else {
+                arm.setClaw2Closed();
+            }
+        }
+
+        if(gamepadEx2.getButton(GamepadKeys.Button.Y)){
+            clawBoolean = !clawBoolean;
+
+            claw1Boolean = clawBoolean;
+            claw2Boolean = clawBoolean;
+
+            if(clawBoolean){
+                arm.setClawOpen();
+
+            } else {
+                arm.setClawClosed();
+            }
+        }
+
 
 
 

@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.PIDController;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 
-public class Arm {
+public class ArmSystem {
     private DcMotorEx armPivot;
     private DcMotorEx armExtend;
     private Servo clawServo1;
@@ -24,6 +24,9 @@ public class Arm {
 
     private PIDController armExtendController = new PIDController(0.01, 0, 0.01);
     private double extendF = 0;
+
+    double pivotSpeed = 0;
+    double extendSpeed = 0;
 
     private double pivotTargetPosition = 0;
     private double extendTargetPosition = 0;
@@ -54,7 +57,7 @@ public class Arm {
 
     private double ticks_per_degree = 700/180;
 
-    public Arm(RobotHardware robot){
+    public ArmSystem(RobotHardware robot){
         armPivot = robot.slideMotor1;
         armExtend = robot.intakeMotor;
         clawServo1 = robot.angleServo;
@@ -70,7 +73,7 @@ public class Arm {
         double armPosition = armPivot.getCurrentPosition();
         double pivotPid = armPivotController.calculate(pivotTargetPosition-armPosition);
         double pivotFf = Math.cos(Math.toRadians(pivotTargetPosition / ticks_per_degree)) * pivotF;
-        double pivotSpeed = pivotPid + pivotFf;
+        pivotSpeed = pivotPid + pivotFf;
 
         if(Math.abs(pivotTargetPosition-armPosition) > 5) {
             armPivot.setPower(pivotSpeed);
@@ -81,7 +84,7 @@ public class Arm {
         double extendPosition = armExtend.getCurrentPosition();
         double extendPid = armExtendController.calculate(extendTargetPosition-extendPosition);
         double extendFf = Math.cos(Math.toRadians(extendTargetPosition / ticks_per_degree)) * extendF;
-        double extendSpeed = extendPid + extendFf;
+        extendSpeed = extendPid + extendFf;
 
         if(Math.abs(extendTargetPosition-extendPosition) > 5) {
             armExtend.setPower(extendSpeed);
@@ -146,6 +149,34 @@ public class Arm {
     public void setClawClosed(){
         setClaw1Closed();
         setClaw2Closed();
+    }
+
+    public double getPivotPosition(){
+        return armPivot.getCurrentPosition();
+    }
+
+    public double getExtendPosition(){
+        return armExtend.getCurrentPosition();
+    }
+
+    public double getPivotSpeed(){
+        return pivotSpeed;
+    }
+
+    public double getExtendSpeed(){
+        return extendSpeed;
+    }
+
+    public double getWristPosition(){
+        return wristServo.getPosition();
+    }
+
+    public double getClaw1Position(){
+        return clawServo1.getPosition();
+    }
+
+    public double getClaw2Position(){
+        return clawServo2.getPosition();
     }
 
 
