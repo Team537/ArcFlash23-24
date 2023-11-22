@@ -18,8 +18,9 @@ import org.firstinspires.ftc.teamcode.Pose;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.SwerveDrivetrain;
 import org.firstinspires.ftc.teamcode.manipulator.Deposit;
-import org.firstinspires.ftc.teamcode.manipulator.Intake;
-import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
+
+
+
 
 @Config
 @TeleOp(name = "Test Swerve Drive")
@@ -27,17 +28,15 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();
     private SwerveDrivetrain drivetrain;
-    private Intake intake;
-    private Deposit deposit;
+
 
 
     private GamepadEx gamepadEx;
     private static double MAX_X_SPEED = 5.0;
     private static double MAX_Y_SPEED = 5.0;
     private static double MAX_TURN_SPEED = Math.PI/4;
-    private IntakeToggle intakeToggle = IntakeToggle.STOP;
-    private boolean intakeRunOut = false;
-    private double intakeToggleNumber = 0;
+
+
 
 
     @Override
@@ -48,11 +47,11 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
 
         robot.init(hardwareMap, telemetry);
-        deposit = new Deposit(robot);
+
         gamepadEx = new GamepadEx(gamepad1);
         drivetrain = new SwerveDrivetrain(robot);
 
-        intake = new Intake(robot);
+
 
         robot.enabled = true;
 
@@ -87,92 +86,39 @@ public class TeleopSwerveDrive extends CommandOpMode {
         telemetry.addData("Module Velocities", drivetrain.getVelocities());
         telemetry.update();
 
-        if(gamepadEx.getButton(GamepadKeys.Button.A)) {
-            if(intakeToggleNumber <= 0) {
-                if(intakeToggle == IntakeToggle.STOP) {
-                    intakeToggle = IntakeToggle.RUN;
-                } else if(intakeToggle == IntakeToggle.RUN) {
-                    intakeToggle = IntakeToggle.STOP;
-                } else if(intakeToggle == IntakeToggle.RUNOUT) {
-                    intakeToggle = IntakeToggle.STOP;
-
-                }
-            }
-            intakeToggleNumber++;
-            intakeToggleNumber++;
-
-        }
-        if(gamepadEx.getButton(GamepadKeys.Button.RIGHT_BUMPER)) {
-            intake.resetIntakeCount();
-        }
-
-        if(intakeToggleNumber > 4) {
-            intakeToggleNumber = 4;
-        } else if(intakeToggleNumber > 0) {
-            intakeToggleNumber--;
-        }
-
-//        if (intake.getLEDFlashBool()){
-//            deposit.setWhiteLed();
-//            deposit.setLEDState(Deposit.LEDState.NONE);
-//        }
 
 
-        if(intakeToggle == IntakeToggle.RUN){
-            intake.run();
-        }else if(intakeToggle == IntakeToggle.RUNOUT){
-            intake.runOut();
-        } else if (intakeToggle == IntakeToggle.STOP){
-            intake.stop();
-        }
 
-        if(intake.isDoublePixel()){
-            intakeToggle = IntakeToggle.RUNOUT;
-        }
 
-        if(intakeToggle == IntakeToggle.RUNOUT && !intake.isDoublePixel()) {
-            intakeToggle = IntakeToggle.STOP;
-        }
 
-        intake.runColorSensor();
+
+
 
         if(gamepadEx.getButton(GamepadKeys.Button.DPAD_UP)){
-            deposit.setHighPosition();
+
         }
 
         if(gamepadEx.getButton(GamepadKeys.Button.DPAD_RIGHT)){
-            deposit.setMidPosition();
+
         }
 
         if(gamepadEx.getButton(GamepadKeys.Button.DPAD_LEFT)){
-            deposit.setLowPosition();
+
         }
         
         if(gamepadEx.getButton(GamepadKeys.Button.DPAD_DOWN)){
-            deposit.setDownPosition();
+
         }
 
 
 
 
-        intake.loop();
-        deposit.periodic();
-//        robot.clearBulkCache();
-        telemetry.addData("Intake State", intake.getIntakeState());
-        telemetry.addData("Slide State", deposit.getCurrentSlideState());
-        telemetry.addData("Slide 1 Position", deposit.getSlideMotor1Position());
-        telemetry.addData("Slide 2 Position", deposit.getSlideMotor2Position());
-        telemetry.addData("Current Pixel State", intake.getCurrentPixelState());
-        telemetry.addData("Current Pixel Count", intake.getCurrentPixelCount());
+
 
 
     }
 
 
-    public enum IntakeToggle {
-        RUN,
-        RUNOUT,
-        STOP
-    }
+
 }
 
