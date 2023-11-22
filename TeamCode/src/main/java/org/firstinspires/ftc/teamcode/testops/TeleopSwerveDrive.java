@@ -96,6 +96,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
         telemetry.addData("Claw 2 Position", arm.getClaw2Position());
         telemetry.update();
 
+        arm.loop();
 
         if(gamepadEx2.getButton(GamepadKeys.Button.DPAD_UP)){
             arm.setHighPosition();
