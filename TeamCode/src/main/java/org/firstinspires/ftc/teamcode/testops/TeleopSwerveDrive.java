@@ -35,7 +35,9 @@ public class TeleopSwerveDrive extends CommandOpMode {
     private static double MAX_X_SPEED = 5.0;
     private static double MAX_Y_SPEED = 5.0;
     private static double MAX_TURN_SPEED = Math.PI/4;
-    private boolean intakeToggle = false;
+    private IntakeToggle intakeToggle = IntakeToggle.STOP;
+    private boolean intakeRunOut = false;
+    private double intakeToggleNumber = 0;
 
 
     @Override
@@ -56,6 +58,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
 
 //        PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+
 
 //        PhotonCore.EXPANSION_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
 //        PhotonCore.experimental.setMaximumParallelCommands(8);
@@ -85,23 +88,72 @@ public class TeleopSwerveDrive extends CommandOpMode {
         telemetry.update();
 
         if(gamepadEx.getButton(GamepadKeys.Button.A)) {
-            intakeToggle = !intakeToggle;
+            if(intakeToggleNumber <= 0) {
+                if(intakeToggle == IntakeToggle.STOP) {
+                    intakeToggle = IntakeToggle.RUN;
+                } else if(intakeToggle == IntakeToggle.RUN) {
+                    intakeToggle = IntakeToggle.STOP;
+                } else if(intakeToggle == IntakeToggle.RUNOUT) {
+                    intakeToggle = IntakeToggle.STOP;
+
+                }
+            }
+            intakeToggleNumber++;
+            intakeToggleNumber++;
 
         }
+        if(gamepadEx.getButton(GamepadKeys.Button.RIGHT_BUMPER)) {
+            intake.resetIntakeCount();
+        }
 
-        if(intakeToggle){
+        if(intakeToggleNumber > 4) {
+            intakeToggleNumber = 4;
+        } else if(intakeToggleNumber > 0) {
+            intakeToggleNumber--;
+        }
+
+//        if (intake.getLEDFlashBool()){
+//            deposit.setWhiteLed();
+//            deposit.setLEDState(Deposit.LEDState.NONE);
+//        }
+
+
+        if(intakeToggle == IntakeToggle.RUN){
             intake.run();
-        }else{
+        }else if(intakeToggle == IntakeToggle.RUNOUT){
+            intake.runOut();
+        } else if (intakeToggle == IntakeToggle.STOP){
             intake.stop();
         }
 
-        if(gamepadEx.getButton(GamepadKeys.Button.B)){
+        if(intake.isDoublePixel()){
+            intakeToggle = IntakeToggle.RUNOUT;
+        }
+
+        if(intakeToggle == IntakeToggle.RUNOUT && !intake.isDoublePixel()) {
+            intakeToggle = IntakeToggle.STOP;
+        }
+
+        intake.runColorSensor();
+
+        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_UP)){
             deposit.setHighPosition();
         }
 
-        if(gamepadEx.getButton(GamepadKeys.Button.X)){
+        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_RIGHT)){
+            deposit.setMidPosition();
+        }
+
+        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_LEFT)){
+            deposit.setLowPosition();
+        }
+        
+        if(gamepadEx.getButton(GamepadKeys.Button.DPAD_DOWN)){
             deposit.setDownPosition();
         }
+
+
+
 
         intake.loop();
         deposit.periodic();
@@ -110,7 +162,17 @@ public class TeleopSwerveDrive extends CommandOpMode {
         telemetry.addData("Slide State", deposit.getCurrentSlideState());
         telemetry.addData("Slide 1 Position", deposit.getSlideMotor1Position());
         telemetry.addData("Slide 2 Position", deposit.getSlideMotor2Position());
+        telemetry.addData("Current Pixel State", intake.getCurrentPixelState());
+        telemetry.addData("Current Pixel Count", intake.getCurrentPixelCount());
 
 
     }
+
+
+    public enum IntakeToggle {
+        RUN,
+        RUNOUT,
+        STOP
+    }
 }
+

@@ -87,7 +87,7 @@ public class Deposit extends SubsystemBase {
     private Timing.Timer highScoreTimer = new Timing.Timer(5);
 
 
-    private PIDController pidController = new PIDController(0.01, 0, 0.01);
+    private PIDController pidController = new PIDController(0.01 , 0, 0.01);
     private double ticks_per_degree = 700/180;
     private double slideMotor1Position;
     private static double ticksPerDegree = 700/180;
@@ -154,17 +154,23 @@ public class Deposit extends SubsystemBase {
 //            currentSlideState = targetSlideState;
 //        }
 
-        slideMotor1Position = slideMotor1.getCurrentPosition();
+        slideMotor1Position = slideMotor2.getCurrentPosition();
         double pid = pidController.calculate(targetPosition1-slideMotor1Position);
 
 
-            double ff = Math.cos(Math.toRadians(targetPosition2 / ticks_per_degree)) * f;
+            double ff = Math.cos(Math.toRadians(targetPosition1 / ticks_per_degree)) * f;
 //        slideMotor1.setTargetPosition((int)targetPosition1);
 
-        slideSpeed = pid + ff;
+        slideSpeed = (pid + ff);
 
 //        slideMotor1.setPower(slideSpeed);
-        slideMotor2.setPower(slideSpeed);
+       if(Math.abs(targetPosition2-slideMotor1Position) > 5) {
+           slideMotor1.setPower(slideSpeed * 0.1);
+           slideMotor2.setPower(slideSpeed*0.1);
+       } else{
+           slideMotor1.setPower(0);
+           slideMotor2.setPower(0);
+       }
 
 //    if(currentLEDState == LEDState.NONE) setNoneLed();
 
