@@ -138,9 +138,9 @@ public class RobotHardware {
         slideMotor1 = hardwareMap.get(DcMotorEx.class, "slideMotor1");
         slideMotor2 = hardwareMap.get(DcMotorEx.class, "slideMotor2");
 
-        frontLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
-        frontRightServo.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
+      frontLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
+     frontRightServo.setDirection(DcMotorSimple.Direction.REVERSE);
+      backLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightServo.setDirection(DcMotorSimple.Direction.REVERSE);
 
         frontLeftEncoder = hardwareMap.get(AnalogInput.class, "frontLeftEncoder");

@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.CRServoImplEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.PwmControl;
@@ -28,8 +29,8 @@ import javax.xml.parsers.SAXParser;
 
 @Config
 public class SwerveModule {
-    public static double P = 0.1, I = 0, D = 0;
-    public static double K_STATIC = 0.03;
+    public static double P = 0.05, I = 0, D = 0, F = 0.1;
+    public static double K_STATIC = 0.001;
 
     public static double MAX_SERVO = .95, MAX_MOTOR = 0.2; //max speed of either, motor at 20% now for testing
 
@@ -69,11 +70,13 @@ public class SwerveModule {
         this.driveMotor.setMotorType(motorConfigurationType);
         this.driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
+        this.driveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
         this.servo = servo;
         ((CRServoImplEx) this.servo).setPwmRange(new PwmControl.PwmRange(505, 2495, 5000));
 
         this.absoluteAnalogEncoder = absoluteAnalogEncoder;
-        rotationController = new PIDFController(P, I, D, 0.1);
+        rotationController = new PIDFController(P, I, D, F);
         this.driveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
     /**
@@ -102,8 +105,8 @@ public class SwerveModule {
      * Update Swerve Module by Adjusting Angle Error in Radians and Drive Power Percentage
      * */
     public void update() {
-//        read();
-        rotationController.setPIDF(P, I, D, 0);
+       read();
+        rotationController.setPIDF(P, I, D, F);
         rotationTarget = getTargetRotation();
         currentAngle = getModuleRotation();
 
@@ -218,17 +221,17 @@ public class SwerveModule {
         this.state = state;
                 //optimize(state, Rotation2d.fromDegrees(getModuleRotation() *180 / Math.PI));
 
-//        double wheelInverse;
+     double wheelInverse;
 
-//        if(state.speedMetersPerSecond < 0){
-//
-//            wheelInverse = 1;
-//        } else {
-//            wheelInverse = -1;
-//        }
+        if(wheelFlipped){
+
+            wheelInverse = 1;
+        } else {
+            wheelInverse = -1;
+        }
 
 
-         driveMotor.setVelocity(((this.state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ));
+         driveMotor.setVelocity( wheelInverse *((this.state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ));
         //driveMotor.setVelocity(-10);
          setTargetRotation(state.angle.getRadians());
 
