@@ -122,7 +122,7 @@ public class RobotHardware {
 
         frontLeftMotor = hardwareMap.get(DcMotorEx.class, "frontLeftMotor");
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
-        backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
+        backLeftMotor =  hardwareMap.get(DcMotorEx.class, "backRightMotor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
 //        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
 
@@ -132,7 +132,7 @@ public class RobotHardware {
 //        frontRightServo = hardwareMap.get(CRServo.class, "frontRightServo");
 //        backLeftServo = hardwareMap.get(CRServo.class, "backLeftServo");
 //        backRightServo = hardwareMap.get(CRServo.class, "backRightServo");
-        shooterServo = hardwareMap.get(Servo.class, "droneShooter");
+       // shooterServo = hardwareMap.get(Servo.class, "droneShooter");
 //        angleServo = hardwareMap.get(Servo.class, "angleServo");
 //        swivelServo = hardwareMap.get(Servo.class, "swivelServo");
 //        latchServo = hardwareMap.get(Servo.class, "latchServo");
