@@ -31,7 +31,8 @@ public class TeleopSwerveDrive extends CommandOpMode {
     private Deposit deposit;
 
 
-    private GamepadEx gamepadEx;
+    private GamepadEx gamepadEx1;
+    private GamepadEx gamepadEx2;
     private static double MAX_X_SPEED = 5.0;
     private static double MAX_Y_SPEED = 5.0;
     private static double MAX_TURN_SPEED = Math.PI/4;
@@ -71,9 +72,9 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
         robot.startIMUThread(this);
         drivetrain.driveVelocity(new ChassisSpeeds(
-                gamepadEx.getLeftY() * MAX_X_SPEED,
-                gamepadEx.getLeftX() * MAX_Y_SPEED,
-                gamepadEx.getRightX() * MAX_TURN_SPEED
+                gamepadEx1.getLeftY() * MAX_X_SPEED,
+                gamepadEx1.getLeftX() * MAX_Y_SPEED,
+                gamepadEx1.getRightX() * MAX_TURN_SPEED
         ),new Rotation2d(robot.getAngle()));
 
         robot.read(drivetrain);
@@ -165,27 +166,27 @@ public class TeleopSwerveDrive extends CommandOpMode {
         //arm.loop();
         telemetry.update();
 
-        if(gamepadEx.getButton(GamepadKeys.Button.A)) {
-            intakeToggle = !intakeToggle;
-
-        }
-
-        if(intakeToggle){
-            intake.run();
-        }else{
-            intake.stop();
-        }
-
-        if(gamepadEx.getButton(GamepadKeys.Button.B)){
-            deposit.setHighPosition();
-        }
-
-        if(gamepadEx.getButton(GamepadKeys.Button.X)){
-            deposit.setDownPosition();
-        }
-
-        intake.loop();
-        deposit.periodic();
+//        if(gamepadEx.getButton(GamepadKeys.Button.A)) {
+//            intakeToggle = !intakeToggle;
+//
+//        }
+//
+//        if(intakeToggle){
+//            intake.run();
+//        }else{
+//            intake.stop();
+//        }
+//
+//        if(gamepadEx.getButton(GamepadKeys.Button.B)){
+//            deposit.setHighPosition();
+//        }
+//
+//        if(gamepadEx.getButton(GamepadKeys.Button.X)){
+//            deposit.setDownPosition();
+//        }
+//
+//        intake.loop();
+//        deposit.periodic();
 //        robot.clearBulkCache();
         telemetry.addData("Intake State", intake.getIntakeState());
         telemetry.addData("Slide State", deposit.getCurrentSlideState());
