@@ -36,6 +36,7 @@ public class MecanumDrive extends LinearOpMode {
         // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
         imu.initialize(parameters);
 
+        double slow = 1;
         waitForStart();
 
         if (isStopRequested()) return;
@@ -48,8 +49,14 @@ public class MecanumDrive extends LinearOpMode {
             // This button choice was made so that it is hard to hit on accident,
             // it can be freely changed based on preference.
             // The equivalent button is start on Xbox-style controllers.
-            if (gamepad1.options) {
+            if (gamepad1.x) {
                 imu.resetYaw();
+            }
+
+            if(gamepad1.right_trigger >= 0.75) {
+                slow = 0.5;
+            } else {
+                slow = 1;
             }
 
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
@@ -69,10 +76,12 @@ public class MecanumDrive extends LinearOpMode {
             double frontRightPower = (rotY - rotX - rx) / denominator;
             double backRightPower = (rotY + rotX - rx) / denominator;
 
-            frontLeftMotor.setPower(frontLeftPower);
-            backLeftMotor.setPower(backLeftPower);
-            frontRightMotor.setPower(frontRightPower);
-            backRightMotor.setPower(backRightPower);
+            frontLeftMotor.setPower(frontLeftPower * slow);
+            backLeftMotor.setPower(backLeftPower * slow);
+            frontRightMotor.setPower(frontRightPower * slow);
+            backRightMotor.setPower(backRightPower * slow);
         }
+
     }
+
 }
