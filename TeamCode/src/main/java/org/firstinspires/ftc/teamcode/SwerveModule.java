@@ -29,8 +29,8 @@ import javax.xml.parsers.SAXParser;
 
 @Config
 public class SwerveModule {
-    public static double P = 0.05, I = 0, D = 0, F = 0.1;
-    public static double K_STATIC = 0.001;
+    public static double P = 0.1, I = 0, D = 0, F = 0;
+    public static double K_STATIC = 0.03;
 
     public static double MAX_SERVO = .95, MAX_MOTOR = 0.2; //max speed of either, motor at 20% now for testing
 
@@ -70,7 +70,7 @@ public class SwerveModule {
         this.driveMotor.setMotorType(motorConfigurationType);
         this.driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        this.driveMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         this.servo = servo;
         ((CRServoImplEx) this.servo).setPwmRange(new PwmControl.PwmRange(505, 2495, 5000));
@@ -99,6 +99,7 @@ public class SwerveModule {
      */
     public void read() {
         moduleAngle = absoluteAnalogEncoder.getCurrentPosition();
+        setTargetRotation(0);
     }
 
     /**

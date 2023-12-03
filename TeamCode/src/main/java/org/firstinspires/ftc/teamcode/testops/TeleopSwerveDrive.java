@@ -46,8 +46,9 @@ public class TeleopSwerveDrive extends CommandOpMode {
 
 
         robot.init(hardwareMap, telemetry);
-        deposit = new Deposit(robot);
-        gamepadEx = new GamepadEx(gamepad1);
+//        arm = new ArmSystem(robot);
+        gamepadEx1 = new GamepadEx(gamepad1);
+        gamepadEx2 = new GamepadEx(gamepad2);
         drivetrain = new SwerveDrivetrain(robot);
 
         intake = new Intake(robot);
@@ -76,12 +77,92 @@ public class TeleopSwerveDrive extends CommandOpMode {
         ),new Rotation2d(robot.getAngle()));
 
         robot.read(drivetrain);
+
+
+
+//        pixel1Detected = arm.getPixel1Detcted();
+//        pixel2Detected = arm.getPixel2Detcted();
+//
+//
+//
+//        if(gamepadEx2.getButton(GamepadKeys.Button.DPAD_UP)){
+//            arm.setHighPosition();
+//        }
+//
+//        if(gamepadEx2.getButton(GamepadKeys.Button.DPAD_RIGHT)){
+//            arm.setMidPosition();
+//        }
+//
+//        if(gamepadEx2.getButton(GamepadKeys.Button.DPAD_LEFT)){
+//            arm.setLowPosition();
+//        }
+//
+//        if(gamepadEx2.getButton(GamepadKeys.Button.DPAD_DOWN)){
+//            arm.setDownPosition();
+//        }
+//
+//        if(gamepadEx2.getButton(GamepadKeys.Button.LEFT_BUMPER)){
+//            claw1Boolean = !claw1Boolean;
+//            toggleClaw1();
+//
+//
+//        }
+//
+//        if(gamepadEx2.getButton(GamepadKeys.Button.RIGHT_BUMPER)){
+//            claw2Boolean = !claw2Boolean;
+//            toggleClaw2();
+//
+//        }
+//
+//        if(gamepadEx2.getButton(GamepadKeys.Button.Y)){
+//            clawBoolean = !clawBoolean;
+//
+//            claw1Boolean = clawBoolean;
+//            claw2Boolean = clawBoolean;
+//
+//            toggleClaw1();
+//            toggleClaw2();
+//
+//        }
+//
+//        if(pixel1Detected){
+//            if(claw1OpenFirst) {
+//                arm.setClaw1Closed();
+//                claw1Boolean = false;
+//                claw1OpenFirst = false;
+//            } else if (claw1Boolean){
+//                claw1OpenFirst = true;
+//            }
+//        }
+//
+//        if(pixel2Detected){
+//            if(claw2OpenFirst) {
+//                arm.setClaw2Closed();
+//                claw2Boolean = false;
+//                claw2OpenFirst = false;
+//            } else if (claw2Boolean){
+//                claw2OpenFirst = true;
+//            }
+//        }
+//
+
+
+
+
         drivetrain.updateModules();
         telemetry.addData("Angle", robot.getAngle());
         telemetry.addData("Swerve", drivetrain.getTelemetry());
         telemetry.addData("Swerve Module States", drivetrain.getSwerveModuleStates());
         telemetry.addData("Swerve Module Servo", drivetrain.getSwerveServoPowers());
         telemetry.addData("Module Velocities", drivetrain.getVelocities());
+//        telemetry.addData("Pivot Position", arm.getPivotPosition());
+//        telemetry.addData("Pivot Speed", arm.getPivotSpeed());
+//        telemetry.addData("Extend Position", arm.getExtendPosition());
+//        telemetry.addData("Extend Speed", arm.getExtendSpeed());
+//        telemetry.addData("Wrist Position", arm.getWristPosition());
+//        telemetry.addData("Claw 1 Position", arm.getClaw1Position());
+//        telemetry.addData("Claw 2 Position", arm.getClaw2Position());
+        //arm.loop();
         telemetry.update();
 
         if(gamepadEx.getButton(GamepadKeys.Button.A)) {

@@ -126,6 +126,12 @@ public class RobotHardware {
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
 
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
 
 
         frontLeftServo = hardwareMap.get(CRServo.class, "frontLeftServo");
