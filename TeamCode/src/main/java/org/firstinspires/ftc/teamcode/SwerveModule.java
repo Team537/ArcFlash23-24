@@ -29,7 +29,7 @@ import javax.xml.parsers.SAXParser;
 
 @Config
 public class SwerveModule {
-    public static double P = 0.1, I = 0, D = 0, F = 0;
+    public static double P = 0.1, I = 0, D = 0, F = 0.15;
     public static double K_STATIC = 0.03;
 
     public static double MAX_SERVO = .95, MAX_MOTOR = 0.2; //max speed of either, motor at 20% now for testing
@@ -99,7 +99,7 @@ public class SwerveModule {
      */
     public void read() {
         moduleAngle = absoluteAnalogEncoder.getCurrentPosition();
-        setTargetRotation(0);
+//        setTargetRotation(0);
     }
 
     /**
@@ -232,7 +232,7 @@ public class SwerveModule {
         }
 
 
-         driveMotor.setVelocity( wheelInverse *((this.state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ));
+         driveMotor.setVelocity( wheelInverse *0.05*((this.state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ));
         //driveMotor.setVelocity(-10);
          setTargetRotation(state.angle.getRadians());
 

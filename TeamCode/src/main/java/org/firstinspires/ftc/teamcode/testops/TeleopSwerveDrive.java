@@ -73,7 +73,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
         robot.startIMUThread(this);
         drivetrain.driveVelocity(new ChassisSpeeds(
                 gamepadEx1.getLeftY() * MAX_X_SPEED,
-                gamepadEx1.getLeftX() * MAX_Y_SPEED,
+                -gamepadEx1.getLeftX() * MAX_Y_SPEED,
                 gamepadEx1.getRightX() * MAX_TURN_SPEED
         ),new Rotation2d(robot.getAngle()));
 
