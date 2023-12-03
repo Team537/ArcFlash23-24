@@ -33,7 +33,8 @@ public class RobotHardware {
     public DcMotorEx frontRightMotor;
     public DcMotorEx backLeftMotor;
     public DcMotorEx backRightMotor;
-    public DcMotorEx intakeMotor;
+//    public DcMotorEx intakeMotor;
+//    public DcMotorEx intakeMotor;
 
 
     public TouchSensor touch;
@@ -124,7 +125,7 @@ public class RobotHardware {
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "frontRightMotor");
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "backRightMotor");
-        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+ //       intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -139,10 +140,10 @@ public class RobotHardware {
         backLeftServo = hardwareMap.get(CRServo.class, "backLeftServo");
         backRightServo = hardwareMap.get(CRServo.class, "backRightServo");
         shooterServo = hardwareMap.get(Servo.class, "shooterServo");
-        angleServo = hardwareMap.get(Servo.class, "angleServo");
+  //      angleServo = hardwareMap.get(Servo.class, "angleServo");
 //        swivelServo = hardwareMap.get(Servo.class, "swivelServo");
-        slideMotor1 = hardwareMap.get(DcMotorEx.class, "slideMotor1");
-        slideMotor2 = hardwareMap.get(DcMotorEx.class, "slideMotor2");
+      //  slideMotor1 = hardwareMap.get(DcMotorEx.class, "slideMotor1");
+    //    slideMotor2 = hardwareMap.get(DcMotorEx.class, "slideMotor2");
 
       frontLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
      frontRightServo.setDirection(DcMotorSimple.Direction.REVERSE);

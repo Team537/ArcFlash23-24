@@ -188,10 +188,10 @@ public class TeleopSwerveDrive extends CommandOpMode {
 //        intake.loop();
 //        deposit.periodic();
 //        robot.clearBulkCache();
-        telemetry.addData("Intake State", intake.getIntakeState());
-        telemetry.addData("Slide State", deposit.getCurrentSlideState());
-        telemetry.addData("Slide 1 Position", deposit.getSlideMotor1Position());
-        telemetry.addData("Slide 2 Position", deposit.getSlideMotor2Position());
+//        telemetry.addData("Intake State", intake.getIntakeState());
+//        telemetry.addData("Slide State", deposit.getCurrentSlideState());
+//        telemetry.addData("Slide 1 Position", deposit.getSlideMotor1Position());
+//        telemetry.addData("Slide 2 Position", deposit.getSlideMotor2Position());
 
 
     }

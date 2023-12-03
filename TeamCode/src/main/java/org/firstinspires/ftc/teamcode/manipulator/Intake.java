@@ -15,7 +15,7 @@ public class Intake {
     private IntakeState intakeState = IntakeState.STOPPED;
 
     public Intake(RobotHardware robot){
-        intakeMotor = robot.intakeMotor;
+//        intakeMotor = robot.intakeMotor;
 
     }
 
