@@ -29,7 +29,7 @@ public class BlueMecanumAuto extends LinearOpMode {
     TrajectorySequence centerPath = drivetrain.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(0)))
             .forward(36)
             .addDisplacementMarker(1, () -> {
-                deposit.latchOpen();
+                //deposit.latchOpen();
             })
             .strafeLeft(75)
             .turn(Math.toRadians(90))
@@ -64,23 +64,24 @@ public class BlueMecanumAuto extends LinearOpMode {
         deposit = new Deposit(robot);
 
         pipeline = new BluePropDetectionPipeline();
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(
-                hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId
-        );
 
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                camera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
-            }
+        // int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        //camera = OpenCvCameraFactory.getInstance().createWebcam(
+                //hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId
+        //);
 
-            @Override
-            public void onError(int errorCode)
-            {
-
-            }
-        });
+        //camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+//            @Override
+//            public void onOpened() {
+//                camera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
+//            }
+//
+//            @Override
+//            public void onError(int errorCode)
+//            {
+//
+//            }
+//        });
 
 
 

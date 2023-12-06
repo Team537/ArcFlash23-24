@@ -29,7 +29,6 @@ public class BluePropDetectionPipeline extends OpenCvPipeline {
 
         // Create a mask to detect blue within the specified range
         Core.inRange(hsvMat, lowerBlue, upperBlue, mask);
-
         // Find contours in the mask
         List<MatOfPoint> contours = new ArrayList<>();
         Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
