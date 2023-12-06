@@ -29,7 +29,7 @@ import javax.xml.parsers.SAXParser;
 
 @Config
 public class SwerveModule {
-    public static double P = 0.1, I = 0, D = 0, F = 0.2;
+    public static double P = 0.1, I = 0, D = 0, F = 0.195;
     //  f is basically the strength used to turn the servos or motors (power maybe?)
     public static double K_STATIC = 0.03;
 
@@ -59,7 +59,7 @@ public class SwerveModule {
 
     double wheelInverse = 1;
 
-    double velocityPowerAmount = 0.05; //basically a percentage ex. 0.05 = 5% acceleration speed
+    double velocityPowerAmount = 0.5; //basically a percentage ex. 0.05 = 5% acceleration speed
     private SwerveModuleState state = new SwerveModuleState();
 
 
@@ -243,8 +243,9 @@ public class SwerveModule {
 
         // DANGEROUS WHEN TESTING --- USE LOWER VALUES FOR TEST IF NOT ON THE GROUND
         //USE VELOCITYpOWERaMOUNT TO SLOW IT DOWN
+
         velocity = wheelInverse * velocityPowerAmount * ((this.state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO );
-        driveMotor.setVelocity(velocity);
+        driveMotor.setVelocity(velocity > 300 ? 300: velocity);
 
         //driveMotor.setVelocity(-10);
 
@@ -351,7 +352,8 @@ public class SwerveModule {
     }
 
     public double getVelocity(){
-        return ((wheelInverse * velocityPowerAmount * (state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ));
-        // (wheelInverse * velocityPowerAmount * (state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ))
+        return (velocity > 300 ? 300 : velocity);
+        // return (wheelInverse * velocityPowerAmount * (state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ));
     }
+
 }

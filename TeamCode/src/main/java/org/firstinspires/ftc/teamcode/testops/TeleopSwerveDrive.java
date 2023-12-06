@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.Globals;
 import org.firstinspires.ftc.teamcode.Pose;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.SwerveDrivetrain;
+import org.firstinspires.ftc.teamcode.SwerveModule;
 import org.firstinspires.ftc.teamcode.manipulator.Deposit;
 import org.firstinspires.ftc.teamcode.manipulator.Intake;
 import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
@@ -74,7 +75,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
         drivetrain.driveVelocity(new ChassisSpeeds(
                 gamepadEx1.getLeftY() * MAX_X_SPEED,
                 -gamepadEx1.getLeftX() * MAX_Y_SPEED, // if not - it will go left when joystick is right...
-                gamepadEx1.getRightX() * MAX_TURN_SPEED
+                -gamepadEx1.getRightX() * MAX_TURN_SPEED
         ),new Rotation2d(robot.getAngle()));
 
         robot.read(drivetrain);
@@ -156,6 +157,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
         telemetry.addData("Swerve Module States", drivetrain.getSwerveModuleStates());
         telemetry.addData("Swerve Module Servo", drivetrain.getSwerveServoPowers());
         telemetry.addData("Module Velocities", drivetrain.getVelocities());
+
 //        telemetry.addData("Pivot Position", arm.getPivotPosition());
 //        telemetry.addData("Pivot Speed", arm.getPivotSpeed());
 //        telemetry.addData("Extend Position", arm.getExtendPosition());
