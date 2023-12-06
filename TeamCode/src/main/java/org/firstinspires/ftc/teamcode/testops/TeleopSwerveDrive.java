@@ -73,7 +73,7 @@ public class TeleopSwerveDrive extends CommandOpMode {
         robot.startIMUThread(this);
         drivetrain.driveVelocity(new ChassisSpeeds(
                 gamepadEx1.getLeftY() * MAX_X_SPEED,
-                -gamepadEx1.getLeftX() * MAX_Y_SPEED,
+                -gamepadEx1.getLeftX() * MAX_Y_SPEED, // if not - it will go left when joystick is right...
                 gamepadEx1.getRightX() * MAX_TURN_SPEED
         ),new Rotation2d(robot.getAngle()));
 
@@ -188,6 +188,8 @@ public class TeleopSwerveDrive extends CommandOpMode {
 //        intake.loop();
 //        deposit.periodic();
 //        robot.clearBulkCache();
+
+        //this shouldnt be here. its from another teleop mode and will break everything
 //        telemetry.addData("Intake State", intake.getIntakeState());
 //        telemetry.addData("Slide State", deposit.getCurrentSlideState());
 //        telemetry.addData("Slide 1 Position", deposit.getSlideMotor1Position());

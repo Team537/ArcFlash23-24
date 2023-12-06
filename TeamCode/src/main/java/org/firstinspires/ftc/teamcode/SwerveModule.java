@@ -29,7 +29,8 @@ import javax.xml.parsers.SAXParser;
 
 @Config
 public class SwerveModule {
-    public static double P = 0.1, I = 0, D = 0, F = 0.15;
+    public static double P = 0.1, I = 0, D = 0, F = 0.2;
+    //  f is basically the strength used to turn the servos or motors (power maybe?)
     public static double K_STATIC = 0.03;
 
     public static double MAX_SERVO = .95, MAX_MOTOR = 0.2; //max speed of either, motor at 20% now for testing
@@ -54,6 +55,11 @@ public class SwerveModule {
     double angleError = 0;
     double steerPower = 0;
 
+    double velocity = 0;
+
+    double wheelInverse = 1;
+
+    double velocityPowerAmount = 0.05; //basically a percentage ex. 0.05 = 5% acceleration speed
     private SwerveModuleState state = new SwerveModuleState();
 
 
@@ -99,7 +105,7 @@ public class SwerveModule {
      */
     public void read() {
         moduleAngle = absoluteAnalogEncoder.getCurrentPosition();
-//        setTargetRotation(0);
+//        setTargetRotation(0); // dont even try to use this. it will ALWAYS set target position to 0
     }
 
     /**
@@ -113,6 +119,9 @@ public class SwerveModule {
 
          angleError = normalizeRadians(rotationTarget - currentAngle);
         if (MOTOR_FLIPPING && Math.abs(angleError) > Math.PI / 2) {
+
+                //try pi/4 for accuracy?
+
             rotationTarget = normalizeRadians(rotationTarget - Math.PI);
             wheelFlipped = true;
         } else {
@@ -219,36 +228,45 @@ public class SwerveModule {
 
 
     public void setDesiredState(SwerveModuleState state){
+
         this.state = state;
+
                 //optimize(state, Rotation2d.fromDegrees(getModuleRotation() *180 / Math.PI));
 
-     double wheelInverse;
 
         if(wheelFlipped){
-
             wheelInverse = 1;
         } else {
             wheelInverse = -1;
         }
 
 
-         driveMotor.setVelocity( wheelInverse *0.05*((this.state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ));
+        // DANGEROUS WHEN TESTING --- USE LOWER VALUES FOR TEST IF NOT ON THE GROUND
+        //USE VELOCITYpOWERaMOUNT TO SLOW IT DOWN
+        velocity = wheelInverse * velocityPowerAmount * ((this.state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO );
+        driveMotor.setVelocity(velocity);
+
         //driveMotor.setVelocity(-10);
-         setTargetRotation(state.angle.getRadians());
+
+        setTargetRotation(state.angle.getRadians());
 
 
     }
 
     public SwerveModuleState optimize(
             SwerveModuleState desiredState, Rotation2d currentAngle) {
+
         double targetAngle = desiredState.angle.getDegrees();
         double targetSpeed = desiredState.speedMetersPerSecond;
         double delta = targetAngle - currentAngle.getDegrees();
+
         if(Math.abs(delta) > 90) {
             targetSpeed = -targetSpeed;
             targetAngle = delta > 90 ? (targetAngle -= 180 ) : (targetAngle += 180);
         }
+
         return new SwerveModuleState(targetSpeed,Rotation2d.fromDegrees(targetAngle));
+
     }
 
     private double placeInAppropriateScope(double scopeReference, double newAngle) {
@@ -333,6 +351,7 @@ public class SwerveModule {
     }
 
     public double getVelocity(){
-        return ((state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO );
+        return ((wheelInverse * velocityPowerAmount * (state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ));
+        // (wheelInverse * velocityPowerAmount * (state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ))
     }
 }
