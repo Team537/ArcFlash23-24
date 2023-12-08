@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.config.Config;
 
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.controller.PIDFController;
+import com.arcrobotics.ftclib.geometry.Rotation2d;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.SwerveModuleState;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -18,7 +19,11 @@ import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Rotation;
+
 import java.util.Locale;
+
+import javax.xml.parsers.SAXParser;
 
 
 @Config
@@ -119,12 +124,12 @@ public class SwerveModule {
      * @return Target Module Rotation in Radians */
 
     public double getTargetRotation() {
-        return normalizeRadians(targetAngle - Math.PI);
+        return normalizeRadians(targetAngle);
     }
     /** Get Actual Module Rotation
      * @return Actual Module Rotation in Radians */
     public double getModuleRotation() {
-        return normalizeRadians(moduleAngle - Math.PI);
+        return normalizeRadians(moduleAngle);
     }
   /**
    * Set Drive Motor Power
@@ -209,12 +214,64 @@ public class SwerveModule {
 
 
     public void setDesiredState(SwerveModuleState state){
-        this.state = state;
+        this.state = optimize(state, Rotation2d.fromDegrees(getModuleRotation() *180 / Math.PI));
 
-         driveMotor.setVelocity(((state.speedMetersPerSecond/39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ));
+//        double wheelInverse;
+
+//        if(state.speedMetersPerSecond < 0){
+//
+//            wheelInverse = 1;
+//        } else {
+//            wheelInverse = -1;
+//        }
+
+
+         driveMotor.setVelocity(((this.state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO ));
+        //driveMotor.setVelocity(-10);
          setTargetRotation(state.angle.getRadians());
 
 
+    }
+
+    public SwerveModuleState optimize(
+            SwerveModuleState desiredState, Rotation2d currentAngle) {
+        double targetAngle = desiredState.angle.getDegrees();
+        double targetSpeed = desiredState.speedMetersPerSecond;
+        double delta = targetAngle - currentAngle.getDegrees();
+        if(Math.abs(delta) > 90) {
+            targetSpeed = -targetSpeed;
+            targetAngle = delta > 90 ? (targetAngle -= 180 ) : (targetAngle += 180);
+        }
+        return new SwerveModuleState(targetSpeed,Rotation2d.fromDegrees(targetAngle));
+    }
+
+    private double placeInAppropriateScope(double scopeReference, double newAngle) {
+        double lowerBound;
+        double upperBound;
+        double lowerOffset = scopeReference % 360;
+        if(lowerOffset >= 0) {
+            lowerBound = scopeReference - lowerOffset;
+            upperBound = scopeReference + (360 - lowerOffset);
+        } else {
+            upperBound = scopeReference - lowerOffset;
+            lowerBound = scopeReference - (360 + lowerOffset);
+        }
+        while ( newAngle < lowerBound) {
+            newAngle += 360;
+        }
+        while (newAngle > upperBound) {
+            newAngle -= 360;
+        }
+        if(newAngle - scopeReference > 180) {
+            newAngle -= 360;
+        } else if (newAngle - scopeReference < -180) {
+            newAngle += 360;
+        }
+        return newAngle;
+    }
+
+    public double getSteerPower(){
+        return steerPower;
     }
 
     //idk what this is
@@ -267,5 +324,9 @@ public class SwerveModule {
       * */
     public double encoderTicksToInches(double ticks) {
         return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV;
+    }
+
+    public double getVelocity(){
+        return ((state.speedMetersPerSecond * 39.3701) * TICKS_PER_REV)/ (WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO );
     }
 }
