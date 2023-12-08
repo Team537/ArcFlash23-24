@@ -23,7 +23,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 
-@Autonomous (name = "Red Mecanum Auto")
+//@Autonomous (name = "Red Mecanum Auto")
 public class RedMecanumAuto extends LinearOpMode {
 
     DcMotor frontLeftMotor = hardwareMap.get(DcMotorEx.class, "frontLeftMotor");

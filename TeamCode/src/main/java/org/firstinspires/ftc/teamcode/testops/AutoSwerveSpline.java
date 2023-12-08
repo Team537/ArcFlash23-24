@@ -17,7 +17,7 @@ import me.wobblyyyy.pathfinder2.trajectory.Trajectory;
 import me.wobblyyyy.pathfinder2.trajectory.spline.SplineBuilderFactory;
 
 @Config
-@Autonomous(name = "Test PathFinder Spline")
+//@Autonomous(name = "Test PathFinder Spline")
 public class AutoSwerveSpline extends LinearOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();

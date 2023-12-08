@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.testops;
 
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -8,11 +10,23 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.RobotHardware;
+import org.firstinspires.ftc.teamcode.manipulator.ArmSystem;
 
-@TeleOp
+@TeleOp(name = "Teleop")
 public class MecanumDrive extends LinearOpMode {
+    public boolean claw1Boolean = false;
+    public boolean claw2Boolean = false;
+    public boolean clawBoolean = false;
+    ArmSystem arm;
     @Override
     public void runOpMode() throws InterruptedException {
+
+        RobotHardware robot = RobotHardware.getInstance();
+        arm = new ArmSystem(robot);
+        GamepadEx gamepadEx2 = new GamepadEx(gamepad2);
+
+
         // Declare our motors
         // Make sure your ID's match your configuration
         DcMotor frontLeftMotor = hardwareMap.get(DcMotorEx.class, "frontLeftMotor");
@@ -80,8 +94,76 @@ public class MecanumDrive extends LinearOpMode {
             backLeftMotor.setPower(backLeftPower * slow);
             frontRightMotor.setPower(frontRightPower * slow);
             backRightMotor.setPower(backRightPower * slow);
+
+            if(gamepadEx2.getButton(GamepadKeys.Button.DPAD_UP)){
+                arm.setHighPosition();
+            }
+
+            if(gamepadEx2.getButton(GamepadKeys.Button.DPAD_RIGHT)){
+                arm.setMidPosition();
+            }
+
+            if(gamepadEx2.getButton(GamepadKeys.Button.DPAD_LEFT)){
+                arm.setLowPosition();
+            }
+
+            if(gamepadEx2.getButton(GamepadKeys.Button.DPAD_DOWN)){
+                arm.setDownPosition();
+            }
+
+            if(gamepadEx2.getButton(GamepadKeys.Button.LEFT_BUMPER)){
+                claw1Boolean = !claw1Boolean;
+                toggleClaw1();
+
+
+            }
+
+            if(gamepadEx2.getButton(GamepadKeys.Button.RIGHT_BUMPER)){
+                claw2Boolean = !claw2Boolean;
+                toggleClaw2();
+
+            }
+
+            if(gamepadEx2.getButton(GamepadKeys.Button.Y)){
+                clawBoolean = !clawBoolean;
+
+                claw1Boolean = clawBoolean;
+                claw2Boolean = clawBoolean;
+
+                toggleClaw1();
+                toggleClaw2();
+
+            }
+            telemetry.addData("Pivot Position", arm.getPivotPosition());
+            telemetry.addData("Pivot Speed", arm.getPivotSpeed());
+            telemetry.addData("Extend Position", arm.getExtendPosition());
+            telemetry.addData("Extend Speed", arm.getExtendSpeed());
+            telemetry.addData("Wrist Position", arm.getWristPosition());
+            telemetry.addData("Claw 1 Position", arm.getClaw1Position());
+            telemetry.addData("Claw 2 Position", arm.getClaw2Position());
+            arm.loop();
+            telemetry.update();
         }
 
+
+
     }
+    public void toggleClaw1() {
+        if(claw1Boolean){
+            arm.setClaw1Open();
+        } else {
+            arm.setClaw1Closed();
+        }
+    }
+
+    public void toggleClaw2(){
+        if(claw2Boolean){
+            arm.setClaw2Open();
+        } else {
+            arm.setClaw2Closed();
+        }
+    }
+
+
 
 }

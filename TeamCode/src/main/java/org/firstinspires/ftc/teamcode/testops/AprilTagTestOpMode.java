@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import kotlin.Unit;
 
 @Config
-@TeleOp(name = "April Tag Detection")
+//@TeleOp(name = "April Tag Detection")
 public class AprilTagTestOpMode extends CommandOpMode {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;

@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.manipulator.Intake;
 import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
 
 @Config
-@TeleOp(name = "😈😈😈😈😈😈")
+//@TeleOp(name = "😈😈😈😈😈😈")
 public class Teleop extends CommandOpMode {
     private ElapsedTime timer;
     private double loopTime = 0;

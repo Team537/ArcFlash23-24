@@ -25,7 +25,7 @@ import org.firstinspires.ftc.teamcode.manipulator.Intake;
 
 
 @Config
-@TeleOp(name = "Manipulator Test OpMode")
+//@TeleOp(name = "Manipulator Test OpMode")
 public class TimeLEDTestOpMode extends CommandOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();

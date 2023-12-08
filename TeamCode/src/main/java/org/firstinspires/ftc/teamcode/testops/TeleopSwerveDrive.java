@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.manipulator.ArmSystem;
 
 
 @Config
-@TeleOp(name = "Test Swerve Drive")
+//@TeleOp(name = "Test Swerve Drive")
 public class TeleopSwerveDrive extends CommandOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();

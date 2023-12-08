@@ -27,37 +27,37 @@ public class ArmSystem {
     private PIDController armExtendController = new PIDController(0.01, 0, 0.01);
     private double extendF = 0;
 
-    double pivotSpeed = 0;
-    double extendSpeed = 0;
+    private static double pivotSpeed = 0;
+    private static double extendSpeed = 0;
 
-    private double pivotTargetPosition = 0;
-    private double extendTargetPosition = 0;
-    private double claw1TargetPosition = 0;
-    private double claw2TargetPosition = 0;
-    private double wristTargetPosition = 0;
+    private static double pivotTargetPosition = 0;
+    private static double extendTargetPosition = 0;
+    private static double claw1TargetPosition = 0;
+    private static double claw2TargetPosition = 0;
+    private static double wristTargetPosition = 0;
 
-    private double pivotDownPosition = 0;
-    private double pivotLowPosition = 10;
-    private double pivotMidPosition = 20;
-    private double pivotHighPosition = 30;
+    private static double pivotDownPosition = 0;
+    private static double pivotLowPosition = 10;
+    private static double pivotMidPosition = 20;
+    private static double pivotHighPosition = 30;
 
-    private double extendDownPosition = 0;
-    private double extendLowPosition = 10;
-    private double extendMidPosition = 20;
-    private double extendHighPosition = 30;
+    private static double extendDownPosition = 0;
+    private static double extendLowPosition = 10;
+    private static double extendMidPosition = 20;
+    private static double extendHighPosition = 30;
 
-    private double clawOpenPosition1 = 0;
-    private double clawClosedPosition1 = 0.75;
+    private static double clawOpenPosition1 = 0;
+    private static double clawClosedPosition1 = 0.75;
 
-    private double clawOpenPosition2 = 0;
-    private double clawClosedPosition2 = 0.75;
+    private static double clawOpenPosition2 = 0;
+    private static double clawClosedPosition2 = 0.75;
 
-    private double wristDownPosition = 0;
-    private double wristLowPosition = 0.1;
-    private double wristMidPosition = 0.2;
-    private double wristHighPosition = 0.3;
+    private static double wristDownPosition = 0;
+    private static double wristLowPosition = 0.1;
+    private static double wristMidPosition = 0.2;
+    private static double wristHighPosition = 0.3;
 
-    private double ticks_per_degree = 700/180;
+    private static double ticks_per_degree = 700/180;
 
     public ArmSystem(RobotHardware robot){
         armPivot = robot.armPivot;

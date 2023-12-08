@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
 import me.wobblyyyy.pathfinder2.geometry.PointXYZ;
 
 @Config
-@Autonomous(name = "Test PathFinder Go To Point")
+//@Autonomous(name = "Test PathFinder Go To Point")
 public class AutoSwerveGoToPoint extends LinearOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();

@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Config
-@Autonomous(name = "Test Trajectory")
+//@Autonomous(name = "Test Trajectory")
 public class TrajectoryTest extends CommandOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();

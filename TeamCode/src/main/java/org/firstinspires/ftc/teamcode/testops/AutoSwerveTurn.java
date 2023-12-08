@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.pathfinder.PFinder;
 import me.wobblyyyy.pathfinder2.geometry.PointXYZ;
 
 @Config
-@Autonomous(name = "Test PathFinder Turn")
+//@Autonomous(name = "Test PathFinder Turn")
 public class AutoSwerveTurn extends LinearOpMode {
 
     private final RobotHardware robot = RobotHardware.getInstance();
