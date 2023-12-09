@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.testops;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,18 +16,28 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.manipulator.ArmSystem;
 
+
+@Config
 @TeleOp(name = "Teleop")
 public class MecanumDrive extends LinearOpMode {
     public boolean claw1Boolean = false;
     public boolean claw2Boolean = false;
     public boolean clawBoolean = false;
+    public int claw1number = 0;
+    public int claw2number = 0;
+
+
+    public static boolean boolTest = false;
     ArmSystem arm;
     @Override
     public void runOpMode() throws InterruptedException {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         RobotHardware robot = RobotHardware.getInstance();
+        robot.init(hardwareMap, telemetry);
         arm = new ArmSystem(robot);
         GamepadEx gamepadEx2 = new GamepadEx(gamepad2);
+        GamepadEx gamepadEx1 = new GamepadEx(gamepad1);
 
 
         // Declare our motors
@@ -111,34 +124,34 @@ public class MecanumDrive extends LinearOpMode {
                 arm.setDownPosition();
             }
 
+            if(gamepadEx2.getButton(GamepadKeys.Button.X)){
+                arm.wristStop();
+            }
+
             if(gamepadEx2.getButton(GamepadKeys.Button.LEFT_BUMPER)){
-                claw1Boolean = !claw1Boolean;
-                toggleClaw1();
-
-
+                arm.wristDown();
             }
 
             if(gamepadEx2.getButton(GamepadKeys.Button.RIGHT_BUMPER)){
-                claw2Boolean = !claw2Boolean;
-                toggleClaw2();
+                arm.wristUp();
+            }
+
+            if(gamepadEx1.getButton(GamepadKeys.Button.LEFT_BUMPER)){
+                arm.setClawOpen();
 
             }
 
-            if(gamepadEx2.getButton(GamepadKeys.Button.Y)){
-                clawBoolean = !clawBoolean;
-
-                claw1Boolean = clawBoolean;
-                claw2Boolean = clawBoolean;
-
-                toggleClaw1();
-                toggleClaw2();
+            if(gamepadEx1.getButton(GamepadKeys.Button.RIGHT_BUMPER)){
+               arm.setClawClosed();
 
             }
+
+
             telemetry.addData("Pivot Position", arm.getPivotPosition());
             telemetry.addData("Pivot Speed", arm.getPivotSpeed());
-            telemetry.addData("Extend Position", arm.getExtendPosition());
-            telemetry.addData("Extend Speed", arm.getExtendSpeed());
-            telemetry.addData("Wrist Position", arm.getWristPosition());
+//            telemetry.addData("Extend Position", arm.getExtendPosition());
+//            telemetry.addData("Extend Speed", arm.getExtendSpeed());
+             telemetry.addData("Wrist Position", arm.getWristPosition());
             telemetry.addData("Claw 1 Position", arm.getClaw1Position());
             telemetry.addData("Claw 2 Position", arm.getClaw2Position());
             arm.loop();
@@ -147,13 +160,16 @@ public class MecanumDrive extends LinearOpMode {
 
 
 
+
     }
     public void toggleClaw1() {
-        if(claw1Boolean){
-            arm.setClaw1Open();
-        } else {
-            arm.setClaw1Closed();
-        }
+
+            if (claw1Boolean) {
+                arm.setClaw1Open();
+            } else {
+                arm.setClaw1Closed();
+            }
+
     }
 
     public void toggleClaw2(){

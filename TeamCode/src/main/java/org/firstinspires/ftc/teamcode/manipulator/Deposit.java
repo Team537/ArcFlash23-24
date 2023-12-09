@@ -61,13 +61,13 @@ public class Deposit extends SubsystemBase {
     private static double midPosition1 = 25;
     private static double midPosition2 = 25;
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
     private static double highPosition1 = 40;
     private static double highPosition2 = 40;
-=======
-    private static double highPosition1 = 800;
-    private static double highPosition2 = 800;
->>>>>>> PlanBManipulator
+//=======
+//    private static double highPosition1 = 800;
+//    private static double highPosition2 = 800;
+//>>>>>>> PlanBManipulator
 
     private static double swivelServoLeft = 0;
     private static double swivelServoRight = 0.3;
@@ -133,54 +133,54 @@ public class Deposit extends SubsystemBase {
 //        swivelServo = robot.swivelServo;
 //        colorSensor = robot.colorSensor;
 //        relativeLayout = robot.relativeLayout;
-<<<<<<< HEAD
+//<<<<<<< HEAD
         blinkin = robot.blinkin;
-=======
+//=======
 //        blinkin = robot.blinkin;
->>>>>>> PlanBManipulator
+//>>>>>>> PlanBManipulator
 //        touch = robot.touch;
 //        touch2 = robot.touch2;
 
 
 
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 //    slideMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //    slideMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
 //         blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
-=======
+//=======
 //        if (colorSensor instanceof SwitchableLight) {
 //            ((SwitchableLight)colorSensor).enableLight(true);
 //        }
 
 //        colorSensor.setGain(colorSensorGain);
 //        blinkin.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
->>>>>>> PlanBManipulator
+//>>>>>>> PlanBManipulator
     }
 
    @Override
     public void periodic(){
-<<<<<<< HEAD
+//<<<<<<< HEAD
 //
-=======
+//=======
         currentSlideState = targetSlideState;
 
->>>>>>> PlanBManipulator
+//>>>>>>> PlanBManipulator
 //        if( getTouchBool() == false && targetSlideState == SlideState.DOWN ) {
 //            currentSlideState = SlideState.TRANSITION;
 //
 //        } else {
 //            currentSlideState = targetSlideState;
-<<<<<<< HEAD
+//<<<<<<< HEAD
        // }
-=======
+//=======
 //        }
 
         slideMotor1Position = slideMotor2.getCurrentPosition();
         double pid = pidController.calculate(targetPosition1-slideMotor1Position);
->>>>>>> PlanBManipulator
+//>>>>>>> PlanBManipulator
 
 
             double ff = Math.cos(Math.toRadians(targetPosition1 / ticks_per_degree)) * f;
@@ -188,14 +188,14 @@ public class Deposit extends SubsystemBase {
 
         slideSpeed = (pid + ff);
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
         slideMotor1.setTargetPosition((int)-targetPosition1);
         slideMotor2.setTargetPosition((int)targetPosition2);
         slideMotor1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         slideMotor2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         slideMotor1.setPower(2*slideSpeed);
         slideMotor2.setPower(2*slideSpeed);
-=======
+//=======
 //        slideMotor1.setPower(slideSpeed);
        if(Math.abs(targetPosition2-slideMotor1Position) > 5) {
            slideMotor1.setPower(slideSpeed * 0.1);
@@ -206,7 +206,7 @@ public class Deposit extends SubsystemBase {
        }
 
 //    if(currentLEDState == LEDState.NONE) setNoneLed();
->>>>>>> PlanBManipulator
+//>>>>>>> PlanBManipulator
 
 //    if(currentLEDState == LEDState.NONE) setNoneLed();
 

@@ -126,16 +126,23 @@ public class RobotHardware {
 
 
 
-        frontLeftServo = hardwareMap.get(CRServo.class, "frontLeftServo");
-        frontRightServo = hardwareMap.get(CRServo.class, "frontRightServo");
-        backLeftServo = hardwareMap.get(CRServo.class, "backLeftServo");
-        backRightServo = hardwareMap.get(CRServo.class, "backRightServo");
+
+
+//        frontLeftServo = hardwareMap.get(CRServo.class, "frontLeftServo");
+//        frontRightServo = hardwareMap.get(CRServo.class, "frontRightServo");
+//        backLeftServo = hardwareMap.get(CRServo.class, "backLeftServo");
+//        backRightServo = hardwareMap.get(CRServo.class, "backRightServo");
         shooterServo = hardwareMap.get(Servo.class, "shooterServo");
         clawServo1 = hardwareMap.get(Servo.class, "clawServo1");
         clawServo2 = hardwareMap.get(Servo.class, "clawServo2");
         wristServo = hardwareMap.get(Servo.class, "wristServo");
         armPivot = hardwareMap.get(DcMotorEx.class, "armPivot");
-        slideMotor2 = hardwareMap.get(DcMotorEx.class, "slideMotor2");
+
+        armPivot.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        wristServo.setDirection(Servo.Direction.REVERSE);
+//        clawServo1.setDirection(Servo.Direction.REVERSE);
+//        slideMotor2 = hardwareMap.get(DcMotorEx.class, "slideMotor2");
 
 //        frontLeftServo.setDirection(DcMotorSimple.Direction.REVERSE);
 //        frontRightServo.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -161,10 +168,10 @@ public class RobotHardware {
         //webcam1 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), viewportContainerIds[0]);
 //        webcam2 = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), viewportContainerIds[1]);
 //
-        colorSensor1 = hardwareMap.get(RevColorSensorV3.class, "colorSensor1");
-        colorSensor2 = hardwareMap.get(RevColorSensorV3.class, "colorSensor2");
-        relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
-        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+//        colorSensor1 = hardwareMap.get(RevColorSensorV3.class, "colorSensor1");
+//        colorSensor2 = hardwareMap.get(RevColorSensorV3.class, "colorSensor2");
+//        relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+//        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
         voltage = hardwareMap.voltageSensor.iterator().next().getVoltage();
     }
